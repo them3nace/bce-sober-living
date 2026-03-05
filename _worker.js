@@ -453,35 +453,36 @@ export default {
   }
 };
 
-// Email notification helper (uses Cloudflare Email or webhook)
+// Email notification helper (uses Resend API)
 async function sendEmailNotification(env, subject, body) {
   try {
-    // Option 1: Use a webhook service like Make.com, Zapier, or custom endpoint
-    // This sends to your phone via email-to-SMS or push notification
-    const webhookUrl = env.NOTIFICATION_WEBHOOK;
-    
-    if (webhookUrl) {
-      await fetch(webhookUrl, {
+    const sent = false;
+
+    if (env.RESEND_API_KEY) {
+      await fetch('https://api.resend.com/emails', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${env.RESEND_API_KEY}`
+        },
         body: JSON.stringify({
-          to: 'agent@bcesoberliving.com',
+          from: 'BCE Sober Living <william@bcesoberliving.com>',
+          to: ['william@bcesoberliving.com'],
           subject: `[BCE] ${subject}`,
-          body: body,
-          phone: '4243956144' // For SMS notifications
+          text: body
         })
       });
     }
-    
+
     // Store notification in KV for backup
     const notifId = Date.now().toString();
     await env['BCE-SESSIONS'].put(`notif_${notifId}`, JSON.stringify({
       subject,
       body,
       timestamp: new Date().toISOString(),
-      sent: !!webhookUrl
+      sent: !!env.RESEND_API_KEY
     }));
-    
+
   } catch (error) {
     console.error('Email notification error:', error);
   }
