@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Information - BCE Sober Living, L.L.C</title>
+    <meta name="description" content="General information about BCE Sober Living including house rules, recovery statistics, setup for success, rehabilitation information, and FAQs.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .tabs-wrapper {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+        .tab-nav {
+            display: flex;
+            flex-wrap: wrap;
+            background: linear-gradient(135deg, var(--dark-blue), var(--medium-blue));
+            border-bottom: 3px solid var(--primary-blue);
+        }
+        .tab-btn {
+            flex: 1 1 auto;
+            padding: 1rem 1.2rem;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            letter-spacing: 0.02em;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -3px;
+        }
+        .tab-btn:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.08);
+        }
+        .tab-btn.active {
+            color: #fff;
+            border-bottom: 3px solid var(--primary-blue);
+            background: rgba(77,166,255,0.15);
+        }
+        .tab-panel {
+            display: none;
+            padding: 2.5rem;
+            animation: fadeIn 0.3s ease;
+        }
+        .tab-panel.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tab-panel h2 {
+            color: var(--dark-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--light-blue);
+        }
+        .tab-panel h3 {
+            color: var(--medium-blue);
+            font-size: 1.2rem;
+            margin: 1.8rem 0 0.75rem;
+        }
+        .tab-panel p {
+            color: var(--text-dark);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        .tab-panel ul, .tab-panel ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.9;
+            color: var(--text-dark);
+        }
+        .info-card {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
+            border-left: 4px solid var(--primary-blue);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, var(--dark-blue), var(--medium-blue));
+            color: #fff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            display: block;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.4;
+        }
+        .rule-block {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-blue);
+        }
+        .rule-block h4 {
+            color: var(--dark-blue);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        .rule-block p {
+            margin: 0;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        .step-list {
+            counter-reset: steps;
+            list-style: none;
+            padding: 0;
+        }
+        .step-list li {
+            counter-increment: steps;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            margin-bottom: 1.25rem;
+        }
+        .step-list li::before {
+            content: counter(steps);
+            background: var(--primary-blue);
+            color: #fff;
+            font-weight: 800;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+        /* FAQ styles */
+        .faq-category { margin-bottom: 2rem; }
+        .faq-category h3 {
+            font-size: 1.3rem;
+            color: var(--dark-blue);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-blue);
+        }
+        .faq-item { border-bottom: 1px solid #e9ecef; }
+        .faq-question {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            gap: 1rem;
+        }
+        .faq-question:hover { color: var(--primary-blue); }
+        .faq-icon {
+            font-size: 1.4rem;
+            color: var(--primary-blue);
+            flex-shrink: 0;
+            transition: transform 0.2s;
+        }
+        .faq-item.open .faq-icon { transform: rotate(45deg); }
+        .faq-answer {
+            display: none;
+            padding: 0 0 1rem;
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+        .faq-item.open .faq-answer { display: block; }
+        @media (max-width: 640px) {
+            .tab-btn { font-size: 0.78rem; padding: 0.75rem 0.5rem; }
+            .tab-panel { padding: 1.5rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg width="90" height="90" viewBox="0 0 60 60" class="logo-svg">
+                    <path d="M30 50 C30 50, 10 35, 10 22 C10 15, 15 10, 22 10 C26 10, 28 12, 30 15 C32 12, 34 10, 38 10 C45 10, 50 15, 50 22 C50 35, 30 50, 30 50 Z"
+                          fill="none" stroke="#4da6ff" stroke-width="2.5" opacity="0.7"/>
+                    <text x="30" y="28" font-family="Impact, Arial Black, sans-serif" font-size="12" font-weight="900"
+                          text-anchor="middle" fill="#4da6ff" opacity="0.8"
+                          style="letter-spacing: -1px; paint-order: stroke; stroke: #2a5298; stroke-width: 0.5px;">BCE</text>
+                    <text x="30" y="38" font-family="Impact, Arial Black, sans-serif" font-size="9" font-weight="900"
+                          text-anchor="middle" fill="#6bb8ff" opacity="0.75" style="letter-spacing: 0px;">III</text>
+                    <path d="M28 38 L28 42 L27 44 L28 45 L29 44 L28 42 Z" fill="#4da6ff" opacity="0.3"/>
+                    <path d="M32 38 L32 41 L31 43 L32 44 L33 43 L32 41 Z" fill="#4da6ff" opacity="0.25"/>
+                </svg>
+                <span class="logo-text">BCE Sober Living</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="mission.html">Mission Statement</a></li>
+                <li><a href="founder.html">BCE Founder</a></li>
+                <li><a href="about.html">About BCE</a></li>
+                <li><a href="info.html" class="active">General Information</a></li>
+                <li><a href="updates.html">BCE Updates</a></li>
+                <li><a href="comments.html">Comment Board</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="hero" style="height: 400px;">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 class="hero-title animate-fade-in">General Information</h1>
+                <p class="hero-subtitle animate-fade-in-delay">Everything you need to know about sober living at BCE</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="container">
+                <div class="tabs-wrapper">
+                    <nav class="tab-nav" role="tablist">
+                        <button class="tab-btn active" role="tab" data-tab="house-rules">House Rules</button>
+                        <button class="tab-btn" role="tab" data-tab="statistics">Statistics</button>
+                        <button class="tab-btn" role="tab" data-tab="setup">Setup for Success</button>
+                        <button class="tab-btn" role="tab" data-tab="rehab-info">Rehabilitation Info</button>
+                        <button class="tab-btn" role="tab" data-tab="faq">FAQ</button>
+                    </nav>
+
+                    <!-- HOUSE RULES -->
+                    <div class="tab-panel active" id="tab-house-rules">
+                        <h2>House Rules</h2>
+                        <p>Our house rules exist to protect every resident's recovery and create a stable, respectful community. All residents are expected to understand and follow these guidelines from day one.</p>
+
+                        <div class="rule-block">
+                            <h4>Zero Tolerance for Substance Use</h4>
+                            <p>No alcohol, illicit drugs, or misuse of prescription medications on the premises or by any resident, at any time. A single violation results in immediate removal from the home.</p>
+                        </div>
+                        <div class="rule-block">
+                            <h4>Random Drug & Alcohol Testing</h4>
+                            <p>All residents are subject to random, unannounced drug and alcohol screening. Refusal to test is treated the same as a positive result.</p>
+                        </div>
+                        <div class="rule-block">
+                            <h4>Mandatory Recovery Participation</h4>
+                            <p>Residents must attend a minimum of three (3) recovery meetings per week (AA, NA, SMART Recovery, or equivalent) and provide verification when requested.</p>
+                        </div>
+                        <div class="rule-block">
+                            <h4>Curfew</h4>
+                            <p>Sunday–Thursday curfew is 10:00 PM. Friday–Saturday curfew is 11:00 PM. Exceptions for verified work schedules must be approved in advance by staff.</p>
+                        </div>
+                        <div class="rule-block">
+                            <h4>Employment & Financial Responsibility</h4>
+                            <p>All residents must be employed or actively seeking employment within 30 days of move-in. Rent is due on the 1st of each month. Late payments must be communicated to staff in advance.</p>
+                        </div>
+                        <div class="rule-block">
+                            <h4>Mandatory House Meetings</h4>
+                            <p>Weekly house meetings are mandatory for all residents. These meetings address house business, community issues, and collective support.</p>
+                        </div>
+                        <div class="rule-block">
+                            <h4>Chores & Shared Spaces</h4>
+                            <p>Each resident is responsible for maintaining their personal space and fulfilling a rotating chore assignment for shared areas. Kitchens, bathrooms, and common areas must be left clean after each use.</p>
+                        </div>
+                        <div class="rule-block">
+                            <h4>Guest Policy</h4>
+                            <p>Guests are permitted in common areas only between 10:00 AM and 8:00 PM. All guests must be approved in advance. Overnight guests are strictly prohibited.</p>
+                        </div>
+                        <div class="rule-block">
+                            <h4>Respect & Conduct</h4>
+                            <p>All residents and guests must be treated with dignity and respect. Harassment, intimidation, violence, or threatening behavior of any kind will result in immediate removal.</p>
+                        </div>
+                        <div class="rule-block">
+                            <h4>Honesty & Transparency</h4>
+                            <p>Residents are expected to be honest with staff at all times, including promptly reporting any relapses, crises, or concerns about other residents' safety.</p>
+                        </div>
+
+                        <div class="info-card" style="margin-top:2rem;">
+                            <strong>Questions about the rules?</strong> Speak with staff at any time — we're here to help you succeed, not to catch you failing.
+                        </div>
+                    </div>
+
+                    <!-- STATISTICS -->
+                    <div class="tab-panel" id="tab-statistics">
+                        <h2>Recovery Statistics</h2>
+                        <p>Understanding the data behind addiction and recovery helps residents and families make informed decisions. The following statistics reflect national research on substance use disorder and sober living outcomes.</p>
+
+                        <div class="stat-grid">
+                            <div class="stat-card">
+                                <span class="stat-number">21M+</span>
+                                <span class="stat-label">Americans affected by substance use disorder each year</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number">10%</span>
+                                <span class="stat-label">Of those who need treatment actually receive it</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number">2x</span>
+                                <span class="stat-label">More likely to stay sober with structured sober living vs. going home</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number">68%</span>
+                                <span class="stat-label">Of sober living residents maintain sobriety at 6 months (Oxford House research)</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number">40–60%</span>
+                                <span class="stat-label">Relapse rate without structured post-treatment support</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number">$740B</span>
+                                <span class="stat-label">Annual cost to society from addiction-related crime, healthcare, and lost productivity</span>
+                            </div>
+                        </div>
+
+                        <h3>Why Sober Living Works</h3>
+                        <p>Research consistently shows that the transition from treatment back to independent living is one of the highest-risk periods in recovery. Sober living homes bridge that gap by providing:</p>
+                        <ul>
+                            <li>Peer accountability from others in recovery</li>
+                            <li>Structure and routine that reinforce healthy habits</li>
+                            <li>A substance-free environment during a vulnerable period</li>
+                            <li>Time to rebuild employment, finances, and relationships</li>
+                            <li>Access to ongoing recovery resources and professional referrals</li>
+                        </ul>
+
+                        <h3>Length of Stay & Outcomes</h3>
+                        <p>Studies from the National Institute on Drug Abuse (NIDA) show a direct correlation between length of stay in sober living and long-term sobriety:</p>
+                        <ul>
+                            <li><strong>Less than 90 days:</strong> Modest improvement over no structured support</li>
+                            <li><strong>90–180 days:</strong> Significantly higher rates of employment and sustained sobriety</li>
+                            <li><strong>6–12 months:</strong> Best outcomes for long-term recovery, employment stability, and reduced criminal activity</li>
+                        </ul>
+
+                        <div class="info-card">
+                            <strong>Sources:</strong> NIDA, SAMHSA National Survey on Drug Use and Health, Oxford House Research, Journal of Substance Abuse Treatment.
+                        </div>
+                    </div>
+
+                    <!-- SETUP FOR SUCCESS -->
+                    <div class="tab-panel" id="tab-setup">
+                        <h2>Setup for Success</h2>
+                        <p>Moving into sober living is a major step. The residents who thrive here come in prepared — not just with their belongings, but with the right mindset and tools. Here's how to set yourself up from day one.</p>
+
+                        <h3>Before You Arrive</h3>
+                        <ol class="step-list">
+                            <li><strong>Notify your support network.</strong> Let your sponsor, therapist, counselor, or family members know your new address and move-in date.</li>
+                            <li><strong>Secure your documents.</strong> Bring your ID, Social Security card, insurance cards, and any prescription medications with documentation.</li>
+                            <li><strong>Start the job search early.</strong> If you're not already employed, begin applying before move-in so you're ready to hit the ground running.</li>
+                            <li><strong>Find local meetings.</strong> Research AA, NA, or SMART Recovery meeting schedules in Frederick, MD so you know where to go from day one.</li>
+                            <li><strong>Pack essentials.</strong> Personal hygiene items, bedding, enough clothes for at least a week, and a small amount of spending money for the first few days.</li>
+                        </ol>
+
+                        <h3>Your First 30 Days</h3>
+                        <ol class="step-list">
+                            <li><strong>Get a sponsor if you don't have one.</strong> A sponsor is one of the single most powerful tools in early recovery.</li>
+                            <li><strong>Attend every house meeting.</strong> These are where trust and community are built. Show up fully.</li>
+                            <li><strong>Establish a daily routine.</strong> Wake time, meals, meetings, work, exercise, and sleep at consistent times every day.</li>
+                            <li><strong>Communicate with staff proactively.</strong> If you're struggling — financially, emotionally, or otherwise — tell us before it becomes a crisis.</li>
+                            <li><strong>Avoid high-risk people, places, and things.</strong> The first 90 days are the most critical. Protect them fiercely.</li>
+                        </ol>
+
+                        <h3>Tools for Long-Term Success</h3>
+                        <ul>
+                            <li>Build a written daily schedule and stick to it</li>
+                            <li>Keep a sobriety journal — tracking thoughts and triggers helps you recognize patterns</li>
+                            <li>Practice financial literacy — budget your income every week</li>
+                            <li>Stay physically active — exercise reduces cravings and improves mood</li>
+                            <li>Limit screen time and social media, especially in the first 60 days</li>
+                            <li>Celebrate milestones — 30, 60, 90 days of sobriety matter</li>
+                            <li>Plan your exit before it's time to leave — have housing, savings, and a continued support plan ready</li>
+                        </ul>
+
+                        <div class="info-card">
+                            <strong>Remember:</strong> Recovery is not a straight line. Bad days are part of the process. What separates long-term success is how you respond to hard days — reach out, don't isolate.
+                        </div>
+                    </div>
+
+                    <!-- REHAB GENERAL INFORMATION -->
+                    <div class="tab-panel" id="tab-rehab-info">
+                        <h2>Rehabilitation General Information</h2>
+                        <p>Understanding the landscape of recovery can help you or a loved one make the best decisions at every stage of the journey.</p>
+
+                        <h3>The Continuum of Care</h3>
+                        <p>Addiction treatment exists on a spectrum. Sober living typically follows inpatient or intensive outpatient treatment as the next step toward independent living.</p>
+                        <ul>
+                            <li><strong>Medical Detox</strong> — Medically supervised withdrawal, usually 3–10 days. The first and most physically intensive step.</li>
+                            <li><strong>Inpatient / Residential Treatment</strong> — 30–90 days of 24/7 structured treatment in a clinical setting. Includes therapy, group work, and medical support.</li>
+                            <li><strong>Partial Hospitalization Program (PHP)</strong> — Intensive daily programming (typically 6 hours/day) without overnight stay.</li>
+                            <li><strong>Intensive Outpatient Program (IOP)</strong> — 3–4 days per week of structured group and individual therapy. Often paired with sober living.</li>
+                            <li><strong>Sober Living / Transitional Housing</strong> — Structured, substance-free housing that bridges treatment and independent living. BCE operates at this level.</li>
+                            <li><strong>Outpatient Therapy / Aftercare</strong> — Ongoing individual or group therapy, often continued for years after acute treatment.</li>
+                        </ul>
+
+                        <h3>Types of Addiction Treatment Approaches</h3>
+                        <ul>
+                            <li><strong>12-Step Programs (AA, NA)</strong> — Peer-led recovery model based on 12 steps and spiritual principles. Free and widely available.</li>
+                            <li><strong>SMART Recovery</strong> — Science-based, self-empowerment alternative to 12-step. Uses CBT-based tools.</li>
+                            <li><strong>Cognitive Behavioral Therapy (CBT)</strong> — Identifies and changes negative thought patterns that lead to substance use.</li>
+                            <li><strong>Medication-Assisted Treatment (MAT)</strong> — FDA-approved medications (Suboxone, Vivitrol, Methadone) combined with counseling for opioid and alcohol use disorders.</li>
+                            <li><strong>Trauma-Informed Care</strong> — Recognizes the role of trauma in addiction and integrates trauma therapy into treatment.</li>
+                            <li><strong>Dual Diagnosis Treatment</strong> — Addresses co-occurring mental health conditions (depression, anxiety, PTSD) alongside addiction simultaneously.</li>
+                        </ul>
+
+                        <h3>Relapse: Understanding the Facts</h3>
+                        <p>Relapse is common and does not mean failure. It is a signal that treatment or support needs to be adjusted.</p>
+                        <ul>
+                            <li>40–60% of people in recovery experience at least one relapse (NIDA)</li>
+                            <li>Relapse rates for addiction are similar to those of other chronic conditions like hypertension and diabetes</li>
+                            <li>Most relapses are preceded by identifiable warning signs: isolation, mood changes, skipping meetings, reconnecting with users</li>
+                            <li>The earlier a relapse is caught and addressed, the better the outcome</li>
+                        </ul>
+
+                        <h3>Local & National Resources</h3>
+                        <ul>
+                            <li><strong>SAMHSA Helpline:</strong> 1-800-662-4357 (free, confidential, 24/7)</li>
+                            <li><strong>Crisis Text Line:</strong> Text HOME to 741741</li>
+                            <li><strong>National Alliance on Mental Illness (NAMI):</strong> 1-800-950-6264</li>
+                            <li><strong>Alcoholics Anonymous:</strong> aa.org</li>
+                            <li><strong>Narcotics Anonymous:</strong> na.org</li>
+                            <li><strong>SMART Recovery:</strong> smartrecovery.org</li>
+                        </ul>
+
+                        <div class="info-card">
+                            If you or someone you know needs immediate help, call <strong>988</strong> (Suicide & Crisis Lifeline) or <strong>911</strong> in a medical emergency.
+                        </div>
+                    </div>
+
+                    <!-- FAQ -->
+                    <div class="tab-panel" id="tab-faq">
+                        <h2>Frequently Asked Questions</h2>
+
+                        <div class="faq-category">
+                            <h3>Admissions & Getting Started</h3>
+                            <div class="faq-item">
+                                <button class="faq-question"><span>What are the requirements to live at BCE Sober Living?</span><span class="faq-icon">+</span></button>
+                                <div class="faq-answer">
+                                    <p>To be eligible for residency at BCE Sober Living, you must:</p>
+                                    <ul>
+                                        <li>Be committed to maintaining sobriety from alcohol and all illicit drugs</li>
+                                        <li>Complete a pre-admission interview</li>
+                                        <li>Have completed or be currently enrolled in treatment (detox, inpatient, or outpatient)</li>
+                                        <li>Be willing to participate in recovery activities (12-step meetings, therapy, etc.)</li>
+                                        <li>Agree to random drug and alcohol screening</li>
+                                        <li>Be able to maintain employment or actively seek employment</li>
+                                        <li>Respect house rules and fellow residents</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question"><span>How do I apply?</span><span class="faq-icon">+</span></button>
+                                <div class="faq-answer">
+                                    <p>The application process is simple:</p>
+                                    <ol>
+                                        <li>Contact us via phone at (424) 395-6144 or through our contact form</li>
+                                        <li>Complete a brief phone screening to ensure we're a good fit</li>
+                                        <li>Schedule an in-person or virtual interview</li>
+                                        <li>Complete the application paperwork</li>
+                                        <li>Upon approval, coordinate your move-in date</li>
+                                    </ol>
+                                    <p>We strive to make the process as quick and smooth as possible, often completing it within 24-48 hours.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question"><span>Can I tour the facility before applying?</span><span class="faq-icon">+</span></button>
+                                <div class="faq-answer">
+                                    <p>Absolutely! We encourage prospective residents and their families to schedule a tour. Contact us to arrange a visit at a time that works for you. During the tour, you'll see our facilities, meet staff members, and have the opportunity to ask questions.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-category">
+                            <h3>Cost & Payment</h3>
+                            <div class="faq-item">
+                                <button class="faq-question"><span>How much does it cost to live at BCE Sober Living?</span><span class="faq-icon">+</span></button>
+                                <div class="faq-answer">
+                                    <p>Our pricing is competitive and reflects the quality of our facilities and services. Costs typically include:</p>
+                                    <ul>
+                                        <li>Monthly rent (contact us for current rates)</li>
+                                        <li>Security deposit (usually equal to one month's rent)</li>
+                                        <li>Utilities (included in monthly rent)</li>
+                                        <li>WiFi (included)</li>
+                                    </ul>
+                                    <p>We offer transparent pricing with no hidden fees. Contact us for detailed pricing information and payment plans.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question"><span>Do you accept insurance?</span><span class="faq-icon">+</span></button>
+                                <div class="faq-answer">
+                                    <p>While sober living housing is typically not covered by insurance, some insurance plans may offer benefits for transitional housing. We can provide documentation to submit to your insurance company. We recommend contacting your insurance provider to inquire about any available benefits.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question"><span>Are payment plans available?</span><span class="faq-icon">+</span></button>
+                                <div class="faq-answer">
+                                    <p>We understand that financial concerns can be a barrier to recovery. We work with residents to establish payment arrangements when possible. Please contact us to discuss your specific situation.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-category">
+                            <h3>Living at BCE</h3>
+                            <div class="faq-item">
+                                <button class="faq-question"><span>How long can I stay?</span><span class="faq-icon">+</span></button>
+                                <div class="faq-answer">
+                                    <p>There is no set minimum or maximum length of stay. Most residents stay between 3-12 months, but everyone's recovery journey is unique. We work with each resident to determine the best timeline for their situation.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question"><span>Can I have visitors?</span><span class="faq-icon">+</span></button>
+                                <div class="faq-answer">
+                                    <p>Yes, visitors are allowed during designated hours and in common areas only. All visitors must be approved in advance and follow house guidelines. Overnight guests are not permitted to maintain the safety and structure of our sober living environment.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question"><span>What if I relapse?</span><span class="faq-icon">+</span></button>
+                                <div class="faq-answer">
+                                    <p>We understand that recovery is a journey with challenges. If a resident relapses, they must be honest and immediately inform staff. Options may include returning to a higher level of care, temporary leave with the possibility of return, or increased support and monitoring. Our priority is always the safety and well-being of all residents.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-category">
+                            <h3>Support & Services</h3>
+                            <div class="faq-item">
+                                <button class="faq-question"><span>What kind of support do you provide?</span><span class="faq-icon">+</span></button>
+                                <div class="faq-answer">
+                                    <ul>
+                                        <li>24/7 staff availability for emergencies</li>
+                                        <li>Regular house meetings and check-ins</li>
+                                        <li>Peer support from fellow residents</li>
+                                        <li>Connections to local recovery resources</li>
+                                        <li>Employment assistance and job search support</li>
+                                        <li>Life skills development</li>
+                                        <li>Referrals to therapists, counselors, and medical providers</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question"><span>Do you provide transportation?</span><span class="faq-icon">+</span></button>
+                                <div class="faq-answer">
+                                    <p>Residents are expected to arrange their own transportation. However, we're located near public transportation and can provide information about local transit options.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question"><span>Are meals provided?</span><span class="faq-icon">+</span></button>
+                                <div class="faq-answer">
+                                    <p>Residents are responsible for their own meals. Our fully equipped kitchens allow residents to prepare their own food, which is an important part of developing independent living skills.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-category">
+                            <h3>Location & Accessibility</h3>
+                            <div class="faq-item">
+                                <button class="faq-question"><span>Where is BCE Sober Living located?</span><span class="faq-icon">+</span></button>
+                                <div class="faq-answer">
+                                    <p>We're located in Frederick, Maryland, offering access to multiple recovery meetings, quality healthcare, employment opportunities, and public transportation.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question"><span>Is the location accessible by public transportation?</span><span class="faq-icon">+</span></button>
+                                <div class="faq-answer">
+                                    <p>Yes, our location is accessible via Frederick's public bus system. We can provide route and schedule information during your tour or interview.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%); padding: 2rem; border-radius: 15px; margin-top: 2rem; text-align: center; border-left: 4px solid var(--primary-blue);">
+                            <p style="margin-bottom: 1.5rem; font-size: 1.1rem;">Can't find the answer you're looking for? We're here to help!</p>
+                            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                                <a href="contact.html" class="btn btn-primary">Contact Us</a>
+                                <a href="tel:4243956144" class="btn btn-secondary">Call (424) 395-6144</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BCE Sober Living, L.L.C</h3>
+                    <p>A division of Edwards Co, Inc</p>
+                    <p>Frederick, MD</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="mission.html">Mission Statement</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <p>Starting your recovery journey begins with a single step.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BCE Sober Living, L.L.C. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('tab-' + tab).classList.add('active');
+            });
+        });
+
+        // FAQ accordion
+        document.querySelectorAll('.faq-question').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.parentElement;
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                if (!isOpen) item.classList.add('open');
+            });
+        });
+
+        // Open tab from URL hash (e.g. info.html#faq)
+        const hash = window.location.hash.replace('#', '');
+        if (hash) {
+            const target = document.querySelector(`[data-tab="${hash}"]`);
+            if (target) target.click();
+        }
+    </script>
+</body>
+</html>
