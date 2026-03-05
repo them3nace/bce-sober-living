@@ -1,0 +1,32 @@
+# BCE Sober Living Site
+# https://www.bcesoberliving.com
+# Cloudflare Worker API Configuration
+
+name = "bcesoberliving"
+pages_build_output_dir = "."
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "enlightened-db"
+database_id = "4fd93ab7-b8ba-4f4b-8d67-b0c721960983"
+
+# KV Namespace for sessions
+[[kv_namespaces]]
+binding = "BCE-SESSIONS"
+id = "229f7ffabfeb46d89ec03649ba8b6094"
+
+[[kv_namespaces]]
+binding = "BCE-COMMENTS"
+id = "865365e8d02049f39126e5c713420a09"
+
+[[kv_namespaces]]
+binding = "BCE-CONTACTS"
+id = "59cd40224df248d7b8b6f94369edccb8"
+
+[vars]
+ENVIRONMENT = "production"
+
+[dev]
+port = 8788
+local_protocol = "http"

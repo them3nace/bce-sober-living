@@ -1,0 +1,118 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║                    BCE III LOGO PREVIEW                       ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+
+         ╭─────────────────────────────────╮
+       ╱                                     ╲
+      ╱          ♥  HEART OUTLINE  ♥          ╲
+     │                                         │
+     │              ┏━━┓  ┏━━┓ ┏━━━┓           │
+     │              ┃  ┃  ┃     ┃             │
+     │              ┣━━┫  ┃     ┣━━           │  
+     │              ┃  ┃  ┃     ┃             │
+     │              ┗━━┛  ┗━━┛ ┗━━━┛           │
+     │                                         │
+     │                  ⠂⠂⠂                     │
+     │                  ⣰⣿⣷                     │
+     │                 ⠿⠿⠿                     │
+     │                  (III)                  │
+     │                   │ │                   │
+     │                  drips                  │
+      ╲                                       ╱
+       ╲                                     ╱
+         ╰─────────────────────────────────╯
+
+
+DESIGN ELEMENTS:
+═════════════════════════════════════════════════════════════
+
+🎨 GRAFFITI TEXT: "BCE"
+   • Impact font (bold, street-art style)
+   • Faded blue color (#4da6ff)
+   • Stroke outline for depth
+   • Slightly roughed edges
+
+Ⅲ  ROMAN NUMERALS: "III"
+   • Below BCE text
+   • Lighter blue (#6bb8ff)
+   • Honors William's brother
+   • Smaller, subtle font
+
+💙 HEART OUTLINE
+   • Hand-drawn style
+   • Surrounds entire text
+   • Faded blue stroke
+   • Symbolizes love & compassion
+
+💧 PAINT DRIPS
+   • Two small drips below text
+   • Authentic spray-paint effect
+   • Adds graffiti credibility
+   • Subtle opacity (30-40%)
+
+✨ ANIMATION
+   • Gentle rotation & scale
+   • Glowing effect pulses
+   • 4-second smooth loop
+   • Professional but dynamic
+
+
+COLOR PALETTE:
+═════════════════════════════════════════════════════════════
+
+Primary Blue:  ████  #4da6ff  (main text & heart)
+Medium Blue:   ████  #2a5298  (stroke & outline)  
+Light Blue:    ████  #6bb8ff  (III numerals)
+All colors use varying opacity for faded graffiti effect
+
+
+SYMBOLISM:
+═════════════════════════════════════════════════════════════
+
+💙 HEART       = Love, compassion, memory of brother
+🎨 GRAFFITI    = Authenticity, street credibility, raw truth
+💧 FADED PAINT = Hope, transformation, new beginnings
+Ⅲ  III        = Brother's memorial, personal mission
+✨ ANIMATION   = Living, dynamic, always evolving
+
+
+WHERE IT APPEARS:
+═════════════════════════════════════════════════════════════
+
+✅ Intro/Splash Page (large, centered, 120x120px)
+✅ All Page Headers (navigation bar, 60x60px)
+✅ Mobile Menu (responsive sizing)
+✅ Animated with smooth spray-paint effect
+
+
+THE MESSAGE:
+═════════════════════════════════════════════════════════════
+
+"BCE Sober Living is built on LOVE (heart), rooted in 
+AUTHENTICITY (graffiti style), honors MEMORY (III), and 
+represents TRANSFORMATION (faded paint creating something 
+new from struggle)."
+
+
+TECHNICAL SPECS:
+═════════════════════════════════════════════════════════════
+
+Format:      SVG (scalable, fast-loading)
+Size:        60x60px (navigation), 120x120px (intro)
+Animation:   CSS keyframes (smooth, no JavaScript needed)
+Files:       Inline SVG (no external image files)
+Load time:   Instant (embedded in HTML)
+Scalability: Perfect on all screens (vector graphics)
+
+
+═════════════════════════════════════════════════════════════
+
+        💙 EVERY VISITOR WILL SEE THE LOVE & MISSION 💙
+              BEFORE READING A SINGLE WORD
+
+═════════════════════════════════════════════════════════════
+
+For full design details, see LOGO_INFO.md

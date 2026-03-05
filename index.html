@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCE Sober Living</title>
+    <meta name="description" content="BCE Sober Living Homes - Full service and upscale transitional living in Frederick, MD">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1f44 0%, #1e3a5f 50%, #2c5282 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .intro-container {
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            max-width: 800px;
+        }
+
+        .logo-container {
+            margin-bottom: 3rem;
+            position: relative;
+            min-height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* DRAMATIC SEQUENCE: Large → Shrink → EXPLODE! */
+        .heart-logo {
+            animation: 
+                heartDramaticSequence 5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards,
+                heartPulseGentle 3s ease-in-out 5s infinite;
+            filter: drop-shadow(0 0 30px rgba(77, 166, 255, 0.9));
+        }
+
+        @keyframes heartDramaticSequence {
+            /* Phase 1: Start HUGE (0-1.5s) */
+            0% {
+                opacity: 0;
+                transform: scale(3.5) rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+                transform: scale(3.5) rotate(0deg);
+            }
+            
+            /* Phase 2: Shrink to TINY with spin (1.5-3s) */
+            40% {
+                transform: scale(0.15) rotate(360deg);
+                filter: drop-shadow(0 0 10px rgba(77, 166, 255, 0.5));
+            }
+            
+            /* Phase 3: Brief pause at tiny (3-3.2s) */
+            48% {
+                transform: scale(0.15) rotate(360deg);
+            }
+            
+            /* Phase 4: EXPLOSIVE EXPANSION (3.2-4.5s) */
+            65% {
+                transform: scale(2.8) rotate(380deg);
+                filter: drop-shadow(0 0 60px rgba(77, 166, 255, 1));
+            }
+            
+            /* Phase 5: Settle to perfect size (4.5-5s) */
+            85% {
+                transform: scale(1.9) rotate(358deg);
+            }
+            
+            100% {
+                opacity: 1;
+                transform: scale(2) rotate(360deg);
+                filter: drop-shadow(0 0 30px rgba(77, 166, 255, 0.8));
+            }
+        }
+
+        /* Continuous gentle pulse AFTER dramatic sequence */
+        @keyframes heartPulseGentle {
+            0%, 100% {
+                transform: scale(2) rotate(360deg);
+                filter: drop-shadow(0 0 30px rgba(77, 166, 255, 0.8));
+            }
+            50% {
+                transform: scale(2.1) rotate(360deg);
+                filter: drop-shadow(0 0 40px rgba(77, 166, 255, 1));
+            }
+        }
+
+        /* Text animations - delayed to appear after heart settles */
+        .line {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin: 1rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .line1 {
+            animation: fadeInUp 0.8s ease-out 4.5s forwards;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .line2 {
+            animation: fadeInUp 0.8s ease-out 5s forwards;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #4da6ff;
+        }
+
+        .line3 {
+            animation: fadeInUp 0.8s ease-out 5.5s forwards;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 10px rgba(77, 166, 255, 0.5);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Redirect message */
+        .redirect-message {
+            margin-top: 3rem;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            opacity: 0;
+            animation: fadeIn 1s ease-out 6s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .intro-container {
+                padding: 1rem;
+            }
+
+            .line1 {
+                font-size: 1rem;
+            }
+
+            .line2 {
+                font-size: 1.2rem;
+            }
+
+            .line3 {
+                font-size: 1.5rem;
+            }
+
+            .logo-container {
+                min-height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="intro-container">
+        <div class="logo-container">
+            <!-- BCE III Heart Logo with DRAMATIC Large-Shrink-EXPLODE Animation -->
+            <svg width="200" height="200" viewBox="0 0 60 60" class="heart-logo">
+                <!-- Heart outline -->
+                <path d="M30 50 C30 50, 10 35, 10 22 C10 15, 15 10, 22 10 C26 10, 28 12, 30 15 C32 12, 34 10, 38 10 C45 10, 50 15, 50 22 C50 35, 30 50, 30 50 Z" 
+                      fill="none" 
+                      stroke="#4da6ff" 
+                      stroke-width="2.5" 
+                      opacity="1"/>
+                
+                <!-- Graffiti-style BCE text -->
+                <text x="30" y="28" 
+                      font-family="Impact, Arial Black, sans-serif" 
+                      font-size="12" 
+                      font-weight="900"
+                      text-anchor="middle" 
+                      fill="#4da6ff" 
+                      style="letter-spacing: -1px; paint-order: stroke; stroke: #2a5298; stroke-width: 0.5px;">BCE</text>
+                
+                <!-- Roman numeral III -->
+                <text x="30" y="38" 
+                      font-family="Impact, Arial Black, sans-serif" 
+                      font-size="9" 
+                      font-weight="900"
+                      text-anchor="middle" 
+                      fill="#6bb8ff">III</text>
+                
+                <!-- Paint drips -->
+                <path d="M28 38 L28 42 L27 44 L28 45 L29 44 L28 42 Z" 
+                      fill="#4da6ff" 
+                      opacity="0.5"/>
+                <path d="M32 38 L32 41 L31 43 L32 44 L33 43 L32 41 Z" 
+                      fill="#4da6ff" 
+                      opacity="0.45"/>
+            </svg>
+        </div>
+
+        <div class="line line1">Brought to you by Edwards Co, Inc...</div>
+        <div class="line line2">A full service and upscale<br>Frederick, MD transitional living</div>
+        <div class="line line3">BCE Sober Living Homes!!!</div>
+        
+        <div class="redirect-message">Entering site...</div>
+    </div>
+
+    <script>
+        // Redirect to home page after animation completes
+        setTimeout(function() {
+            window.location.href = 'home.html';
+        }, 7000); // 7 seconds - gives time to see full animation
+    </script>
+</body>
+</html>

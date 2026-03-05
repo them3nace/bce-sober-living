@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - BCE Sober Living, L.L.C</title>
+    <meta name="description" content="Get in touch with BCE Sober Living. We're here to answer your questions and help you start your recovery journey.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+                        <div class="logo">
+                <svg width="90" height="90" viewBox="0 0 60 60" class="logo-svg">
+                    <!-- Heart outline -->
+                    <path d="M30 50 C30 50, 10 35, 10 22 C10 15, 15 10, 22 10 C26 10, 28 12, 30 15 C32 12, 34 10, 38 10 C45 10, 50 15, 50 22 C50 35, 30 50, 30 50 Z" 
+                          fill="none" 
+                          stroke="#4da6ff" 
+                          stroke-width="2.5" 
+                          opacity="0.7"/>
+                    
+                    <!-- Graffiti-style BCEIII text -->
+                    <text x="30" y="28" 
+                          font-family="Impact, Arial Black, sans-serif" 
+                          font-size="12" 
+                          font-weight="900"
+                          text-anchor="middle" 
+                          fill="#4da6ff" 
+                          opacity="0.8"
+                          style="letter-spacing: -1px; paint-order: stroke; stroke: #2a5298; stroke-width: 0.5px;">BCE</text>
+                    
+                    <text x="30" y="38" 
+                          font-family="Impact, Arial Black, sans-serif" 
+                          font-size="9" 
+                          font-weight="900"
+                          text-anchor="middle" 
+                          fill="#6bb8ff" 
+                          opacity="0.75"
+                          style="letter-spacing: 0px;">III</text>
+                    
+                    <!-- Paint drip effect -->
+                    <path d="M28 38 L28 42 L27 44 L28 45 L29 44 L28 42 Z" 
+                          fill="#4da6ff" 
+                          opacity="0.3"/>
+                    <path d="M32 38 L32 41 L31 43 L32 44 L33 43 L32 41 Z" 
+                          fill="#4da6ff" 
+                          opacity="0.25"/>
+                </svg>
+                <span class="logo-text">BCE Sober Living</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="mission.html">Mission Statement</a></li>
+                <li><a href="founder.html">BCE Founder</a></li>
+                <li><a href="about.html">About BCE</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="updates.html">BCE Updates</a></li>
+                <li><a href="comments.html">Comment Board</a></li>
+                <li><a href="contact.html" class="active">Contact Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="hero" style="height: 400px;">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 class="hero-title animate-fade-in">Contact Us</h1>
+                <p class="hero-subtitle animate-fade-in-delay">We're here to help you take the next step</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="container">
+                <div style="text-align: center; max-width: 800px; margin: 0 auto 3rem;">
+                    <h2 style="color: var(--dark-blue); margin-bottom: 1.5rem;">Let's Talk About Your Recovery</h2>
+                    <p style="color: var(--text-dark); line-height: 1.8; font-size: 1.1rem;">
+                        Whether you're seeking information about BCE Sober Living, ready to begin your recovery journey, or looking for a safe, structured environment to support your sobriety—I'm here to help. Every inquiry is answered personally by William Edwards, founder of BCE. This isn't a call center or automated system. It's real conversation with someone who understands what you're going through because I've been there.
+                    </p>
+                    <p style="color: var(--text-dark); line-height: 1.8; font-size: 1.1rem; margin-top: 1rem;">
+                        All conversations are completely confidential. Whether you're reaching out for yourself or a loved one, you'll be treated with dignity, respect, and understanding.
+                    </p>
+                </div>
+
+                <div class="form-container">
+                    <div class="success-message" id="successMessage">
+                        Thank you for contacting us! We will respond to your inquiry as soon as possible.
+                    </div>
+
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inquiryType">Type of Inquiry</label>
+                            <select id="inquiryType" name="inquiryType">
+                                <option value="general">General Information</option>
+                                <option value="residency">Residency Application</option>
+                                <option value="visit">Schedule a Visit</option>
+                                <option value="partnership">Partnership Opportunity</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" required placeholder="Please share any questions or information that would help us assist you..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                    </form>
+                </div>
+
+                <div style="margin-top: 5rem;">
+                    <div class="features-grid" style="max-width: 900px; margin: 0 auto;">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg width="60" height="60" viewBox="0 0 60 60">
+                                    <circle cx="30" cy="30" r="25" fill="none" stroke="#4da6ff" stroke-width="2"/>
+                                    <path d="M30 10 L30 30 L45 35" stroke="#4da6ff" stroke-width="2" fill="none"/>
+                                </svg>
+                            </div>
+                            <h3>Personal Response</h3>
+                            <p>William personally responds to every inquiry, typically within 24 hours.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg width="60" height="60" viewBox="0 0 60 60">
+                                    <rect x="10" y="15" width="40" height="30" rx="3" fill="none" stroke="#4da6ff" stroke-width="2"/>
+                                    <path d="M10 20 L30 35 L50 20" stroke="#4da6ff" stroke-width="2" fill="none"/>
+                                </svg>
+                            </div>
+                            <h3>Email</h3>
+                            <p>Prefer email? Reach William directly at <strong>william@bcesoberliving.com</strong></p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg width="60" height="60" viewBox="0 0 60 60">
+                                    <path d="M20 15 L20 45 L40 45 L40 15 Z M20 15 Q20 10 25 10 L35 10 Q40 10 40 15" fill="none" stroke="#4da6ff" stroke-width="2"/>
+                                    <circle cx="30" cy="38" r="2" fill="#4da6ff"/>
+                                    <rect x="24" y="20" width="12" height="12" rx="1" fill="none" stroke="#4da6ff" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <h3>Phone</h3>
+                            <p>Call or text William at <strong>(424) 395-6144</strong> to speak directly.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 5rem; padding: 3rem; background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%); border-radius: 15px; border-left: 4px solid var(--primary-blue);">
+                    <h3 style="color: var(--dark-blue); margin-bottom: 1.5rem; text-align: center;">Visit Us</h3>
+                    <div style="text-align: center;">
+                        <p style="color: var(--text-dark); margin-bottom: 0.5rem; font-size: 1.1rem;"><strong>BCE Sober Living, L.L.C</strong></p>
+                        <p style="color: var(--text-dark); margin-bottom: 0.5rem;">A division of Edwards Co, Inc</p>
+                        <p style="color: var(--text-dark); margin-bottom: 0.5rem;">Frederick, Maryland</p>
+                        <p style="color: var(--text-light); font-style: italic; margin-top: 1.5rem;">Schedule an appointment to visit our facilities and learn more about our community.</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 4rem; text-align: center; max-width: 700px; margin-left: auto; margin-right: auto;">
+                    <h3 style="color: var(--dark-blue); margin-bottom: 1.5rem;">Confidentiality Notice</h3>
+                    <p style="color: var(--text-dark); line-height: 1.8;">
+                        We respect your privacy. All inquiries are handled with complete confidentiality. Your personal information will never be shared with third parties and will only be used to respond to your inquiry and provide you with information about our services.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BCE Sober Living, L.L.C</h3>
+                    <p>A division of Edwards Co, Inc</p>
+                    <p>Frederick, MD</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="mission.html">Mission Statement</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <p>Starting your recovery journey begins with a single step.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BCE Sober Living, L.L.C. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
