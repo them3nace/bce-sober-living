@@ -98,6 +98,81 @@ export default {
     }
 
     // ============================================
+    // NETWORKING API
+    // ============================================
+    if (url.pathname === '/api/networking' && request.method === 'POST') {
+      try {
+        const data = await request.json();
+        const id = Date.now().toString();
+        const submission = {
+          id,
+          fullName: data.fullName || '',
+          title: data.title || '',
+          phone: data.phone || '',
+          email: data.email || '',
+          notes: data.notes || '',
+          timestamp: data.timestamp || new Date().toISOString()
+        };
+        await env['BCE-CONTACTS'].put(`network_${id}`, JSON.stringify(submission));
+        await sendEmailNotification(env, 'New Networking Form Submission',
+          `Name: ${submission.fullName}\nTitle: ${submission.title || 'N/A'}\nPhone: ${submission.phone || 'N/A'}\nEmail: ${submission.email}\nNotes: ${submission.notes || 'N/A'}`);
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to submit' }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // Get all networking submissions (admin)
+    if (url.pathname === '/api/admin/networking' && request.method === 'GET') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const keys = await env['BCE-CONTACTS'].list({ prefix: 'network_' });
+        const submissions = [];
+        for (const key of keys.keys) {
+          const value = await env['BCE-CONTACTS'].get(key.name);
+          if (value) submissions.push(JSON.parse(value));
+        }
+        submissions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        return new Response(JSON.stringify(submissions), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify([]), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // Delete networking submission (admin)
+    if (url.pathname.startsWith('/api/admin/networking/') && request.method === 'DELETE') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const id = url.pathname.split('/').pop();
+        await env['BCE-CONTACTS'].delete(`network_${id}`);
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to delete' }), {
+          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // ============================================
     // LIVE CHAT API
     // ============================================
     if (url.pathname === '/api/chat' && request.method === 'POST') {

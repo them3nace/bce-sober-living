@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Networking Admin - BCE Sober Living</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { background: #f0f4f8; min-height: 100vh; }
+
+        #passwordGate {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--dark-blue), var(--medium-blue));
+        }
+        .password-box {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .password-box h2 { color: var(--dark-blue); margin-bottom: 0.5rem; font-size: 1.5rem; }
+        .password-box p  { color: var(--text-light); margin-bottom: 1.5rem; font-size: 0.9rem; }
+        .password-input {
+            width: 100%; padding: 0.85rem 1rem; border: 2px solid #c8d8e8;
+            border-radius: 8px; font-size: 1rem; margin-bottom: 1rem;
+            outline: none; transition: border-color 0.2s;
+        }
+        .password-input:focus { border-color: var(--primary-blue); }
+        .error-msg { color: #c62828; font-size: 0.85rem; margin-bottom: 0.5rem; display: none; }
+
+        #adminPanel { display: none; }
+
+        .admin-topbar {
+            background: linear-gradient(135deg, var(--dark-blue), var(--medium-blue));
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .admin-topbar h1 { font-size: 1.2rem; }
+        .admin-topbar-actions { display: flex; gap: 1rem; align-items: center; }
+
+        .admin-body {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .stats-bar {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .stats-bar span { color: var(--text-light); font-size: 0.9rem; }
+        .stats-bar strong { color: var(--dark-blue); }
+
+        .submission-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 4px solid var(--primary-blue);
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+        .submission-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .submission-info { flex: 1; }
+        .submission-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 0.25rem;
+        }
+        .submission-title {
+            font-size: 0.85rem;
+            color: var(--primary-blue);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        .submission-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+        }
+        .meta-item a { color: var(--primary-blue); text-decoration: none; }
+        .meta-item a:hover { text-decoration: underline; }
+        .submission-notes {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            line-height: 1.6;
+            background: #f8fafc;
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        .submission-time {
+            font-size: 0.75rem;
+            color: #b0b8c0;
+            margin-top: 0.5rem;
+        }
+        .submission-actions { display: flex; flex-direction: column; gap: 0.5rem; flex-shrink: 0; }
+        .btn-delete {
+            padding: 0.4rem 0.85rem;
+            background: #fff0f0;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+        .btn-delete:hover { background: #ffcdd2; }
+        .btn-email {
+            padding: 0.4rem 0.85rem;
+            background: #e8f4ff;
+            color: var(--primary-blue);
+            border: 1px solid #b3d9ff;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+        .btn-email:hover { background: #b3d9ff; }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .empty-state p { font-size: 1rem; margin-top: 0.5rem; }
+
+        @media (max-width: 600px) {
+            .submission-card { flex-direction: column; }
+            .submission-actions { flex-direction: row; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Password Gate -->
+    <div id="passwordGate">
+        <div class="password-box">
+            <svg width="60" height="60" viewBox="0 0 60 60" style="margin-bottom:1rem;">
+                <path d="M30 50 C30 50, 10 35, 10 22 C10 15, 15 10, 22 10 C26 10, 28 12, 30 15 C32 12, 34 10, 38 10 C45 10, 50 15, 50 22 C50 35, 30 50, 30 50 Z"
+                      fill="none" stroke="#4da6ff" stroke-width="2.5"/>
+                <text x="30" y="28" font-family="Impact, Arial Black, sans-serif" font-size="12" font-weight="900"
+                      text-anchor="middle" fill="#4da6ff"
+                      style="letter-spacing:-1px;paint-order:stroke;stroke:#2a5298;stroke-width:0.5px;">BCE</text>
+                <text x="30" y="38" font-family="Impact, Arial Black, sans-serif" font-size="9" font-weight="900"
+                      text-anchor="middle" fill="#6bb8ff">III</text>
+            </svg>
+            <h2>Networking Admin</h2>
+            <p>Sign in to view networking submissions.</p>
+            <p id="loginError" class="error-msg">Incorrect password. Please try again.</p>
+            <input type="password" id="adminPassword" class="password-input" placeholder="Admin password" autocomplete="current-password">
+            <button class="btn btn-primary" style="width:100%" onclick="adminLogin()">Sign In</button>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel">
+        <div class="admin-topbar">
+            <h1>&#128101; BCE Networking Submissions</h1>
+            <div class="admin-topbar-actions">
+                <a href="networking.html" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;">View Page</a>
+                <a href="home.html" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;">View Site</a>
+                <button class="btn btn-secondary" onclick="adminLogout()" style="padding:0.4rem 1rem;font-size:0.85rem;">Sign Out</button>
+            </div>
+        </div>
+
+        <div class="admin-body">
+            <div class="stats-bar">
+                <span>Total submissions: <strong id="totalCount">—</strong></span>
+                <button onclick="loadSubmissions()" style="background:none;border:none;cursor:pointer;color:var(--primary-blue);font-size:0.85rem;font-weight:600;">&#8635; Refresh</button>
+            </div>
+            <div id="submissionsList">
+                <div class="empty-state"><p>Loading...</p></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var adminToken = '';
+
+        function adminLogin() {
+            var pw = document.getElementById('adminPassword').value;
+            if (!pw || pw.length < 6) {
+                document.getElementById('loginError').style.display = 'block';
+                return;
+            }
+            adminToken = 'Bearer BCE-Admin-' + pw;
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('passwordGate').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            loadSubmissions();
+        }
+
+        function adminLogout() {
+            adminToken = '';
+            document.getElementById('passwordGate').style.display = 'flex';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        document.getElementById('adminPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') adminLogin();
+        });
+
+        function loadSubmissions() {
+            document.getElementById('submissionsList').innerHTML = '<div class="empty-state"><p>Loading...</p></div>';
+            fetch('/api/admin/networking', {
+                headers: { 'Authorization': adminToken }
+            })
+            .then(function(r) {
+                if (r.status === 401) throw new Error('Unauthorized');
+                return r.json();
+            })
+            .then(function(data) {
+                var list = Array.isArray(data) ? data : [];
+                document.getElementById('totalCount').textContent = list.length;
+                renderSubmissions(list);
+            })
+            .catch(function(err) {
+                var msg = err.message === 'Unauthorized'
+                    ? 'Incorrect password. Please sign out and try again.'
+                    : 'Failed to load submissions.';
+                document.getElementById('submissionsList').innerHTML = '<div class="empty-state"><p>' + msg + '</p></div>';
+            });
+        }
+
+        function renderSubmissions(list) {
+            var container = document.getElementById('submissionsList');
+            if (list.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>No submissions yet</h3><p>Networking form submissions will appear here.</p></div>';
+                return;
+            }
+            container.innerHTML = list.map(function(s) {
+                var title = s.title ? escHtml(s.title) : '<span style="color:#b0b8c0;font-style:italic;">No title provided</span>';
+                var phone = s.phone
+                    ? '<span class="meta-item">&#128222; <a href="tel:' + escHtml(s.phone) + '">' + escHtml(s.phone) + '</a></span>'
+                    : '';
+                var notes = s.notes
+                    ? '<div class="submission-notes">' + escHtml(s.notes).replace(/\n/g, '<br>') + '</div>'
+                    : '';
+                return '<div class="submission-card" id="card-' + escHtml(s.id) + '">'
+                    + '<div class="submission-info">'
+                    + '<div class="submission-name">' + escHtml(s.fullName) + '</div>'
+                    + '<div class="submission-title">' + title + '</div>'
+                    + '<div class="submission-meta">'
+                    + '<span class="meta-item">&#9993; <a href="mailto:' + escHtml(s.email) + '">' + escHtml(s.email) + '</a></span>'
+                    + phone
+                    + '</div>'
+                    + notes
+                    + '<div class="submission-time">Submitted: ' + formatTime(s.timestamp) + '</div>'
+                    + '</div>'
+                    + '<div class="submission-actions">'
+                    + '<a href="mailto:' + escHtml(s.email) + '?subject=BCE%20Networking%20Follow-Up&body=Hi%20' + encodeURIComponent(s.fullName) + '%2C%0A%0A" class="btn-email">&#9993; Reply</a>'
+                    + '<button class="btn-delete" onclick="deleteSubmission(\'' + escHtml(s.id) + '\')">&#128465; Delete</button>'
+                    + '</div>'
+                    + '</div>';
+            }).join('');
+        }
+
+        function deleteSubmission(id) {
+            if (!confirm('Delete this submission? This cannot be undone.')) return;
+            fetch('/api/admin/networking/' + encodeURIComponent(id), {
+                method: 'DELETE',
+                headers: { 'Authorization': adminToken }
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    var card = document.getElementById('card-' + id);
+                    if (card) card.remove();
+                    var remaining = document.querySelectorAll('.submission-card').length;
+                    document.getElementById('totalCount').textContent = remaining;
+                    if (remaining === 0) {
+                        document.getElementById('submissionsList').innerHTML = '<div class="empty-state"><h3>No submissions yet</h3><p>Networking form submissions will appear here.</p></div>';
+                    }
+                } else {
+                    alert('Failed to delete. Please try again.');
+                }
+            })
+            .catch(function() { alert('Network error. Please try again.'); });
+        }
+
+        function formatTime(ts) {
+            if (!ts) return '';
+            try {
+                return new Date(ts).toLocaleString();
+            } catch(e) { return ts; }
+        }
+
+        function escHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+    </script>
+</body>
+</html>
