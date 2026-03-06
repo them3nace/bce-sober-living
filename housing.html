@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housing - BCE Sober Living, L.L.C</title>
+    <meta name="description" content="Browse available housing options at BCE Sober Living. Filter by level of care, gender, and payment type.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .housing-page {
+            background: var(--off-white);
+            min-height: 100vh;
+        }
+
+        .filter-section {
+            background: var(--white);
+            padding: 2rem 0;
+            border-bottom: 2px solid #e0e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .filter-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .filter-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-groups {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .filter-group {
+            flex: 0 0 auto;
+        }
+
+        .filter-group-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .filter-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.75rem;
+            background: var(--off-white);
+            border: 1.5px solid #c8d8e8;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .filter-chip:hover {
+            border-color: var(--primary-blue);
+            background: #e8f4ff;
+        }
+
+        .filter-chip input[type="checkbox"] {
+            accent-color: var(--primary-blue);
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+        }
+
+        .filter-chip.checked {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .filter-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e0e8f0;
+        }
+
+        .filter-count {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .btn-clear-filters {
+            font-size: 0.85rem;
+            padding: 0.4rem 1rem;
+            background: transparent;
+            border: 1.5px solid #c8d8e8;
+            border-radius: 20px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: all 0.2s ease;
+        }
+
+        .btn-clear-filters:hover {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .houses-section {
+            padding: 3rem 0;
+        }
+
+        .houses-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .houses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 2rem;
+        }
+
+        .house-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .house-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.13);
+        }
+
+        .house-photos {
+            position: relative;
+            height: 220px;
+            background: linear-gradient(135deg, var(--dark-blue), var(--medium-blue));
+            overflow: hidden;
+        }
+
+        .house-photo-slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: none;
+        }
+
+        .house-photo-slide.active {
+            display: block;
+        }
+
+        .house-photo-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .house-photo-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 3rem;
+        }
+
+        .house-photo-placeholder span {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .photo-nav {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            z-index: 2;
+        }
+
+        .photo-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: background 0.2s;
+            border: none;
+            padding: 0;
+        }
+
+        .photo-dot.active {
+            background: white;
+        }
+
+        .photo-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.4);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px; height: 32px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            transition: background 0.2s;
+        }
+
+        .photo-arrow:hover {
+            background: rgba(0,0,0,0.6);
+        }
+
+        .photo-arrow.prev { left: 8px; }
+        .photo-arrow.next { right: 8px; }
+
+        .house-info {
+            padding: 1.5rem;
+        }
+
+        .house-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 0.25rem;
+        }
+
+        .house-address {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .house-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .house-tag {
+            padding: 0.25rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+
+        .tag-care { background: #e3f2fd; color: #1565c0; }
+        .tag-gender { background: #fce4ec; color: #ad1457; }
+        .tag-payment { background: #e8f5e9; color: #2e7d32; }
+        .tag-living { background: #f3e5f5; color: #6a1b9a; }
+
+        .house-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e0e8f0;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .house-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .house-detail-label {
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        .house-detail-value {
+            font-weight: 600;
+            color: var(--dark-blue);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+        }
+
+        .no-results-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-light);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e0e8f0;
+            border-top-color: var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .filter-section {
+                position: relative;
+            }
+
+            .filter-groups {
+                gap: 1rem;
+            }
+
+            .houses-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="housing-page">
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg width="90" height="90" viewBox="0 0 60 60" class="logo-svg">
+                    <path d="M30 50 C30 50, 10 35, 10 22 C10 15, 15 10, 22 10 C26 10, 28 12, 30 15 C32 12, 34 10, 38 10 C45 10, 50 15, 50 22 C50 35, 30 50, 30 50 Z"
+                          fill="none" stroke="#4da6ff" stroke-width="2.5" opacity="0.7"/>
+                    <text x="30" y="28" font-family="Impact, Arial Black, sans-serif" font-size="12" font-weight="900"
+                          text-anchor="middle" fill="#4da6ff" opacity="0.8"
+                          style="letter-spacing: -1px; paint-order: stroke; stroke: #2a5298; stroke-width: 0.5px;">BCE</text>
+                    <text x="30" y="38" font-family="Impact, Arial Black, sans-serif" font-size="9" font-weight="900"
+                          text-anchor="middle" fill="#6bb8ff" opacity="0.75" style="letter-spacing: 0px;">III</text>
+                    <path d="M28 38 L28 42 L27 44 L28 45 L29 44 L28 42 Z" fill="#4da6ff" opacity="0.3"/>
+                    <path d="M32 38 L32 41 L31 43 L32 44 L33 43 L32 41 Z" fill="#4da6ff" opacity="0.25"/>
+                </svg>
+                <span class="logo-text">BCE Sober Living</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="housing.html" class="active">Housing</a></li>
+                <li><a href="info.html">General Information</a></li>
+                <li><a href="updates.html">BCE Updates</a></li>
+                <li><a href="comments.html">Comment Board</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="hero" style="height: 350px;">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 class="hero-title animate-fade-in">Available Housing</h1>
+                <p class="hero-subtitle animate-fade-in-delay">Find the right fit for your recovery journey</p>
+            </div>
+        </section>
+
+        <section class="filter-section">
+            <div class="filter-container">
+                <div class="filter-title">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <path d="M1 3h16M4 9h10M7 15h4" stroke="#0a1f44" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Filter Houses
+                </div>
+                <div class="filter-groups">
+                    <div class="filter-group">
+                        <div class="filter-group-label">Level of Care</div>
+                        <div class="filter-checkboxes">
+                            <label class="filter-chip" id="chip-php">
+                                <input type="checkbox" value="php" onchange="updateChip(this)"> PHP
+                            </label>
+                            <label class="filter-chip" id="chip-iop">
+                                <input type="checkbox" value="iop" onchange="updateChip(this)"> IOP
+                            </label>
+                            <label class="filter-chip" id="chip-detox">
+                                <input type="checkbox" value="detox" onchange="updateChip(this)"> Detox
+                            </label>
+                            <label class="filter-chip" id="chip-inpatient">
+                                <input type="checkbox" value="inpatient" onchange="updateChip(this)"> Inpatient
+                            </label>
+                            <label class="filter-chip" id="chip-sober_living">
+                                <input type="checkbox" value="sober_living" onchange="updateChip(this)"> Sober Living
+                            </label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-group-label">Gender</div>
+                        <div class="filter-checkboxes">
+                            <label class="filter-chip" id="chip-male">
+                                <input type="checkbox" value="male" onchange="updateChip(this)"> Male
+                            </label>
+                            <label class="filter-chip" id="chip-female">
+                                <input type="checkbox" value="female" onchange="updateChip(this)"> Female
+                            </label>
+                            <label class="filter-chip" id="chip-coed">
+                                <input type="checkbox" value="coed" onchange="updateChip(this)"> Coed
+                            </label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-group-label">Living Type</div>
+                        <div class="filter-checkboxes">
+                            <label class="filter-chip" id="chip-clean_living">
+                                <input type="checkbox" value="clean_living" onchange="updateChip(this)"> Clean Living
+                            </label>
+                            <label class="filter-chip" id="chip-maintenance">
+                                <input type="checkbox" value="maintenance" onchange="updateChip(this)"> Maintenance
+                            </label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-group-label">Payment</div>
+                        <div class="filter-checkboxes">
+                            <label class="filter-chip" id="chip-cash">
+                                <input type="checkbox" value="cash" onchange="updateChip(this)"> Cash Only
+                            </label>
+                            <label class="filter-chip" id="chip-medicaid">
+                                <input type="checkbox" value="medicaid" onchange="updateChip(this)"> Medicaid
+                            </label>
+                            <label class="filter-chip" id="chip-cash_medicaid">
+                                <input type="checkbox" value="cash_medicaid" onchange="updateChip(this)"> Cash &amp; Medicaid
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <span class="filter-count" id="filterCount">Showing all houses</span>
+                    <button class="btn-clear-filters" onclick="clearFilters()">Clear Filters</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="houses-section">
+            <div class="houses-container">
+                <div id="housesGrid" class="houses-grid">
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p>Loading available housing...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BCE Sober Living, L.L.C</h3>
+                    <p>A division of Edwards Co, Inc</p>
+                    <p>Frederick, MD</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about-us.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <p>Starting your recovery journey begins with a single step.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BCE Sober Living, L.L.C. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        var allHouses = [];
+        var activeFilters = {};
+
+        // Update chip appearance when checkbox changes
+        function updateChip(checkbox) {
+            var chip = checkbox.closest('.filter-chip');
+            if (checkbox.checked) {
+                chip.classList.add('checked');
+                activeFilters[checkbox.value] = true;
+            } else {
+                chip.classList.remove('checked');
+                delete activeFilters[checkbox.value];
+            }
+            applyFilters();
+        }
+
+        function clearFilters() {
+            document.querySelectorAll('.filter-chip input[type="checkbox"]').forEach(function(cb) {
+                cb.checked = false;
+                cb.closest('.filter-chip').classList.remove('checked');
+            });
+            activeFilters = {};
+            applyFilters();
+        }
+
+        function applyFilters() {
+            var keys = Object.keys(activeFilters);
+            var filtered = allHouses;
+
+            if (keys.length > 0) {
+                filtered = allHouses.filter(function(house) {
+                    return keys.every(function(key) {
+                        if (key === 'php') return house.levels && house.levels.php;
+                        if (key === 'iop') return house.levels && house.levels.iop;
+                        if (key === 'detox') return house.levels && house.levels.detox;
+                        if (key === 'inpatient') return house.levels && house.levels.inpatient;
+                        if (key === 'sober_living') return house.levels && house.levels.sober_living;
+                        if (key === 'male') return house.gender === 'male' || house.gender === 'coed';
+                        if (key === 'female') return house.gender === 'female' || house.gender === 'coed';
+                        if (key === 'coed') return house.gender === 'coed';
+                        if (key === 'clean_living') return house.livingType === 'clean_living';
+                        if (key === 'maintenance') return house.livingType === 'maintenance';
+                        if (key === 'cash') return house.payment === 'cash';
+                        if (key === 'medicaid') return house.payment === 'medicaid' || house.payment === 'cash_medicaid';
+                        if (key === 'cash_medicaid') return house.payment === 'cash_medicaid';
+                        return true;
+                    });
+                });
+            }
+
+            var countEl = document.getElementById('filterCount');
+            if (keys.length === 0) {
+                countEl.textContent = 'Showing all ' + allHouses.length + ' house' + (allHouses.length !== 1 ? 's' : '');
+            } else {
+                countEl.textContent = 'Showing ' + filtered.length + ' of ' + allHouses.length + ' house' + (allHouses.length !== 1 ? 's' : '');
+            }
+
+            renderHouses(filtered);
+        }
+
+        function renderHouses(houses) {
+            var grid = document.getElementById('housesGrid');
+            if (houses.length === 0) {
+                grid.innerHTML = '<div class="no-results"><div class="no-results-icon">&#127968;</div><h3>No houses match your filters</h3><p>Try adjusting or clearing your filters to see more options.</p></div>';
+                return;
+            }
+
+            grid.innerHTML = houses.map(function(house) {
+                return buildHouseCard(house);
+            }).join('');
+        }
+
+        function buildHouseCard(house) {
+            var photos = house.photos || [];
+            var photoCount = photos.length;
+
+            var photosHtml = '';
+            if (photoCount > 0) {
+                photosHtml = photos.map(function(photo, i) {
+                    return '<div class="house-photo-slide ' + (i === 0 ? 'active' : '') + '">'
+                        + '<img src="' + photo + '" alt="Photo ' + (i+1) + ' of ' + (house.name || 'house') + '" loading="lazy">'
+                        + '</div>';
+                }).join('');
+
+                if (photoCount > 1) {
+                    var dots = photos.map(function(_, i) {
+                        return '<button class="photo-dot ' + (i === 0 ? 'active' : '') + '" onclick="goToSlide(this, ' + i + ')"></button>';
+                    }).join('');
+                    photosHtml += '<div class="photo-nav">' + dots + '</div>'
+                        + '<button class="photo-arrow prev" onclick="prevSlide(this)">&#8249;</button>'
+                        + '<button class="photo-arrow next" onclick="nextSlide(this)">&#8250;</button>';
+                }
+            } else {
+                photosHtml = '<div class="house-photo-placeholder">&#127968;<span>No photos available</span></div>';
+            }
+
+            var tags = [];
+            if (house.levels) {
+                var careLabels = { php: 'PHP', iop: 'IOP', detox: 'Detox', inpatient: 'Inpatient', sober_living: 'Sober Living' };
+                Object.keys(careLabels).forEach(function(k) {
+                    if (house.levels[k]) tags.push('<span class="house-tag tag-care">' + careLabels[k] + '</span>');
+                });
+            }
+            if (house.gender) {
+                var genderLabels = { male: 'Male', female: 'Female', coed: 'Coed' };
+                tags.push('<span class="house-tag tag-gender">' + (genderLabels[house.gender] || house.gender) + '</span>');
+            }
+            if (house.payment) {
+                var payLabels = { cash: 'Cash Only', medicaid: 'Medicaid', cash_medicaid: 'Cash &amp; Medicaid' };
+                tags.push('<span class="house-tag tag-payment">' + (payLabels[house.payment] || house.payment) + '</span>');
+            }
+            if (house.livingType) {
+                var livingLabels = { clean_living: 'Clean Living', maintenance: 'Maintenance' };
+                tags.push('<span class="house-tag tag-living">' + (livingLabels[house.livingType] || house.livingType) + '</span>');
+            }
+
+            var costStr = house.costPerBed ? '$' + Number(house.costPerBed).toLocaleString() + '/bed' : 'Contact for pricing';
+            var capStr = house.capacity ? house.capacity + ' bed' + (house.capacity !== 1 ? 's' : '') : 'N/A';
+
+            return '<div class="house-card">'
+                + '<div class="house-photos">' + photosHtml + '</div>'
+                + '<div class="house-info">'
+                + '<div class="house-name">' + escapeHtml(house.name || 'Unnamed Property') + '</div>'
+                + (house.address ? '<div class="house-address">&#128205; ' + escapeHtml(house.address) + '</div>' : '')
+                + '<div class="house-tags">' + tags.join('') + '</div>'
+                + '<div class="house-details">'
+                + '<div class="house-detail"><span class="house-detail-label">Cost:</span><span class="house-detail-value">' + escapeHtml(costStr) + '</span></div>'
+                + '<div class="house-detail"><span class="house-detail-label">Capacity:</span><span class="house-detail-value">' + escapeHtml(capStr) + '</span></div>'
+                + '</div>'
+                + '</div>'
+                + '</div>';
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        function prevSlide(btn) {
+            var photos = btn.closest('.house-photos');
+            var slides = photos.querySelectorAll('.house-photo-slide');
+            var dots = photos.querySelectorAll('.photo-dot');
+            var current = photos.querySelector('.house-photo-slide.active');
+            var idx = Array.from(slides).indexOf(current);
+            var prev = (idx - 1 + slides.length) % slides.length;
+            setSlide(slides, dots, prev);
+        }
+
+        function nextSlide(btn) {
+            var photos = btn.closest('.house-photos');
+            var slides = photos.querySelectorAll('.house-photo-slide');
+            var dots = photos.querySelectorAll('.photo-dot');
+            var current = photos.querySelector('.house-photo-slide.active');
+            var idx = Array.from(slides).indexOf(current);
+            var next = (idx + 1) % slides.length;
+            setSlide(slides, dots, next);
+        }
+
+        function goToSlide(dot, idx) {
+            var photos = dot.closest('.house-photos');
+            var slides = photos.querySelectorAll('.house-photo-slide');
+            var dots = photos.querySelectorAll('.photo-dot');
+            setSlide(slides, dots, idx);
+        }
+
+        function setSlide(slides, dots, idx) {
+            slides.forEach(function(s) { s.classList.remove('active'); });
+            dots.forEach(function(d) { d.classList.remove('active'); });
+            slides[idx].classList.add('active');
+            if (dots[idx]) dots[idx].classList.add('active');
+        }
+
+        // Load houses from API
+        fetch('/api/houses')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                allHouses = data || [];
+                applyFilters();
+            })
+            .catch(function() {
+                document.getElementById('housesGrid').innerHTML =
+                    '<div class="no-results"><div class="no-results-icon">&#9888;&#65039;</div><h3>Could not load housing data</h3><p>Please try refreshing the page or contact us directly.</p></div>';
+            });
+    </script>
+</body>
+</html>

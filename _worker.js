@@ -118,7 +118,7 @@ export default {
         // If it's a user message, send email notification
         if (data.isUser) {
           await sendEmailNotification(env, 'New Live Chat Message',
-            `Conversation: ${data.conversationId}\nMessage: ${data.message}\nTime: ${chatMessage.timestamp}\n\nReply at: https://bcesoberliving.com/admin-chat`);
+            `Conversation: ${data.conversationId}\nMessage: ${data.message}\nTime: ${chatMessage.timestamp}\n\nReply at: https://www.bcesoberliving.com/admin-chat`);
         }
         
         return new Response(JSON.stringify({ success: true, messageId }), {
@@ -133,7 +133,7 @@ export default {
     }
 
     // Get chat history
-    if (url.pathname.startsWith('/api/chat/') && request.method === 'GET') {
+    if (url.pathname.startsWith('/api/chat/') && !url.pathname.startsWith('/api/chat/poll/') && request.method === 'GET') {
       try {
         const conversationId = url.pathname.split('/').pop();
         const prefix = `chat_${conversationId}_`;
@@ -420,6 +420,68 @@ export default {
     }
 
     // ============================================
+    // ADMIN CHAT API — list all conversations
+    // ============================================
+    if (url.pathname === '/api/admin/chat/conversations' && request.method === 'GET') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const allKeys = await env['BCE-SESSIONS'].list({ prefix: 'chat_' });
+        const conversationMap = {};
+
+        for (const key of allKeys.keys) {
+          // Key format: chat_{conversationId}_{messageId}
+          // After removing outer "chat_" prefix: "{conversationId}_{messageId}"
+          const withoutPrefix = key.name.slice('chat_'.length);
+          const lastUnderscore = withoutPrefix.lastIndexOf('_');
+          if (lastUnderscore === -1) continue;
+          const conversationId = withoutPrefix.slice(0, lastUnderscore);
+          if (!conversationId) continue;
+
+          const value = await env['BCE-SESSIONS'].get(key.name);
+          if (!value) continue;
+          const msg = JSON.parse(value);
+
+          if (!conversationMap[conversationId]) {
+            conversationMap[conversationId] = { conversationId, messages: [], hasUnread: false };
+          }
+          conversationMap[conversationId].messages.push(msg);
+          if (msg.isUser && !msg.read) {
+            conversationMap[conversationId].hasUnread = true;
+          }
+        }
+
+        // Build summary list, one entry per conversation
+        const conversations = Object.values(conversationMap).map(function(c) {
+          c.messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+          const latest = c.messages[c.messages.length - 1];
+          return {
+            conversationId: c.conversationId,
+            latestMessage: latest ? latest.message : '',
+            latestTimestamp: latest ? latest.timestamp : '',
+            latestIsUser: latest ? latest.isUser : false,
+            messageCount: c.messages.length,
+            hasUnread: c.hasUnread
+          };
+        });
+
+        conversations.sort((a, b) => new Date(b.latestTimestamp) - new Date(a.latestTimestamp));
+
+        return new Response(JSON.stringify(conversations), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify([]), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // ============================================
     // AGENT REPLY API (for responding to chats via email/SMS)
     // ============================================
     if (url.pathname === '/api/agent/reply' && request.method === 'POST') {
@@ -448,6 +510,165 @@ export default {
       }
     }
 
+    // ============================================
+    // HOUSING API (public)
+    // ============================================
+    if (url.pathname === '/api/houses' && request.method === 'GET') {
+      try {
+        const houseList = await env['BCE-SESSIONS'].list({ prefix: 'house_' });
+        const houses = [];
+        for (const key of houseList.keys) {
+          // Skip photo keys — only load house metadata
+          if (key.name.startsWith('house_photo_')) continue;
+          const value = await env['BCE-SESSIONS'].get(key.name);
+          if (value) {
+            const house = JSON.parse(value);
+            // Attach inline photos (stored as part of house record)
+            houses.push(house);
+          }
+        }
+        houses.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        return new Response(JSON.stringify(houses), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify([]), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // ============================================
+    // HOUSING ADMIN API
+    // ============================================
+
+    // Get all houses (admin)
+    if (url.pathname === '/api/admin/houses' && request.method === 'GET') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const houseList = await env['BCE-SESSIONS'].list({ prefix: 'house_' });
+        const houses = [];
+        for (const key of houseList.keys) {
+          if (key.name.startsWith('house_photo_')) continue;
+          const value = await env['BCE-SESSIONS'].get(key.name);
+          if (value) houses.push(JSON.parse(value));
+        }
+        houses.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        return new Response(JSON.stringify(houses), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify([]), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // Add house (admin)
+    if (url.pathname === '/api/admin/houses' && request.method === 'POST') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const data = await request.json();
+        const houseId = Date.now().toString();
+        const house = {
+          id: houseId,
+          name: data.name,
+          address: data.address || '',
+          costPerBed: data.costPerBed || null,
+          capacity: data.capacity || null,
+          gender: data.gender || '',
+          payment: data.payment || '',
+          livingType: data.livingType || '',
+          levels: data.levels || {},
+          photos: data.photos || [],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+        await env['BCE-SESSIONS'].put(`house_${houseId}`, JSON.stringify(house));
+        return new Response(JSON.stringify({ success: true, house }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to add house' }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // Edit house (admin)
+    if (url.pathname.match(/^\/api\/admin\/houses\/[^/]+$/) && request.method === 'PUT') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const houseId = url.pathname.split('/').pop();
+        const data = await request.json();
+        const existing = await env['BCE-SESSIONS'].get(`house_${houseId}`);
+        if (!existing) {
+          return new Response(JSON.stringify({ error: 'House not found' }), {
+            status: 404,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          });
+        }
+        const house = JSON.parse(existing);
+        if (data.name !== undefined) house.name = data.name;
+        if (data.address !== undefined) house.address = data.address;
+        if (data.costPerBed !== undefined) house.costPerBed = data.costPerBed;
+        if (data.capacity !== undefined) house.capacity = data.capacity;
+        if (data.gender !== undefined) house.gender = data.gender;
+        if (data.payment !== undefined) house.payment = data.payment;
+        if (data.livingType !== undefined) house.livingType = data.livingType;
+        if (data.levels !== undefined) house.levels = data.levels;
+        if (data.photos !== undefined) house.photos = data.photos;
+        house.updatedAt = new Date().toISOString();
+        await env['BCE-SESSIONS'].put(`house_${houseId}`, JSON.stringify(house));
+        return new Response(JSON.stringify({ success: true, house }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to update house' }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // Delete house (admin)
+    if (url.pathname.match(/^\/api\/admin\/houses\/[^/]+$/) && request.method === 'DELETE') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const houseId = url.pathname.split('/').pop();
+        await env['BCE-SESSIONS'].delete(`house_${houseId}`);
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to delete house' }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
     // Fall through to static assets for non-API routes
     return env.ASSETS.fetch(request);
   }
@@ -469,7 +690,8 @@ async function sendEmailNotification(env, subject, body) {
           from: 'BCE Sober Living <william@bcesoberliving.com>',
           to: ['william@bcesoberliving.com'],
           subject: `[BCE] ${subject}`,
-          text: body
+          text: body,
+          html: body.replace(/https?:\/\/[^\s]+/g, url => `<a href="${url}">${url}</a>`).replace(/\n/g, '<br>')
         })
       });
     }

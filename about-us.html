@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - BCE Sober Living, L.L.C</title>
+    <meta name="description" content="Learn about BCE Sober Living — our mission, our story, and the founder behind our commitment to recovery and community support in Frederick, MD.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .tabs-wrapper {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+        .tab-nav {
+            display: flex;
+            flex-wrap: wrap;
+            background: linear-gradient(135deg, var(--dark-blue), var(--medium-blue));
+            border-bottom: 3px solid var(--primary-blue);
+        }
+        .tab-btn {
+            flex: 1 1 auto;
+            padding: 1rem 1.2rem;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            letter-spacing: 0.02em;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -3px;
+        }
+        .tab-btn:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.08);
+        }
+        .tab-btn.active {
+            color: #fff;
+            border-bottom: 3px solid var(--primary-blue);
+            background: rgba(77,166,255,0.15);
+        }
+        .tab-panel {
+            display: none;
+            padding: 2.5rem;
+            animation: fadeIn 0.3s ease;
+        }
+        .tab-panel.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tab-panel h2 {
+            color: var(--dark-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--light-blue);
+        }
+        .tab-panel h3 {
+            color: var(--medium-blue);
+            font-size: 1.2rem;
+            margin: 1.8rem 0 0.75rem;
+        }
+        .tab-panel p {
+            color: var(--text-dark);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        .tab-panel ul, .tab-panel ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.9;
+            color: var(--text-dark);
+        }
+        .info-card {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
+            border-left: 4px solid var(--primary-blue);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .quote-block {
+            font-style: italic;
+            color: var(--accent-blue);
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-blue);
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin: 2rem 0;
+        }
+        .service-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+            border-left: 4px solid var(--primary-blue);
+        }
+        .service-card h4 {
+            color: var(--dark-blue);
+            margin-bottom: 0.4rem;
+            font-size: 1rem;
+        }
+        .service-card p {
+            margin: 0;
+            color: var(--text-light);
+            font-size: 0.92rem;
+        }
+        .founder-photo-wrap {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .founder-photo-wrap img {
+            width: 100%;
+            max-width: 380px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 3px solid #4da6ff;
+            animation: fadeInUp 1s ease-out;
+        }
+        .memorial-wrap {
+            margin: 3rem 0;
+            text-align: center;
+        }
+        .memorial-img-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .memorial-img-container img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+        .memorial-logo-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(10, 31, 68, 0.85);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+        .serenity-card {
+            margin-top: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
+            border-radius: 15px;
+            border-left: 4px solid #4da6ff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .serenity-card h3 {
+            color: var(--dark-blue);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+        .serenity-card p {
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+        .serenity-card .memorial-credit {
+            font-size: 0.95rem;
+            color: var(--accent-blue);
+            font-weight: 600;
+            text-align: center;
+            font-style: normal;
+        }
+        @media (max-width: 640px) {
+            .tab-btn { font-size: 0.78rem; padding: 0.75rem 0.5rem; }
+            .tab-panel { padding: 1.5rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg width="90" height="90" viewBox="0 0 60 60" class="logo-svg">
+                    <path d="M30 50 C30 50, 10 35, 10 22 C10 15, 15 10, 22 10 C26 10, 28 12, 30 15 C32 12, 34 10, 38 10 C45 10, 50 15, 50 22 C50 35, 30 50, 30 50 Z"
+                          fill="none" stroke="#4da6ff" stroke-width="2.5" opacity="0.7"/>
+                    <text x="30" y="28" font-family="Impact, Arial Black, sans-serif" font-size="12" font-weight="900"
+                          text-anchor="middle" fill="#4da6ff" opacity="0.8"
+                          style="letter-spacing: -1px; paint-order: stroke; stroke: #2a5298; stroke-width: 0.5px;">BCE</text>
+                    <text x="30" y="38" font-family="Impact, Arial Black, sans-serif" font-size="9" font-weight="900"
+                          text-anchor="middle" fill="#6bb8ff" opacity="0.75" style="letter-spacing: 0px;">III</text>
+                    <path d="M28 38 L28 42 L27 44 L28 45 L29 44 L28 42 Z" fill="#4da6ff" opacity="0.3"/>
+                    <path d="M32 38 L32 41 L31 43 L32 44 L33 43 L32 41 Z" fill="#4da6ff" opacity="0.25"/>
+                </svg>
+                <span class="logo-text">BCE Sober Living</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="home.html">Home</a></li>
+                <li><a href="about-us.html" class="active">About Us</a></li>
+                <li><a href="housing.html">Housing</a></li>
+                <li><a href="info.html">General Information</a></li>
+                <li><a href="updates.html">BCE Updates</a></li>
+                <li><a href="comments.html">Comment Board</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="hero" style="height: 400px;">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 class="hero-title animate-fade-in">About Us</h1>
+                <p class="hero-subtitle animate-fade-in-delay">Our mission, our story, and the people behind BCE Sober Living</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="container">
+                <div class="tabs-wrapper">
+                    <nav class="tab-nav" role="tablist">
+                        <button class="tab-btn active" role="tab" data-tab="mission">Mission Statement</button>
+                        <button class="tab-btn" role="tab" data-tab="about">About BCE</button>
+                        <button class="tab-btn" role="tab" data-tab="founder">BCE Founder</button>
+                    </nav>
+
+                    <!-- MISSION STATEMENT -->
+                    <div class="tab-panel active" id="tab-mission">
+                        <h2>BCE Mission Statement</h2>
+
+                        <p>At BCE Sober Living, our mission is deeply personal and powerfully clear: to provide a safe, structured, and supportive recovery home in Frederick for people struggling with addiction who are truly ready to stop. This is not a flop house or a revolving-door environment. This is a place where lives are rebuilt, hope is restored, and recovery becomes real.</p>
+
+                        <p>BCE III Sober Living LLC is named after my brother, who passed away from an accidental overdose five years ago. His loss was the catalyst for my own recovery and the inspiration for this mission. Every resident who walks through our doors represents a life that can be saved, a family that can be healed, and a community that can be strengthened.</p>
+
+                        <h3>Our Commitment to Residents</h3>
+
+                        <p>I will be present and available to all residents. Whether you need someone to talk to, help with job searches, résumé preparation, insurance navigation, doctor appointments, or applications for available benefits—I will be there. I also have two licensed therapists who have offered to lead workshops, run therapeutic exercises, and support residents who ask for it.</p>
+
+                        <p>This isn't just about providing housing. It's about providing hope, structure, accountability, and genuine support for people who are ready to reclaim their lives.</p>
+
+                        <h3>What We Believe</h3>
+
+                        <p><strong>Recovery is Possible:</strong> I've lived it. I know what it takes, and I know what awaits on the other side. Recovery isn't just about stopping—it's about starting something better. It's about peace, happiness, and love.</p>
+
+                        <p><strong>Readiness Matters:</strong> We focus on those who are ready and willing to be helped. This home is for people who genuinely want what so many of us in recovery have found. Because when you're ready, amazing things become possible.</p>
+
+                        <p><strong>Community Strength:</strong> By helping individuals recover, we strengthen our entire community. Frederick has shown me incredible kindness and support, and I'm committed to giving that back tenfold.</p>
+
+                        <p><strong>No One Is Beyond Hope:</strong> I woke up on a ventilator to learn my brother had passed two weeks earlier. That trauma could have destroyed me, but instead, it transformed me. If I can find recovery after that, so can you.</p>
+
+                        <h3>Our Standards</h3>
+
+                        <p>BCE Sober Living will maintain high standards because the people we serve deserve nothing less. This means:</p>
+
+                        <p>A structured environment with clear expectations and accountability measures that help residents succeed. A safe, comfortable home maintained to professional standards. Active support from someone who understands addiction both personally and professionally. Access to therapeutic resources and community connections. Zero tolerance for active substance use—because everyone's recovery depends on maintaining a sober environment.</p>
+
+                        <h3>My Vow to Frederick</h3>
+
+                        <p>I vow to help and provide a safe, secure, and structured environment for the citizens of this town. I will do everything in my power to save the ones that want it. The people who want what I and many others have assiduously achieved: Peace, happiness, and love.</p>
+
+                        <p>I've found my calling: to assist and guide individuals toward a life worth living, and to support the families who are also impacted by addiction. Let's focus on those who are ready and willing to be helped, and in doing so, strengthen our entire community.</p>
+
+                        <div class="quote-block">"God's purposes will prevail, no matter what." — Genesis 12:10–13:1</div>
+                    </div>
+
+                    <!-- ABOUT BCE -->
+                    <div class="tab-panel" id="tab-about">
+                        <h2>Who We Are</h2>
+
+                        <p>BCE Sober Living, L.L.C is a recovery home in Frederick, Maryland, founded by William Edwards and operated under Edwards Co, Inc. Unlike typical sober living facilities, BCE represents something deeply personal—a mission born from tragedy, fueled by lived experience, and committed to saving lives.</p>
+
+                        <p>The name "BCE III" honors William's brother, who passed away from an accidental overdose. That devastating loss became the turning point that led William to recovery and, ultimately, to founding this home. Every aspect of BCE is designed with one goal in mind: helping people who are truly ready to stop using and start living.</p>
+
+                        <!-- Memorial Section -->
+                        <div class="memorial-wrap">
+                            <div class="memorial-img-container">
+                                <img src="images/charles-edwards-memorial.jpg"
+                                     alt="In Memory of Charles Edwards">
+                                <div class="memorial-logo-overlay">
+                                    <svg width="120" height="120" viewBox="0 0 60 60" style="filter: drop-shadow(0 0 15px rgba(77, 166, 255, 0.8));">
+                                        <path d="M30 50 C30 50, 10 35, 10 22 C10 15, 15 10, 22 10 C26 10, 28 12, 30 15 C32 12, 34 10, 38 10 C45 10, 50 15, 50 22 C50 35, 30 50, 30 50 Z"
+                                              fill="none" stroke="#4da6ff" stroke-width="2.5" opacity="0.9"/>
+                                        <text x="30" y="28" font-family="Impact, Arial Black, sans-serif" font-size="12" font-weight="900"
+                                              text-anchor="middle" fill="#4da6ff" opacity="1"
+                                              style="letter-spacing: -1px; paint-order: stroke; stroke: #2a5298; stroke-width: 0.5px;">BCE</text>
+                                        <text x="30" y="38" font-family="Impact, Arial Black, sans-serif" font-size="9" font-weight="900"
+                                              text-anchor="middle" fill="#6bb8ff" opacity="1" style="letter-spacing: 0px;">III</text>
+                                        <path d="M28 38 L28 42 L27 44 L28 45 L29 44 L28 42 Z" fill="#4da6ff" opacity="0.4"/>
+                                        <path d="M32 38 L32 41 L31 43 L32 44 L33 43 L32 41 Z" fill="#4da6ff" opacity="0.35"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="serenity-card">
+                                <h3>The Serenity Prayer</h3>
+                                <p>God, grant me the serenity to accept the things I cannot change,</p>
+                                <p>Courage to change the things I can,</p>
+                                <p>And wisdom to know the difference.</p>
+                                <p class="memorial-credit">In loving memory of Charles Edwards<br>1987 – 2019</p>
+                            </div>
+                        </div>
+
+                        <h3>Our Founder's Background</h3>
+
+                        <p>William Edwards brings a unique combination of personal recovery experience and professional expertise to BCE Sober Living. He's worked with treatment centers since 2010—both as a professional and as someone who has sought help himself. This dual perspective shapes everything about how BCE operates.</p>
+
+                        <p>William holds an undergraduate degree in quantitative finance from James Madison University and a master's degree in computer science from Columbia University. He's worked as a quantitative analyst for major corporations including Marriott, Starwood, Pepsi, Dannon, and two REITs. He was previously FINRA-registered (Series 7, 63, and 65), passed the New Jersey Bar Exam, and held a real estate license in Virginia.</p>
+
+                        <p>This background isn't about credentials—it's about demonstrating that William has done his due diligence, knows how to structure a successful operation, and is committed to running BCE with professionalism and integrity.</p>
+
+                        <h3>Why Frederick?</h3>
+
+                        <p>Location matters immensely in recovery. Frederick offers everything residents need: proximity to healthcare and treatment resources, employment opportunities, access to recovery meetings and support groups, a welcoming community that has embraced this mission, and the perfect balance of urban resources and small-town support.</p>
+
+                        <p>Frederick has been incredibly supportive of William's vision. The response from this community has been overwhelmingly positive, with offers to volunteer, connections to resources, prayers, and encouragement. This is exactly the kind of community where a recovery home can truly thrive.</p>
+
+                        <h3>What Makes BCE Different</h3>
+
+                        <p><strong>Hands-On Founder Involvement:</strong> William isn't just a businessman running a facility from afar. He will be present and available to residents, offering personal support, guidance with practical matters (job searches, résumés, insurance, appointments, benefits applications), and the perspective of someone who's lived through addiction and recovery.</p>
+
+                        <p><strong>Professional Therapeutic Support:</strong> Two licensed therapists have offered to lead workshops and therapeutic exercises for residents who want additional support. This goes beyond basic housing to provide real clinical resources.</p>
+
+                        <p><strong>Structure Without Being Institutional:</strong> This is not a flop house. It's also not a cold, institutional facility. BCE offers structure, accountability, and clear expectations within a supportive, understanding environment.</p>
+
+                        <p><strong>Focus on Readiness:</strong> We're honest about who we serve: people who are truly ready to stop. We can't help everyone, but for those who genuinely want recovery, we will move mountains to support them.</p>
+
+                        <h3>Our Services Include</h3>
+                        <div class="services-grid">
+                            <div class="service-card">
+                                <h4>24/7 Support</h4>
+                                <p>Professional staff available around the clock to ensure safety and provide assistance when needed.</p>
+                            </div>
+                            <div class="service-card">
+                                <h4>Structured Environment</h4>
+                                <p>Clear guidelines, regular meetings, and accountability systems that promote responsibility and growth.</p>
+                            </div>
+                            <div class="service-card">
+                                <h4>Community Connection</h4>
+                                <p>Access to local recovery meetings, treatment providers, and community resources.</p>
+                            </div>
+                            <div class="service-card">
+                                <h4>Life Skills Development</h4>
+                                <p>Support in building essential skills for independent living, employment, and long-term success.</p>
+                            </div>
+                            <div class="service-card">
+                                <h4>Safe &amp; Sober Environment</h4>
+                                <p>Regular monitoring and clear policies ensuring a drug and alcohol-free living space.</p>
+                            </div>
+                            <div class="service-card">
+                                <h4>Comfortable Accommodations</h4>
+                                <p>Quality furnishings, modern amenities, and well-maintained facilities that feel like home.</p>
+                            </div>
+                        </div>
+
+                        <h3>The BCE Promise</h3>
+
+                        <p>William's promise to every resident is clear: "I vow to help and provide a safe, secure, and structured environment. I will do everything in my power to save the ones that want it. The people who want what I and many others have assiduously achieved: Peace, happiness, and love."</p>
+
+                        <p>This isn't marketing language. It's a personal commitment from someone who knows what's at stake because he's lived it.</p>
+                    </div>
+
+                    <!-- BCE FOUNDER -->
+                    <div class="tab-panel" id="tab-founder">
+                        <h2>Meet William Edwards — Founder of BCE Sober Living</h2>
+
+                        <div class="founder-photo-wrap">
+                            <img src="images/william-edwards.jpg"
+                                 alt="William Edwards - Founder of BCE Sober Living">
+                        </div>
+
+                        <p>BCE Sober Living was born from personal tragedy, profound transformation, and an unwavering commitment to helping others find the recovery that saved my life.</p>
+
+                        <h3>A Story of Loss and Redemption</h3>
+
+                        <p>Five years ago, my brother passed away from an accidental overdose. That, unfortunately, was the moment I finally decided to stop using. I woke up on a ventilator two weeks after he had already passed to learn he was gone. The experience traumatized me, and the guilt is something I will carry forever.</p>
+
+                        <p>I've worked with treatment centers since 2010—both professionally and as someone who has sought help myself. That dual perspective—understanding addiction from the inside while also working within the recovery field—has shaped everything about BCE Sober Living.</p>
+
+                        <h3>Why BCE? Why Frederick?</h3>
+
+                        <p>My goal is clear: to open a sober living home in the City of Frederick for people struggling with addiction who are truly ready to stop. This will not be a flop house or a revolving-door environment. It will be a structured, supportive recovery home where I will be present and available to all residents.</p>
+
+                        <p>Whether residents need someone to talk to, help with job searches, résumé preparation, insurance, doctor appointments, or applications for available benefits—I will be there. I also have two licensed therapists who have offered to lead workshops, run therapeutic exercises, and support residents who ask for it.</p>
+
+                        <p>Frederick is one of the most incredible places I've lived, and that's entirely because of the people who make up this community. The response from this city has been overwhelmingly positive, and I couldn't imagine a better place to fulfill my purpose and help save the lives of those who want it.</p>
+
+                        <h3>A Foundation Built on Experience</h3>
+
+                        <p>I hold an undergraduate degree in quantitative finance from James Madison University and a master's degree in computer science from Columbia University. Professionally, I've worked as a quantitative analyst for organizations including Marriott, Starwood, Pepsi, a hedge fund, Dannon, and two REITs. I was previously FINRA-registered with Series 7, 63, and 65 licenses, passed the New Jersey Bar Exam, and held my real estate license in Virginia.</p>
+
+                        <p>I share this not to boast, but to emphasize that I am not entering this venture blindly. I've done my due diligence, I'm well aware of what I'm doing, and I know how to structure this home for success. Under my S-corp, I've formed BCE III Sober Living LLC—named after my brother—for this project.</p>
+
+                        <h3>My Commitment to You</h3>
+
+                        <p>I've always made it a point to help others, sometimes to the detriment of my own well-being. I've learned from that mistake. My focus now is helping the people who genuinely want what I—and so many others in recovery—have found, because it really is great!</p>
+
+                        <p>I vow to help and provide a safe, secure, and structured environment for the citizens of this town. I will do everything in my power to save the ones that want it. The people who want what I and many others have assiduously achieved: Peace, happiness, and love.</p>
+
+                        <h3>A Message of Hope</h3>
+
+                        <p>I've found my calling: to assist and guide individuals toward a life worth living, and to support the families who are also impacted by addiction. Let's focus on those who are ready and willing to be helped, and in doing so, strengthen our entire community.</p>
+
+                        <div class="quote-block">"God's purposes will prevail, no matter what." — Genesis 12:10–13:1</div>
+
+                        <p>Every resident who walks through our doors will be welcomed into a community built on hope, transformation, and the possibility of a brighter future. This is more than a business—it's my life's purpose.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2>Ready to Begin Your Journey?</h2>
+                <p>Discover how BCE Sober Living can support your path to recovery.</p>
+                <a href="contact.html" class="btn btn-light">Contact Us Today</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BCE Sober Living, L.L.C</h3>
+                    <p>A division of Edwards Co, Inc</p>
+                    <p>Frederick, MD</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about-us.html">About Us</a></li>
+                        <li><a href="housing.html">Housing</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect</h3>
+                    <p>Starting your recovery journey begins with a single step.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BCE Sober Living, L.L.C. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+                document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+                btn.classList.add('active');
+                document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+                history.replaceState(null, '', '#' + btn.dataset.tab);
+            });
+        });
+
+        // Hash-based deep linking (e.g. about-us.html#founder)
+        (function() {
+            var hash = window.location.hash.replace('#', '');
+            var validTabs = ['mission', 'about', 'founder'];
+            if (hash && validTabs.indexOf(hash) !== -1) {
+                document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+                document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+                var btn = document.querySelector('[data-tab="' + hash + '"]');
+                var panel = document.getElementById('tab-' + hash);
+                if (btn && panel) {
+                    btn.classList.add('active');
+                    panel.classList.add('active');
+                }
+            }
+        })();
+    </script>
+</body>
+</html>

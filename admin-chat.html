@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Admin - BCE Sober Living</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { background: #f0f4f8; min-height: 100vh; }
+
+        /* Password Gate */
+        #passwordGate {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--dark-blue), var(--medium-blue));
+        }
+        .password-box {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .password-box h2 { color: var(--dark-blue); margin-bottom: 0.5rem; font-size: 1.5rem; }
+        .password-box p  { color: var(--text-light); margin-bottom: 1.5rem; font-size: 0.9rem; }
+        .password-input {
+            width: 100%; padding: 0.85rem 1rem; border: 2px solid #c8d8e8;
+            border-radius: 8px; font-size: 1rem; margin-bottom: 1rem;
+            outline: none; transition: border-color 0.2s;
+        }
+        .password-input:focus { border-color: var(--primary-blue); }
+        .error-msg { color: #c62828; font-size: 0.85rem; margin-bottom: 0.5rem; display: none; }
+
+        /* Admin Panel */
+        #adminPanel { display: none; height: 100vh; flex-direction: column; }
+
+        .admin-topbar {
+            background: linear-gradient(135deg, var(--dark-blue), var(--medium-blue));
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .admin-topbar h1 { font-size: 1.2rem; }
+        .admin-topbar-actions { display: flex; gap: 1rem; align-items: center; }
+
+        /* Chat Layout */
+        .chat-layout {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            height: calc(100vh - 60px);
+        }
+
+        /* Conversation List */
+        .conv-list {
+            width: 300px;
+            flex-shrink: 0;
+            background: white;
+            border-right: 1px solid #e0e8f0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .conv-list-header {
+            padding: 1rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-light);
+            border-bottom: 1px solid #e0e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .conv-list-body {
+            overflow-y: auto;
+            flex: 1;
+        }
+        .conv-item {
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid #f0f4f8;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .conv-item:hover { background: #f0f4f8; }
+        .conv-item.active { background: #e8f4ff; border-left: 3px solid var(--primary-blue); }
+        .conv-item.unread { background: #fff8e1; }
+        .conv-item.unread.active { background: #fff3cd; }
+        .conv-id {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 0.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .conv-id .unread-dot {
+            width: 8px; height: 8px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            display: none;
+        }
+        .conv-item.unread .unread-dot { display: block; }
+        .conv-preview {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 0.2rem;
+        }
+        .conv-time {
+            font-size: 0.72rem;
+            color: #b0b8c0;
+        }
+        .conv-empty {
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Thread Panel */
+        .thread-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #f8fafc;
+        }
+        .thread-header {
+            padding: 1rem 1.5rem;
+            background: white;
+            border-bottom: 1px solid #e0e8f0;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            flex-shrink: 0;
+        }
+        .thread-header strong { color: var(--dark-blue); font-size: 1rem; }
+
+        .thread-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .thread-empty {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Messages */
+        .msg {
+            max-width: 75%;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .msg.user {
+            background: white;
+            border: 1px solid #e0e8f0;
+            align-self: flex-start;
+            border-bottom-left-radius: 3px;
+        }
+        .msg.agent {
+            background: var(--primary-blue);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 3px;
+        }
+        .msg-meta {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            margin-top: 0.2rem;
+        }
+        .msg.agent + .msg-meta { text-align: right; }
+        .msg-group { display: flex; flex-direction: column; }
+        .msg-group.user-group { align-items: flex-start; }
+        .msg-group.agent-group { align-items: flex-end; }
+
+        /* Reply Box */
+        .reply-box {
+            padding: 1rem 1.5rem;
+            background: white;
+            border-top: 1px solid #e0e8f0;
+            flex-shrink: 0;
+        }
+        .reply-row {
+            display: flex;
+            gap: 0.75rem;
+        }
+        .reply-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid #c8d8e8;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            transition: border-color 0.2s;
+            min-height: 70px;
+        }
+        .reply-input:focus { border-color: var(--primary-blue); }
+        .btn-send-reply {
+            padding: 0 1.25rem;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            align-self: flex-end;
+            height: 44px;
+        }
+        .btn-send-reply:hover { background: var(--accent-blue); }
+        .btn-send-reply:disabled { opacity: 0.6; cursor: default; }
+        .reply-status {
+            font-size: 0.8rem;
+            margin-top: 0.4rem;
+            display: none;
+        }
+        .reply-status.success { color: #2e7d32; }
+        .reply-status.error   { color: #c62828; }
+
+        /* Refresh indicator */
+        .refresh-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        @media (max-width: 768px) {
+            .conv-list { width: 100%; display: none; }
+            .conv-list.show-mobile { display: flex; }
+            .thread-panel.hide-mobile { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Password Gate -->
+    <div id="passwordGate">
+        <div class="password-box">
+            <svg width="60" height="60" viewBox="0 0 60 60" style="margin-bottom:1rem;">
+                <path d="M30 50 C30 50, 10 35, 10 22 C10 15, 15 10, 22 10 C26 10, 28 12, 30 15 C32 12, 34 10, 38 10 C45 10, 50 15, 50 22 C50 35, 30 50, 30 50 Z"
+                      fill="none" stroke="#4da6ff" stroke-width="2.5"/>
+                <text x="30" y="28" font-family="Impact, Arial Black, sans-serif" font-size="12" font-weight="900"
+                      text-anchor="middle" fill="#4da6ff"
+                      style="letter-spacing:-1px;paint-order:stroke;stroke:#2a5298;stroke-width:0.5px;">BCE</text>
+                <text x="30" y="38" font-family="Impact, Arial Black, sans-serif" font-size="9" font-weight="900"
+                      text-anchor="middle" fill="#6bb8ff">III</text>
+            </svg>
+            <h2>Live Chat Admin</h2>
+            <p>Sign in to view and respond to visitor messages.</p>
+            <p id="loginError" class="error-msg">Incorrect password. Please try again.</p>
+            <input type="password" id="adminPassword" class="password-input" placeholder="Admin password" autocomplete="current-password">
+            <button class="btn btn-primary" style="width:100%" onclick="adminLogin()">Sign In</button>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel">
+        <div class="admin-topbar">
+            <h1>&#128172; Live Chat Admin</h1>
+            <div class="admin-topbar-actions">
+                <span class="refresh-badge" id="refreshBadge">Auto-refreshing</span>
+                <a href="home.html" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;">View Site</a>
+                <button class="btn btn-secondary" onclick="adminLogout()" style="padding:0.4rem 1rem;font-size:0.85rem;">Sign Out</button>
+            </div>
+        </div>
+
+        <div class="chat-layout">
+            <!-- Conversation List -->
+            <div class="conv-list" id="convList">
+                <div class="conv-list-header">
+                    <span>Conversations</span>
+                    <button onclick="loadConversations()" style="background:none;border:none;cursor:pointer;color:var(--primary-blue);font-size:0.8rem;">&#8635; Refresh</button>
+                </div>
+                <div class="conv-list-body" id="convListBody">
+                    <div class="conv-empty">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Thread Panel -->
+            <div class="thread-panel" id="threadPanel">
+                <div class="thread-header" id="threadHeader">
+                    Select a conversation to view messages.
+                </div>
+                <div class="thread-messages" id="threadMessages">
+                    <div class="thread-empty">&#128172; No conversation selected</div>
+                </div>
+                <div class="reply-box" id="replyBox" style="display:none;">
+                    <div class="reply-row">
+                        <textarea class="reply-input" id="replyInput" placeholder="Type your reply..."></textarea>
+                        <button class="btn-send-reply" id="btnSend" onclick="sendReply()">Send</button>
+                    </div>
+                    <div class="reply-status" id="replyStatus"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var adminToken = '';
+        var selectedConvId = null;
+        var refreshInterval = null;
+
+        // ---- Auth ----
+        function adminLogin() {
+            var pw = document.getElementById('adminPassword').value;
+            if (!pw || pw.length < 6) {
+                document.getElementById('loginError').style.display = 'block';
+                return;
+            }
+            adminToken = 'Bearer BCE-Admin-' + pw;
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('passwordGate').style.display = 'none';
+            var panel = document.getElementById('adminPanel');
+            panel.style.display = 'flex';
+            loadConversations();
+            // Auto-refresh conversation list every 15 seconds
+            refreshInterval = setInterval(function() {
+                loadConversations(true);
+                if (selectedConvId) loadThread(selectedConvId, true);
+            }, 15000);
+        }
+
+        function adminLogout() {
+            adminToken = '';
+            clearInterval(refreshInterval);
+            document.getElementById('passwordGate').style.display = 'flex';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        document.getElementById('adminPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') adminLogin();
+        });
+
+        // ---- Conversation List ----
+        function loadConversations(silent) {
+            if (!silent) {
+                document.getElementById('convListBody').innerHTML = '<div class="conv-empty">Loading...</div>';
+            }
+            fetch('/api/admin/chat/conversations', {
+                headers: { 'Authorization': adminToken }
+            })
+            .then(function(r) {
+                if (r.status === 401) throw new Error('Unauthorized');
+                return r.json();
+            })
+            .then(function(data) {
+                renderConvList(Array.isArray(data) ? data : []);
+            })
+            .catch(function(err) {
+                if (!silent) {
+                    var msg = err.message === 'Unauthorized'
+                        ? 'Incorrect password. Please sign out and try again.'
+                        : 'Failed to load conversations.';
+                    document.getElementById('convListBody').innerHTML = '<div class="conv-empty">' + msg + '</div>';
+                }
+            });
+        }
+
+        function renderConvList(convs) {
+            var body = document.getElementById('convListBody');
+            if (convs.length === 0) {
+                body.innerHTML = '<div class="conv-empty">No conversations yet.<br>Chat messages from visitors will appear here.</div>';
+                return;
+            }
+            body.innerHTML = convs.map(function(c) {
+                var isActive = c.conversationId === selectedConvId ? ' active' : '';
+                var isUnread = c.hasUnread ? ' unread' : '';
+                var shortId = c.conversationId.replace('chat_', '#').slice(0, 14) + '...';
+                var preview = c.latestMessage ? escHtml(c.latestMessage).slice(0, 60) + (c.latestMessage.length > 60 ? '…' : '') : '(no messages)';
+                var direction = c.latestIsUser ? '&#8594; You' : 'You &#8592;';
+                return '<div class="conv-item' + isActive + isUnread + '" onclick="selectConv(\'' + escHtml(c.conversationId) + '\')">'
+                    + '<div class="conv-id"><span>' + shortId + '</span><span class="unread-dot"></span></div>'
+                    + '<div class="conv-preview">' + preview + '</div>'
+                    + '<div class="conv-time">' + direction + ' &nbsp;·&nbsp; ' + formatTime(c.latestTimestamp) + ' &nbsp;·&nbsp; ' + c.messageCount + ' msg' + (c.messageCount !== 1 ? 's' : '') + '</div>'
+                    + '</div>';
+            }).join('');
+        }
+
+        function selectConv(convId) {
+            selectedConvId = convId;
+            // Update active state in list
+            document.querySelectorAll('.conv-item').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            var items = document.querySelectorAll('.conv-item');
+            items.forEach(function(el) {
+                if (el.getAttribute('onclick') && el.getAttribute('onclick').indexOf(convId) !== -1) {
+                    el.classList.add('active');
+                    el.classList.remove('unread'); // mark as seen
+                }
+            });
+            loadThread(convId, false);
+            document.getElementById('replyBox').style.display = 'block';
+            document.getElementById('replyInput').focus();
+        }
+
+        // ---- Thread ----
+        function loadThread(convId, silent) {
+            if (!silent) {
+                document.getElementById('threadMessages').innerHTML = '<div class="thread-empty">Loading...</div>';
+            }
+            document.getElementById('threadHeader').innerHTML = '<strong>Conversation:</strong> ' + escHtml(convId);
+
+            fetch('/api/chat/' + encodeURIComponent(convId))
+            .then(function(r) { return r.json(); })
+            .then(function(msgs) {
+                renderThread(Array.isArray(msgs) ? msgs : []);
+            })
+            .catch(function() {
+                if (!silent) {
+                    document.getElementById('threadMessages').innerHTML = '<div class="thread-empty">Could not load messages.</div>';
+                }
+            });
+        }
+
+        function renderThread(msgs) {
+            var container = document.getElementById('threadMessages');
+            if (msgs.length === 0) {
+                container.innerHTML = '<div class="thread-empty">No messages in this conversation.</div>';
+                return;
+            }
+            container.innerHTML = msgs.map(function(msg) {
+                var side = msg.isUser ? 'user' : 'agent';
+                var groupSide = msg.isUser ? 'user-group' : 'agent-group';
+                var label = msg.isUser ? 'Visitor' : 'BCE Admin';
+                return '<div class="msg-group ' + groupSide + '">'
+                    + '<div class="msg ' + side + '">' + escHtml(msg.message).replace(/\n/g, '<br>') + '</div>'
+                    + '<div class="msg-meta">' + label + ' &nbsp;·&nbsp; ' + formatTime(msg.timestamp) + '</div>'
+                    + '</div>';
+            }).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // ---- Reply ----
+        function sendReply() {
+            if (!selectedConvId) return;
+            var input = document.getElementById('replyInput');
+            var text = input.value.trim();
+            if (!text) return;
+
+            var btn = document.getElementById('btnSend');
+            btn.disabled = true;
+            btn.textContent = '...';
+
+            fetch('/api/agent/reply', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ conversationId: selectedConvId, message: text })
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                btn.disabled = false;
+                btn.textContent = 'Send';
+                if (data.success) {
+                    input.value = '';
+                    showReplyStatus('success', 'Sent!');
+                    loadThread(selectedConvId, true);
+                } else {
+                    showReplyStatus('error', 'Failed to send. Try again.');
+                }
+            })
+            .catch(function() {
+                btn.disabled = false;
+                btn.textContent = 'Send';
+                showReplyStatus('error', 'Network error. Try again.');
+            });
+        }
+
+        function showReplyStatus(type, msg) {
+            var el = document.getElementById('replyStatus');
+            el.textContent = msg;
+            el.className = 'reply-status ' + type;
+            el.style.display = 'block';
+            setTimeout(function() { el.style.display = 'none'; }, 3000);
+        }
+
+        // Ctrl+Enter or Cmd+Enter to send
+        document.getElementById('replyInput').addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                sendReply();
+            }
+        });
+
+        // ---- Helpers ----
+        function formatTime(ts) {
+            if (!ts) return '';
+            try {
+                var d = new Date(ts);
+                var now = new Date();
+                var diff = now - d;
+                if (diff < 60000)  return 'just now';
+                if (diff < 3600000) return Math.floor(diff / 60000) + 'm ago';
+                if (diff < 86400000) return Math.floor(diff / 3600000) + 'h ago';
+                return d.toLocaleDateString();
+            } catch(e) { return ts; }
+        }
+
+        function escHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+    </script>
+</body>
+</html>
