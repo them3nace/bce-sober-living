@@ -24,7 +24,7 @@
             background: #fff;
             border-radius: 16px;
             box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-            overflow: hidden;
+            overflow: visible;
             margin-bottom: 3rem;
         }
         .tab-nav {
@@ -32,6 +32,8 @@
             flex-wrap: wrap;
             background: linear-gradient(135deg, var(--dark-blue), var(--medium-blue));
             border-bottom: 3px solid var(--primary-blue);
+            border-radius: 16px 16px 0 0;
+            overflow: hidden;
         }
         .tab-btn {
             flex: 1 1 auto;
@@ -178,36 +180,6 @@
             border-bottom: 2px solid var(--light-blue);
         }
         .faq-item { border-bottom: 1px solid #e9ecef; }
-        .faq-question {
-            width: 100%;
-            background: none;
-            border: none;
-            padding: 1rem 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            text-align: left;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            gap: 1rem;
-        }
-        .faq-question:hover { color: var(--primary-blue); }
-        .faq-icon {
-            font-size: 1.4rem;
-            color: var(--primary-blue);
-            flex-shrink: 0;
-            transition: transform 0.2s;
-        }
-        .faq-item.open .faq-icon { transform: rotate(45deg); }
-        .faq-answer {
-            display: none;
-            padding: 0 0 1rem;
-            color: var(--text-dark);
-            line-height: 1.8;
-        }
-        .faq-item.open .faq-answer { display: block; }
         @media (max-width: 640px) {
             .tab-btn { font-size: 0.78rem; padding: 0.75rem 0.5rem; }
             .tab-panel { padding: 1.5rem 1rem; }
@@ -345,45 +317,13 @@
                         <h2>House Rules</h2>
                         <p>Our house rules exist to protect every resident's recovery and create a stable, respectful community. All residents are expected to understand and follow these guidelines from day one.</p>
 
-                        <div class="rule-block">
-                            <h4>Zero Tolerance for Substance Use</h4>
-                            <p>No alcohol, illicit drugs, or misuse of prescription medications on the premises or by any resident, at any time. A single violation results in immediate removal from the home.</p>
+                        <div id="rulesList">
+                            <p style="text-align:center;color:#888;padding:2rem;">Loading rules...</p>
                         </div>
-                        <div class="rule-block">
-                            <h4>Random Drug & Alcohol Testing</h4>
-                            <p>All residents are subject to random, unannounced drug and alcohol screening. Refusal to test is treated the same as a positive result.</p>
-                        </div>
-                        <div class="rule-block">
-                            <h4>Mandatory Recovery Participation</h4>
-                            <p>Residents must attend a minimum of three (3) recovery meetings per week (AA, NA, SMART Recovery, or equivalent) and provide verification when requested.</p>
-                        </div>
-                        <div class="rule-block">
-                            <h4>Curfew</h4>
-                            <p>Sunday–Thursday curfew is 10:00 PM. Friday–Saturday curfew is 11:00 PM. Exceptions for verified work schedules must be approved in advance by staff.</p>
-                        </div>
-                        <div class="rule-block">
-                            <h4>Employment & Financial Responsibility</h4>
-                            <p>All residents must be employed or actively seeking employment within 30 days of move-in. Rent is due on the 1st of each month. Late payments must be communicated to staff in advance.</p>
-                        </div>
-                        <div class="rule-block">
-                            <h4>Mandatory House Meetings</h4>
-                            <p>Weekly house meetings are mandatory for all residents. These meetings address house business, community issues, and collective support.</p>
-                        </div>
-                        <div class="rule-block">
-                            <h4>Chores & Shared Spaces</h4>
-                            <p>Each resident is responsible for maintaining their personal space and fulfilling a rotating chore assignment for shared areas. Kitchens, bathrooms, and common areas must be left clean after each use.</p>
-                        </div>
-                        <div class="rule-block">
-                            <h4>Guest Policy</h4>
-                            <p>Guests are permitted in common areas only between 10:00 AM and 8:00 PM. All guests must be approved in advance. Overnight guests are strictly prohibited.</p>
-                        </div>
-                        <div class="rule-block">
-                            <h4>Respect & Conduct</h4>
-                            <p>All residents and guests must be treated with dignity and respect. Harassment, intimidation, violence, or threatening behavior of any kind will result in immediate removal.</p>
-                        </div>
-                        <div class="rule-block">
-                            <h4>Honesty & Transparency</h4>
-                            <p>Residents are expected to be honest with staff at all times, including promptly reporting any relapses, crises, or concerns about other residents' safety.</p>
+
+                        <!-- Admin Update button -->
+                        <div style="text-align:center;margin:1.5rem 0 0;">
+                            <button id="rulesAdminBtn" style="background:#6c757d;color:#fff;border:none;border-radius:6px;padding:0.45rem 1.2rem;font-size:0.88rem;cursor:pointer;">🔐 Admin Update</button>
                         </div>
 
                         <div class="info-card" style="margin-top:2rem;">
@@ -539,140 +479,13 @@
                     <div class="tab-panel" id="tab-faq">
                         <h2>Frequently Asked Questions</h2>
 
-                        <div class="faq-category">
-                            <h3>Admissions & Getting Started</h3>
-                            <div class="faq-item">
-                                <button class="faq-question"><span>What are the requirements to live at BCE Sober Living?</span><span class="faq-icon">+</span></button>
-                                <div class="faq-answer">
-                                    <p>To be eligible for residency at BCE Sober Living, you must:</p>
-                                    <ul>
-                                        <li>Be committed to maintaining sobriety from alcohol and all illicit drugs</li>
-                                        <li>Complete a pre-admission interview</li>
-                                        <li>Have completed or be currently enrolled in treatment (detox, inpatient, or outpatient)</li>
-                                        <li>Be willing to participate in recovery activities (12-step meetings, therapy, etc.)</li>
-                                        <li>Agree to random drug and alcohol screening</li>
-                                        <li>Be able to maintain employment or actively seek employment</li>
-                                        <li>Respect house rules and fellow residents</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <button class="faq-question"><span>How do I apply?</span><span class="faq-icon">+</span></button>
-                                <div class="faq-answer">
-                                    <p>The application process is simple:</p>
-                                    <ol>
-                                        <li>Contact us via phone at (424) 395-6144 or through our contact form</li>
-                                        <li>Complete a brief phone screening to ensure we're a good fit</li>
-                                        <li>Schedule an in-person or virtual interview</li>
-                                        <li>Complete the application paperwork</li>
-                                        <li>Upon approval, coordinate your move-in date</li>
-                                    </ol>
-                                    <p>We strive to make the process as quick and smooth as possible, often completing it within 24-48 hours.</p>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <button class="faq-question"><span>Can I tour the facility before applying?</span><span class="faq-icon">+</span></button>
-                                <div class="faq-answer">
-                                    <p>Absolutely! We encourage prospective residents and their families to schedule a tour. Contact us to arrange a visit at a time that works for you. During the tour, you'll see our facilities, meet staff members, and have the opportunity to ask questions.</p>
-                                </div>
-                            </div>
+                        <div id="faqList">
+                            <p style="text-align:center;color:#888;padding:2rem;">Loading FAQs...</p>
                         </div>
 
-                        <div class="faq-category">
-                            <h3>Cost & Payment</h3>
-                            <div class="faq-item">
-                                <button class="faq-question"><span>How much does it cost to live at BCE Sober Living?</span><span class="faq-icon">+</span></button>
-                                <div class="faq-answer">
-                                    <p>Our pricing is competitive and reflects the quality of our facilities and services. Costs typically include:</p>
-                                    <ul>
-                                        <li>Monthly rent (contact us for current rates)</li>
-                                        <li>Security deposit (usually equal to one month's rent)</li>
-                                        <li>Utilities (included in monthly rent)</li>
-                                        <li>WiFi (included)</li>
-                                    </ul>
-                                    <p>We offer transparent pricing with no hidden fees. Contact us for detailed pricing information and payment plans.</p>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <button class="faq-question"><span>Do you accept insurance?</span><span class="faq-icon">+</span></button>
-                                <div class="faq-answer">
-                                    <p>While sober living housing is typically not covered by insurance, some insurance plans may offer benefits for transitional housing. We can provide documentation to submit to your insurance company. We recommend contacting your insurance provider to inquire about any available benefits.</p>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <button class="faq-question"><span>Are payment plans available?</span><span class="faq-icon">+</span></button>
-                                <div class="faq-answer">
-                                    <p>We understand that financial concerns can be a barrier to recovery. We work with residents to establish payment arrangements when possible. Please contact us to discuss your specific situation.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="faq-category">
-                            <h3>Living at BCE</h3>
-                            <div class="faq-item">
-                                <button class="faq-question"><span>How long can I stay?</span><span class="faq-icon">+</span></button>
-                                <div class="faq-answer">
-                                    <p>There is no set minimum or maximum length of stay. Most residents stay between 3-12 months, but everyone's recovery journey is unique. We work with each resident to determine the best timeline for their situation.</p>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <button class="faq-question"><span>Can I have visitors?</span><span class="faq-icon">+</span></button>
-                                <div class="faq-answer">
-                                    <p>Yes, visitors are allowed during designated hours and in common areas only. All visitors must be approved in advance and follow house guidelines. Overnight guests are not permitted to maintain the safety and structure of our sober living environment.</p>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <button class="faq-question"><span>What if I relapse?</span><span class="faq-icon">+</span></button>
-                                <div class="faq-answer">
-                                    <p>We understand that recovery is a journey with challenges. If a resident relapses, they must be honest and immediately inform staff. Options may include returning to a higher level of care, temporary leave with the possibility of return, or increased support and monitoring. Our priority is always the safety and well-being of all residents.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="faq-category">
-                            <h3>Support & Services</h3>
-                            <div class="faq-item">
-                                <button class="faq-question"><span>What kind of support do you provide?</span><span class="faq-icon">+</span></button>
-                                <div class="faq-answer">
-                                    <ul>
-                                        <li>24/7 staff availability for emergencies</li>
-                                        <li>Regular house meetings and check-ins</li>
-                                        <li>Peer support from fellow residents</li>
-                                        <li>Connections to local recovery resources</li>
-                                        <li>Employment assistance and job search support</li>
-                                        <li>Life skills development</li>
-                                        <li>Referrals to therapists, counselors, and medical providers</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <button class="faq-question"><span>Do you provide transportation?</span><span class="faq-icon">+</span></button>
-                                <div class="faq-answer">
-                                    <p>Residents are expected to arrange their own transportation. However, we're located near public transportation and can provide information about local transit options.</p>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <button class="faq-question"><span>Are meals provided?</span><span class="faq-icon">+</span></button>
-                                <div class="faq-answer">
-                                    <p>Residents are responsible for their own meals. Our fully equipped kitchens allow residents to prepare their own food, which is an important part of developing independent living skills.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="faq-category">
-                            <h3>Location & Accessibility</h3>
-                            <div class="faq-item">
-                                <button class="faq-question"><span>Where is BCE Sober Living located?</span><span class="faq-icon">+</span></button>
-                                <div class="faq-answer">
-                                    <p>We're located in Frederick, Maryland, offering access to multiple recovery meetings, quality healthcare, employment opportunities, and public transportation.</p>
-                                </div>
-                            </div>
-                            <div class="faq-item">
-                                <button class="faq-question"><span>Is the location accessible by public transportation?</span><span class="faq-icon">+</span></button>
-                                <div class="faq-answer">
-                                    <p>Yes, our location is accessible via Frederick's public bus system. We can provide route and schedule information during your tour or interview.</p>
-                                </div>
-                            </div>
+                        <!-- Admin Update button -->
+                        <div style="text-align:center;margin:1.5rem 0 0;">
+                            <button id="faqAdminBtn" style="background:#6c757d;color:#fff;border:none;border-radius:6px;padding:0.45rem 1.2rem;font-size:0.88rem;cursor:pointer;">🔐 Admin Update</button>
                         </div>
 
                         <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%); padding: 2rem; border-radius: 15px; margin-top: 2rem; text-align: center; border-left: 4px solid var(--primary-blue);">
@@ -727,22 +540,526 @@
             });
         });
 
-        // FAQ accordion
-        document.querySelectorAll('.faq-question').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const item = btn.parentElement;
-                const isOpen = item.classList.contains('open');
-                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-                if (!isOpen) item.classList.add('open');
-            });
-        });
-
         // Open tab from URL hash (e.g. info.html#faq)
         const hash = window.location.hash.replace('#', '');
         if (hash) {
             const target = document.querySelector(`[data-tab="${hash}"]`);
             if (target) target.click();
         }
+    </script>
+
+    <!-- House Rules Admin Modal -->
+    <div id="rulesAdminModal" class="admin-modal">
+        <div class="admin-modal-content" style="max-width:700px;">
+            <button id="rulesAdminClose" class="admin-close">&#x2715;</button>
+            <div id="rulesAdminLogin">
+                <h3>Admin Login</h3>
+                <div class="form-group">
+                    <label for="rulesAdminPw">Password</label>
+                    <input type="password" id="rulesAdminPw" placeholder="Enter admin password" />
+                </div>
+                <button id="rulesAdminLoginBtn" class="btn btn-primary">Login</button>
+                <p id="rulesAdminErr" style="color:#dc3545;margin-top:0.5rem;font-size:0.9rem;"></p>
+            </div>
+            <div id="rulesAdminPanel" style="display:none;">
+                <h3 style="margin-bottom:1.25rem;">Manage House Rules</h3>
+                <div id="rulesAdminList"></div>
+                <hr style="margin:1.5rem 0;">
+                <h4 style="color:var(--dark-blue);margin-bottom:1rem;">Add New Rule</h4>
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="newRuleTitle" placeholder="Rule title" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" />
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <textarea id="newRuleContent" rows="3" placeholder="Rule description" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;resize:vertical;"></textarea>
+                </div>
+                <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+                    <button id="rulesAddBtn" class="btn btn-primary">Add Rule</button>
+                    <span id="rulesAddStatus" style="font-size:0.88rem;color:green;"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var DEFAULT_RULES = [
+            { id:'r1',  order:1,  title:'Zero Tolerance for Substance Use',       content:'No alcohol, illicit drugs, or misuse of prescription medications on the premises or by any resident, at any time. A single violation results in immediate removal from the home.' },
+            { id:'r2',  order:2,  title:'Random Drug & Alcohol Testing',           content:'All residents are subject to random, unannounced drug and alcohol screening. Refusal to test is treated the same as a positive result.' },
+            { id:'r3',  order:3,  title:'Mandatory Recovery Participation',        content:'Residents must attend a minimum of three (3) recovery meetings per week (AA, NA, SMART Recovery, or equivalent) and provide verification when requested.' },
+            { id:'r4',  order:4,  title:'Curfew',                                  content:'Sunday–Thursday curfew is 10:00 PM. Friday–Saturday curfew is 11:00 PM. Exceptions for verified work schedules must be approved in advance by staff.' },
+            { id:'r5',  order:5,  title:'Employment & Financial Responsibility',   content:'All residents must be employed or actively seeking employment within 30 days of move-in. Rent is due on the 1st of each month. Late payments must be communicated to staff in advance.' },
+            { id:'r6',  order:6,  title:'Mandatory House Meetings',                content:'Weekly house meetings are mandatory for all residents. These meetings address house business, community issues, and collective support.' },
+            { id:'r7',  order:7,  title:'Chores & Shared Spaces',                  content:'Each resident is responsible for maintaining their personal space and fulfilling a rotating chore assignment for shared areas. Kitchens, bathrooms, and common areas must be left clean after each use.' },
+            { id:'r8',  order:8,  title:'Guest Policy',                            content:'Guests are permitted in common areas only between 10:00 AM and 8:00 PM. All guests must be approved in advance. Overnight guests are strictly prohibited.' },
+            { id:'r9',  order:9,  title:'Respect & Conduct',                       content:'All residents and guests must be treated with dignity and respect. Harassment, intimidation, violence, or threatening behavior of any kind will result in immediate removal.' },
+            { id:'r10', order:10, title:'Honesty & Transparency',                  content:'Residents are expected to be honest with staff at all times, including promptly reporting any relapses, crises, or concerns about other residents\' safety.' }
+        ];
+
+        var currentRules = [];
+        var rulesToken = '';
+
+        function esc(s) {
+            return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        function renderRules(rules) {
+            var list = document.getElementById('rulesList');
+            if (!rules || !rules.length) { list.innerHTML = '<p style="color:#888;text-align:center;padding:2rem;">No rules available.</p>'; return; }
+            list.innerHTML = rules.map(function(r) {
+                return '<div class="rule-block" data-rid="' + esc(r.id) + '">' +
+                    '<h4>' + esc(r.title) + '</h4>' +
+                    '<p style="white-space:pre-line;">' + esc(r.content) + '</p>' +
+                '</div>';
+            }).join('');
+        }
+
+        function loadRules() {
+            return fetch('/api/house-rules')
+                .then(function(r) { return r.ok ? r.json() : []; })
+                .then(function(rules) {
+                    currentRules = rules && rules.length ? rules : DEFAULT_RULES;
+                    renderRules(currentRules);
+                    return currentRules;
+                })
+                .catch(function() { renderRules(DEFAULT_RULES); return DEFAULT_RULES; });
+        }
+
+        loadRules();
+
+        var modal = document.getElementById('rulesAdminModal');
+        var btn   = document.getElementById('rulesAdminBtn');
+        if (!modal || !btn) return;
+
+        btn.addEventListener('click', function() { modal.classList.add('open'); });
+        document.getElementById('rulesAdminClose').addEventListener('click', function() { modal.classList.remove('open'); });
+        modal.addEventListener('click', function(e) { if (e.target === modal) modal.classList.remove('open'); });
+
+        async function hashPw(pw) {
+            var d = new TextEncoder().encode(pw + 'bce_salt_2025');
+            var h = await crypto.subtle.digest('SHA-256', d);
+            return Array.from(new Uint8Array(h)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
+        }
+
+        document.getElementById('rulesAdminLoginBtn').addEventListener('click', async function() {
+            var pw = document.getElementById('rulesAdminPw').value;
+            var hashed  = await hashPw(pw);
+            var correct = await hashPw('admin123');
+            if (hashed === correct) {
+                rulesToken = hashed;
+                document.getElementById('rulesAdminLogin').style.display = 'none';
+                document.getElementById('rulesAdminPanel').style.display  = 'block';
+                renderAdminRules(currentRules.length ? currentRules : DEFAULT_RULES);
+            } else {
+                document.getElementById('rulesAdminErr').textContent = 'Incorrect password';
+            }
+        });
+
+        function renderAdminRules(rules) {
+            var list = document.getElementById('rulesAdminList');
+            if (!rules || !rules.length) { list.innerHTML = '<p>No rules yet.</p>'; return; }
+            list.innerHTML = rules.map(function(r) {
+                var isDefault = String(r.id).startsWith('r') && isNaN(String(r.id).replace('r','').charAt(0) === '' ? 'x' : String(r.id).replace('r',''));
+                // simpler: default ids are r1..r10
+                isDefault = /^r\d+$/.test(String(r.id));
+                return '<div class="admin-item" style="border-bottom:1px solid #eee;padding:0.75rem 0;">' +
+                    '<div style="display:flex;align-items:flex-start;gap:0.75rem;flex-wrap:wrap;">' +
+                        '<div style="flex:1;min-width:200px;">' +
+                            '<div style="font-weight:700;color:var(--dark-blue);font-size:0.93rem;">' + esc(r.title) + '</div>' +
+                            '<div style="font-size:0.82rem;color:#666;margin-top:2px;">' + esc((r.content||'').substring(0,80)) + ((r.content||'').length>80?'…':'') + '</div>' +
+                        '</div>' +
+                        '<div style="display:flex;gap:6px;flex-shrink:0;">' +
+                            '<button class="rule-edit-btn" data-id="' + esc(r.id) + '" style="background:#0056b3;color:#fff;border:none;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:0.82rem;">Edit</button>' +
+                            '<button class="rule-del-btn" data-id="' + esc(r.id) + '" data-isdefault="' + isDefault + '" data-title="' + esc(r.title||'') + '" data-content="' + esc(r.content||'') + '" data-order="' + (r.order||999) + '" style="background:#dc3545;color:#fff;border:none;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:0.82rem;">Delete</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div id="redit_' + esc(r.id) + '" style="display:none;margin-top:0.75rem;background:#f8f9fa;padding:1rem;border-radius:8px;">' +
+                        '<div class="form-group" style="margin-bottom:0.6rem;">' +
+                            '<label style="font-size:0.82rem;font-weight:600;">Title</label>' +
+                            '<input type="text" class="re-title" value="' + esc(r.title||'') + '" style="width:100%;padding:6px;border:1px solid #ccc;border-radius:4px;" />' +
+                        '</div>' +
+                        '<div class="form-group" style="margin-bottom:0.6rem;">' +
+                            '<label style="font-size:0.82rem;font-weight:600;">Content</label>' +
+                            '<textarea class="re-content" rows="3" style="width:100%;padding:6px;border:1px solid #ccc;border-radius:4px;resize:vertical;">' + esc(r.content||'') + '</textarea>' +
+                        '</div>' +
+                        '<div style="display:flex;gap:6px;align-items:center;">' +
+                            '<button class="rule-save-btn" data-id="' + esc(r.id) + '" data-isdefault="' + isDefault + '" data-order="' + (r.order||999) + '" style="background:#007bff;color:#fff;border:none;border-radius:4px;padding:5px 12px;cursor:pointer;">Save</button>' +
+                            '<button class="rule-cancel-btn" data-id="' + esc(r.id) + '" style="background:#6c757d;color:#fff;border:none;border-radius:4px;padding:5px 12px;cursor:pointer;">Cancel</button>' +
+                            '<span class="re-status" style="font-size:0.82rem;color:green;"></span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+            list.querySelectorAll('.rule-edit-btn').forEach(function(b) {
+                b.addEventListener('click', function() {
+                    var f = document.getElementById('redit_' + this.dataset.id);
+                    f.style.display = f.style.display === 'none' ? 'block' : 'none';
+                });
+            });
+            list.querySelectorAll('.rule-cancel-btn').forEach(function(b) {
+                b.addEventListener('click', function() {
+                    document.getElementById('redit_' + this.dataset.id).style.display = 'none';
+                });
+            });
+
+            list.querySelectorAll('.rule-save-btn').forEach(function(b) {
+                b.addEventListener('click', async function() {
+                    var id = this.dataset.id;
+                    var isDefault = this.dataset.isdefault === 'true';
+                    var order = parseInt(this.dataset.order) || 999;
+                    var f = document.getElementById('redit_' + id);
+                    var payload = {
+                        title:   f.querySelector('.re-title').value.trim(),
+                        content: f.querySelector('.re-content').value.trim()
+                    };
+                    var status = f.querySelector('.re-status');
+                    status.style.color = '#888'; status.textContent = 'Saving...';
+                    try {
+                        var method = isDefault ? 'POST' : 'PUT';
+                        var endpoint = isDefault ? '/api/admin/house-rules' : '/api/admin/house-rules/' + id;
+                        if (isDefault) payload.order = order;
+                        var r = await fetch(endpoint, {
+                            method: method,
+                            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + rulesToken },
+                            body: JSON.stringify(payload)
+                        });
+                        if (!r.ok) throw new Error();
+                        status.style.color = 'green'; status.textContent = 'Saved!';
+                        var updated = await loadRules();
+                        setTimeout(function() { renderAdminRules(updated); }, 600);
+                    } catch (e) {
+                        status.style.color = '#dc3545'; status.textContent = 'Error!';
+                    }
+                });
+            });
+
+            list.querySelectorAll('.rule-del-btn').forEach(function(b) {
+                b.addEventListener('click', async function() {
+                    if (!confirm('Delete this rule?')) return;
+                    var id = this.dataset.id;
+                    var isDefault = this.dataset.isdefault === 'true';
+                    try {
+                        if (isDefault) {
+                            // Default rules don't exist in KV yet — POST to create, then DELETE
+                            var order = parseInt(this.dataset.order) || 999;
+                            var res = await fetch('/api/admin/house-rules', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + rulesToken },
+                                body: JSON.stringify({ title: this.dataset.title, content: this.dataset.content, order: order })
+                            });
+                            if (res.ok) {
+                                var data = await res.json();
+                                id = data.rule ? data.rule.id : data.id;
+                            }
+                        }
+                        await fetch('/api/admin/house-rules/' + id, {
+                            method: 'DELETE',
+                            headers: { 'Authorization': 'Bearer ' + rulesToken }
+                        });
+                    } catch (e) {}
+                    var updated = await loadRules();
+                    renderAdminRules(updated);
+                });
+            });
+        }
+
+        document.getElementById('rulesAddBtn').addEventListener('click', async function() {
+            var title   = document.getElementById('newRuleTitle').value.trim();
+            var content = document.getElementById('newRuleContent').value.trim();
+            var status  = document.getElementById('rulesAddStatus');
+            if (!title || !content) { status.style.color='#dc3545'; status.textContent='Title and content are required.'; return; }
+            status.style.color = '#888'; status.textContent = 'Saving...';
+            try {
+                var r = await fetch('/api/admin/house-rules', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + rulesToken },
+                    body: JSON.stringify({ title: title, content: content, order: 999 })
+                });
+                if (!r.ok) throw new Error();
+                document.getElementById('newRuleTitle').value   = '';
+                document.getElementById('newRuleContent').value = '';
+                status.style.color = 'green'; status.textContent = 'Added!';
+                var updated = await loadRules();
+                renderAdminRules(updated);
+            } catch (e) {
+                status.style.color = '#dc3545'; status.textContent = 'Error saving rule.';
+            }
+        });
+    });
+    </script>
+
+    <!-- FAQ Admin Modal -->
+    <div id="faqAdminModal" class="admin-modal">
+        <div class="admin-modal-content" style="max-width:750px;">
+            <button id="faqAdminClose" class="admin-close">&#x2715;</button>
+            <div id="faqAdminLogin">
+                <h3>Admin Login</h3>
+                <div class="form-group">
+                    <label for="faqAdminPw">Password</label>
+                    <input type="password" id="faqAdminPw" placeholder="Enter admin password" />
+                </div>
+                <button id="faqAdminLoginBtn" class="btn btn-primary">Login</button>
+                <p id="faqAdminErr" style="color:#dc3545;margin-top:0.5rem;font-size:0.9rem;"></p>
+            </div>
+            <div id="faqAdminPanel" style="display:none;">
+                <h3 style="margin-bottom:1.25rem;">Manage FAQs</h3>
+                <div id="faqAdminList"></div>
+                <hr style="margin:1.5rem 0;">
+                <h4 style="color:var(--dark-blue);margin-bottom:1rem;">Add New FAQ</h4>
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" id="newFaqCat" placeholder="e.g. Admissions & Getting Started" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" />
+                </div>
+                <div class="form-group">
+                    <label>Question</label>
+                    <input type="text" id="newFaqQ" placeholder="Question text" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" />
+                </div>
+                <div class="form-group">
+                    <label>Answer</label>
+                    <textarea id="newFaqA" rows="4" placeholder="Answer text (use new lines for bullet points)" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;resize:vertical;"></textarea>
+                </div>
+                <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+                    <button id="faqAddBtn" class="btn btn-primary">Add FAQ</button>
+                    <span id="faqAddStatus" style="font-size:0.88rem;color:green;"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var DEFAULT_FAQS = [
+            { id:'d1',  category:'Admissions & Getting Started', order:1,  question:'What are the requirements to live at BCE Sober Living?', answer:'To be eligible, you must:\n• Be committed to maintaining sobriety from alcohol and all illicit drugs\n• Complete a pre-admission interview\n• Have completed or be currently enrolled in treatment (detox, inpatient, or outpatient)\n• Be willing to participate in recovery activities (12-step meetings, therapy, etc.)\n• Agree to random drug and alcohol screening\n• Be able to maintain employment or actively seek employment\n• Respect house rules and fellow residents' },
+            { id:'d2',  category:'Admissions & Getting Started', order:2,  question:'How do I apply?', answer:'The application process is simple:\n1. Contact us via phone at (424) 395-6144 or through our contact form\n2. Complete a brief phone screening\n3. Schedule an in-person or virtual interview\n4. Complete the application paperwork\n5. Upon approval, coordinate your move-in date\n\nWe strive to complete the process within 24-48 hours.' },
+            { id:'d3',  category:'Admissions & Getting Started', order:3,  question:'Can I tour the facility before applying?', answer:"Absolutely! We encourage prospective residents and their families to schedule a tour. Contact us to arrange a visit at a time that works for you. During the tour, you'll see our facilities, meet staff members, and have the opportunity to ask questions." },
+            { id:'d4',  category:'Cost & Payment',               order:4,  question:'How much does it cost to live at BCE Sober Living?', answer:"Our pricing reflects the quality of our facilities. Costs include:\n• Monthly rent (contact us for current rates)\n• Security deposit (usually one month's rent)\n• Utilities (included)\n• WiFi (included)\n\nWe offer transparent pricing with no hidden fees." },
+            { id:'d5',  category:'Cost & Payment',               order:5,  question:'Do you accept insurance?', answer:"While sober living housing is typically not covered by insurance, some plans may offer benefits for transitional housing. We can provide documentation to submit to your insurance company. Contact your provider to inquire about available benefits." },
+            { id:'d6',  category:'Cost & Payment',               order:6,  question:'Are payment plans available?', answer:'We understand financial concerns can be a barrier to recovery. We work with residents to establish payment arrangements when possible. Please contact us to discuss your specific situation.' },
+            { id:'d7',  category:'Living at BCE',                order:7,  question:'How long can I stay?', answer:"There is no set minimum or maximum length of stay. Most residents stay between 3–12 months, but everyone's recovery journey is unique. We work with each resident to determine the best timeline." },
+            { id:'d8',  category:'Living at BCE',                order:8,  question:'Can I have visitors?', answer:'Yes, visitors are allowed during designated hours in common areas only. All visitors must be approved in advance and follow house guidelines. Overnight guests are not permitted.' },
+            { id:'d9',  category:'Living at BCE',                order:9,  question:'What if I relapse?', answer:'We understand recovery is a journey. If a resident relapses, they must be honest and inform staff immediately. Options may include returning to a higher level of care, temporary leave, or increased support. Our priority is always the safety and well-being of all residents.' },
+            { id:'d10', category:'Support & Services',           order:10, question:'What kind of support do you provide?', answer:'• 24/7 staff availability for emergencies\n• Regular house meetings and check-ins\n• Peer support from fellow residents\n• Connections to local recovery resources\n• Employment assistance and job search support\n• Life skills development\n• Referrals to therapists, counselors, and medical providers' },
+            { id:'d11', category:'Support & Services',           order:11, question:'Do you provide transportation?', answer:"Residents are expected to arrange their own transportation. We're located near public transportation and can provide information about local transit options." },
+            { id:'d12', category:'Support & Services',           order:12, question:'Are meals provided?', answer:'Residents are responsible for their own meals. Our fully equipped kitchens allow residents to prepare their own food, which supports independent living skills.' },
+            { id:'d13', category:'Location & Accessibility',     order:13, question:'Where is BCE Sober Living located?', answer:"We're located in Frederick, Maryland, offering access to multiple recovery meetings, quality healthcare, employment opportunities, and public transportation." },
+            { id:'d14', category:'Location & Accessibility',     order:14, question:'Is the location accessible by public transportation?', answer:"Yes, our location is accessible via Frederick's public bus system. We can provide route and schedule information during your tour or interview." }
+        ];
+
+        var currentFAQs = [];
+        var faqToken = '';
+
+        function esc(s) {
+            return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+        function ansHtml(s) { return esc(s).replace(/\n/g,'<br>'); }
+
+        function bindAccordion(container) {
+            container.querySelectorAll('.faq-question').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var item = btn.closest('.faq-item');
+                    var isOpen = item.classList.contains('active');
+                    container.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('active'); });
+                    if (!isOpen) item.classList.add('active');
+                });
+            });
+        }
+
+        function renderFAQs(faqs) {
+            var list = document.getElementById('faqList');
+            if (!faqs || !faqs.length) { list.innerHTML = '<p style="color:#888;text-align:center;padding:2rem;">No FAQs available.</p>'; return; }
+            var cats = {};
+            faqs.forEach(function(f) {
+                var c = f.category || 'General';
+                if (!cats[c]) cats[c] = [];
+                cats[c].push(f);
+            });
+            var html = '';
+            Object.keys(cats).forEach(function(cat) {
+                html += '<div class="faq-category"><h3>' + esc(cat) + '</h3>';
+                cats[cat].forEach(function(f) {
+                    html += '<div class="faq-item" data-fid="' + esc(f.id) + '">' +
+                        '<button class="faq-question"><span>' + esc(f.question) + '</span><span class="faq-icon">+</span></button>' +
+                        '<div class="faq-answer"><p style="white-space:pre-line;">' + ansHtml(f.answer) + '</p></div>' +
+                    '</div>';
+                });
+                html += '</div>';
+            });
+            list.innerHTML = html;
+            bindAccordion(list);
+        }
+
+        function loadFAQs() {
+            return fetch('/api/faqs')
+                .then(function(r) { return r.ok ? r.json() : []; })
+                .then(function(faqs) {
+                    currentFAQs = faqs && faqs.length ? faqs : DEFAULT_FAQS;
+                    renderFAQs(currentFAQs);
+                    return currentFAQs;
+                })
+                .catch(function() { renderFAQs(DEFAULT_FAQS); return DEFAULT_FAQS; });
+        }
+
+        loadFAQs();
+
+        // Admin modal
+        var modal = document.getElementById('faqAdminModal');
+        var btn   = document.getElementById('faqAdminBtn');
+        if (!modal || !btn) return;
+
+        btn.addEventListener('click', function() { modal.classList.add('open'); });
+        document.getElementById('faqAdminClose').addEventListener('click', function() { modal.classList.remove('open'); });
+        modal.addEventListener('click', function(e) { if (e.target === modal) modal.classList.remove('open'); });
+
+        async function hashPw(pw) {
+            var d = new TextEncoder().encode(pw + 'bce_salt_2025');
+            var h = await crypto.subtle.digest('SHA-256', d);
+            return Array.from(new Uint8Array(h)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
+        }
+
+        document.getElementById('faqAdminLoginBtn').addEventListener('click', async function() {
+            var pw = document.getElementById('faqAdminPw').value;
+            var hashed  = await hashPw(pw);
+            var correct = await hashPw('admin123');
+            if (hashed === correct) {
+                faqToken = hashed;
+                document.getElementById('faqAdminLogin').style.display = 'none';
+                document.getElementById('faqAdminPanel').style.display  = 'block';
+                renderAdminList(currentFAQs.length ? currentFAQs : DEFAULT_FAQS);
+            } else {
+                document.getElementById('faqAdminErr').textContent = 'Incorrect password';
+            }
+        });
+
+        function renderAdminList(faqs) {
+            var list = document.getElementById('faqAdminList');
+            if (!faqs || !faqs.length) { list.innerHTML = '<p>No FAQs yet.</p>'; return; }
+            list.innerHTML = faqs.map(function(f) {
+                var isDefault = String(f.id).startsWith('d');
+                return '<div class="admin-item" data-fid="' + esc(f.id) + '" style="border-bottom:1px solid #eee;padding:0.75rem 0;">' +
+                    '<div style="display:flex;align-items:flex-start;gap:0.75rem;flex-wrap:wrap;">' +
+                        '<div style="flex:1;min-width:200px;">' +
+                            '<div style="font-size:0.75rem;color:var(--accent-blue);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;">' + esc(f.category||'General') + '</div>' +
+                            '<div style="font-weight:600;color:var(--dark-blue);font-size:0.93rem;">' + esc(f.question) + '</div>' +
+                            '<div style="font-size:0.82rem;color:#666;margin-top:2px;white-space:pre-line;">' + esc((f.answer||'').substring(0,80)) + ((f.answer||'').length>80?'…':'') + '</div>' +
+                        '</div>' +
+                        '<div style="display:flex;gap:6px;flex-shrink:0;">' +
+                            '<button class="faq-edit-btn" data-id="' + esc(f.id) + '" style="background:#0056b3;color:#fff;border:none;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:0.82rem;">Edit</button>' +
+                            (isDefault ? '' : '<button class="faq-del-btn" data-id="' + esc(f.id) + '" style="background:#dc3545;color:#fff;border:none;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:0.82rem;">Delete</button>') +
+                        '</div>' +
+                    '</div>' +
+                    '<div id="fedit_' + esc(f.id) + '" style="display:none;margin-top:0.75rem;background:#f8f9fa;padding:1rem;border-radius:8px;">' +
+                        '<div class="form-group" style="margin-bottom:0.6rem;">' +
+                            '<label style="font-size:0.82rem;font-weight:600;">Category</label>' +
+                            '<input type="text" class="fe-cat" value="' + esc(f.category||'') + '" style="width:100%;padding:6px;border:1px solid #ccc;border-radius:4px;" />' +
+                        '</div>' +
+                        '<div class="form-group" style="margin-bottom:0.6rem;">' +
+                            '<label style="font-size:0.82rem;font-weight:600;">Question</label>' +
+                            '<input type="text" class="fe-q" value="' + esc(f.question||'') + '" style="width:100%;padding:6px;border:1px solid #ccc;border-radius:4px;" />' +
+                        '</div>' +
+                        '<div class="form-group" style="margin-bottom:0.6rem;">' +
+                            '<label style="font-size:0.82rem;font-weight:600;">Answer</label>' +
+                            '<textarea class="fe-a" rows="4" style="width:100%;padding:6px;border:1px solid #ccc;border-radius:4px;resize:vertical;">' + esc(f.answer||'') + '</textarea>' +
+                        '</div>' +
+                        '<div style="display:flex;gap:6px;align-items:center;">' +
+                            '<button class="faq-save-btn" data-id="' + esc(f.id) + '" data-isdefault="' + isDefault + '" style="background:#007bff;color:#fff;border:none;border-radius:4px;padding:5px 12px;cursor:pointer;">Save</button>' +
+                            '<button class="faq-cancel-btn" data-id="' + esc(f.id) + '" style="background:#6c757d;color:#fff;border:none;border-radius:4px;padding:5px 12px;cursor:pointer;">Cancel</button>' +
+                            '<span class="fe-status" style="font-size:0.82rem;color:green;"></span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+            // Edit toggle
+            list.querySelectorAll('.faq-edit-btn').forEach(function(b) {
+                b.addEventListener('click', function() {
+                    var f = document.getElementById('fedit_' + this.dataset.id);
+                    f.style.display = f.style.display === 'none' ? 'block' : 'none';
+                });
+            });
+            list.querySelectorAll('.faq-cancel-btn').forEach(function(b) {
+                b.addEventListener('click', function() {
+                    document.getElementById('fedit_' + this.dataset.id).style.display = 'none';
+                });
+            });
+
+            // Save
+            list.querySelectorAll('.faq-save-btn').forEach(function(b) {
+                b.addEventListener('click', async function() {
+                    var id = this.dataset.id;
+                    var isDefault = this.dataset.isdefault === 'true';
+                    var f = document.getElementById('fedit_' + id);
+                    var payload = {
+                        category: f.querySelector('.fe-cat').value.trim(),
+                        question: f.querySelector('.fe-q').value.trim(),
+                        answer:   f.querySelector('.fe-a').value.trim()
+                    };
+                    var status = f.querySelector('.fe-status');
+                    status.style.color = '#888'; status.textContent = 'Saving...';
+                    try {
+                        var method = 'PUT';
+                        var endpoint = '/api/admin/faqs/' + id;
+                        // Default items don't exist in KV — save as new
+                        if (isDefault) { method = 'POST'; endpoint = '/api/admin/faqs'; payload.order = parseInt(id.replace('d','')) || 999; }
+                        var r = await fetch(endpoint, {
+                            method: method,
+                            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + faqToken },
+                            body: JSON.stringify(payload)
+                        });
+                        if (!r.ok) throw new Error();
+                        status.style.color = 'green'; status.textContent = 'Saved!';
+                        var updated = await loadFAQs();
+                        setTimeout(function() { renderAdminList(updated); }, 600);
+                    } catch (e) {
+                        status.style.color = '#dc3545'; status.textContent = 'Error!';
+                    }
+                });
+            });
+
+            // Delete
+            list.querySelectorAll('.faq-del-btn').forEach(function(b) {
+                b.addEventListener('click', async function() {
+                    if (!confirm('Delete this FAQ?')) return;
+                    var id = this.dataset.id;
+                    try {
+                        await fetch('/api/admin/faqs/' + id, {
+                            method: 'DELETE',
+                            headers: { 'Authorization': 'Bearer ' + faqToken }
+                        });
+                    } catch (e) {}
+                    var updated = await loadFAQs();
+                    renderAdminList(updated);
+                });
+            });
+        }
+
+        // Add new FAQ
+        document.getElementById('faqAddBtn').addEventListener('click', async function() {
+            var cat = document.getElementById('newFaqCat').value.trim();
+            var q   = document.getElementById('newFaqQ').value.trim();
+            var a   = document.getElementById('newFaqA').value.trim();
+            var status = document.getElementById('faqAddStatus');
+            if (!q || !a) { status.style.color='#dc3545'; status.textContent='Question and answer are required.'; return; }
+            status.style.color = '#888'; status.textContent = 'Saving...';
+            try {
+                var r = await fetch('/api/admin/faqs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + faqToken },
+                    body: JSON.stringify({ category: cat || 'General', question: q, answer: a, order: 999 })
+                });
+                if (!r.ok) throw new Error();
+                document.getElementById('newFaqCat').value = '';
+                document.getElementById('newFaqQ').value   = '';
+                document.getElementById('newFaqA').value   = '';
+                status.style.color = 'green'; status.textContent = 'Added!';
+                var updated = await loadFAQs();
+                renderAdminList(updated);
+            } catch (e) {
+                status.style.color = '#dc3545'; status.textContent = 'Error saving FAQ.';
+            }
+        });
+    });
     </script>
 </body>
 </html>

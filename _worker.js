@@ -983,6 +983,206 @@ export default {
     }
 
     // ============================================
+    // HOUSE RULES API
+    // ============================================
+    if (url.pathname === '/api/house-rules' && request.method === 'GET') {
+      try {
+        const keys = await env['BCE-SESSIONS'].list({ prefix: 'house_rule_' });
+        const rules = [];
+        for (const key of keys.keys) {
+          const value = await env['BCE-SESSIONS'].get(key.name);
+          if (value) rules.push(JSON.parse(value));
+        }
+        rules.sort((a, b) => (a.order || 999) - (b.order || 999) || new Date(a.timestamp) - new Date(b.timestamp));
+        return new Response(JSON.stringify(rules), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify([]), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    if (url.pathname === '/api/admin/house-rules' && request.method === 'POST') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const data = await request.json();
+        const id = Date.now().toString();
+        const rule = {
+          id,
+          title: data.title || '',
+          content: data.content || '',
+          order: data.order != null ? Number(data.order) : 999,
+          timestamp: new Date().toISOString()
+        };
+        await env['BCE-SESSIONS'].put(`house_rule_${id}`, JSON.stringify(rule));
+        return new Response(JSON.stringify({ success: true, rule }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to add rule' }), {
+          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    if (url.pathname.startsWith('/api/admin/house-rules/') && request.method === 'PUT') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const id = url.pathname.split('/').pop();
+        const data = await request.json();
+        const existing = await env['BCE-SESSIONS'].get(`house_rule_${id}`);
+        if (!existing) {
+          return new Response(JSON.stringify({ error: 'Rule not found' }), {
+            status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          });
+        }
+        const rule = JSON.parse(existing);
+        if (data.title   !== undefined) rule.title   = data.title;
+        if (data.content !== undefined) rule.content = data.content;
+        if (data.order   !== undefined) rule.order   = Number(data.order);
+        rule.editedAt = new Date().toISOString();
+        await env['BCE-SESSIONS'].put(`house_rule_${id}`, JSON.stringify(rule));
+        return new Response(JSON.stringify({ success: true, rule }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to edit rule' }), {
+          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    if (url.pathname.startsWith('/api/admin/house-rules/') && request.method === 'DELETE') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const id = url.pathname.split('/').pop();
+        await env['BCE-SESSIONS'].delete(`house_rule_${id}`);
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to delete rule' }), {
+          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // ============================================
+    // FAQ API
+    // ============================================
+    if (url.pathname === '/api/faqs' && request.method === 'GET') {
+      try {
+        const keys = await env['BCE-SESSIONS'].list({ prefix: 'faq_' });
+        const faqs = [];
+        for (const key of keys.keys) {
+          const value = await env['BCE-SESSIONS'].get(key.name);
+          if (value) faqs.push(JSON.parse(value));
+        }
+        faqs.sort((a, b) => (a.order || 999) - (b.order || 999) || new Date(a.timestamp) - new Date(b.timestamp));
+        return new Response(JSON.stringify(faqs), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify([]), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    if (url.pathname === '/api/admin/faqs' && request.method === 'POST') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const data = await request.json();
+        const id = Date.now().toString();
+        const faq = {
+          id,
+          category: data.category || 'General',
+          question: data.question || '',
+          answer: data.answer || '',
+          order: data.order != null ? Number(data.order) : 999,
+          timestamp: new Date().toISOString()
+        };
+        await env['BCE-SESSIONS'].put(`faq_${id}`, JSON.stringify(faq));
+        return new Response(JSON.stringify({ success: true, faq }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to add FAQ' }), {
+          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    if (url.pathname.startsWith('/api/admin/faqs/') && request.method === 'PUT') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const id = url.pathname.split('/').pop();
+        const data = await request.json();
+        const existing = await env['BCE-SESSIONS'].get(`faq_${id}`);
+        if (!existing) {
+          return new Response(JSON.stringify({ error: 'FAQ not found' }), {
+            status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          });
+        }
+        const faq = JSON.parse(existing);
+        if (data.category !== undefined) faq.category = data.category;
+        if (data.question !== undefined) faq.question = data.question;
+        if (data.answer   !== undefined) faq.answer   = data.answer;
+        if (data.order    !== undefined) faq.order     = Number(data.order);
+        faq.editedAt = new Date().toISOString();
+        await env['BCE-SESSIONS'].put(`faq_${id}`, JSON.stringify(faq));
+        return new Response(JSON.stringify({ success: true, faq }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to edit FAQ' }), {
+          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    if (url.pathname.startsWith('/api/admin/faqs/') && request.method === 'DELETE') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const id = url.pathname.split('/').pop();
+        await env['BCE-SESSIONS'].delete(`faq_${id}`);
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to delete FAQ' }), {
+          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // ============================================
     // FACILITY PHOTOS API
     // ============================================
     if (url.pathname === '/api/facility-photos' && request.method === 'GET') {
