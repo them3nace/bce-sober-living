@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <title>Chat Admin - BCE Sober Living</title>
     <link rel="stylesheet" href="styles.css">
     <style>
@@ -241,6 +242,46 @@
         .reply-status.success { color: #2e7d32; }
         .reply-status.error   { color: #c62828; }
 
+        /* Typing indicator (visitor is typing) */
+        .visitor-typing {
+            font-size: 0.8rem;
+            color: #888;
+            font-style: italic;
+            margin-bottom: 0.4rem;
+            min-height: 1.2em;
+        }
+
+        /* Emoji button & picker */
+        .btn-emoji-admin {
+            background: none;
+            border: 1px solid #c8d8e8;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0 8px;
+            height: 36px;
+            align-self: flex-end;
+            flex-shrink: 0;
+        }
+        .btn-emoji-admin:hover { background: #f0f4f8; }
+        .admin-emoji-picker {
+            display: none;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 8px 0 4px;
+        }
+        .admin-emoji-picker.open { display: flex; }
+        .admin-emoji-item {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 3px 5px;
+            border-radius: 4px;
+            line-height: 1;
+        }
+        .admin-emoji-item:hover { background: #f0f4f8; }
+
         /* Refresh indicator */
         .refresh-badge {
             font-size: 0.7rem;
@@ -311,10 +352,15 @@
                     <div class="thread-empty">&#128172; No conversation selected</div>
                 </div>
                 <div class="reply-box" id="replyBox" style="display:none;">
+                    <div class="visitor-typing" id="visitorTyping"></div>
                     <div class="reply-row">
                         <textarea class="reply-input" id="replyInput" placeholder="Type your reply..."></textarea>
-                        <button class="btn-send-reply" id="btnSend" onclick="sendReply()">Send</button>
+                        <div style="display:flex;flex-direction:column;gap:0.4rem;align-self:flex-end;">
+                            <button class="btn-send-reply" id="btnSend" onclick="sendReply()">Send</button>
+                            <button class="btn-emoji-admin" id="btnEmojiAdmin" type="button">😊</button>
+                        </div>
                     </div>
+                    <div class="admin-emoji-picker" id="adminEmojiPicker"></div>
                     <div class="reply-status" id="replyStatus"></div>
                 </div>
             </div>
@@ -325,6 +371,7 @@
         var adminToken = '';
         var selectedConvId = null;
         var refreshInterval = null;
+        var threadRefreshInterval = null;
 
         // ---- Auth ----
         function adminLogin() {
@@ -342,16 +389,31 @@
             // Auto-refresh conversation list every 15 seconds
             refreshInterval = setInterval(function() {
                 loadConversations(true);
-                if (selectedConvId) loadThread(selectedConvId, true);
+                updateRefreshBadge();
             }, 15000);
+            // Auto-refresh active thread every 5 seconds
+            threadRefreshInterval = setInterval(function() {
+                if (selectedConvId) loadThread(selectedConvId, true);
+            }, 5000);
         }
 
         function adminLogout() {
             adminToken = '';
             clearInterval(refreshInterval);
+            clearInterval(threadRefreshInterval);
             document.getElementById('passwordGate').style.display = 'flex';
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('adminPassword').value = '';
+        }
+
+        function updateRefreshBadge() {
+            var badge = document.getElementById('refreshBadge');
+            if (!badge) return;
+            var now = new Date();
+            var t = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            badge.textContent = 'Refreshed ' + t;
+            badge.style.background = 'rgba(100,220,100,0.3)';
+            setTimeout(function() { badge.style.background = 'rgba(255,255,255,0.2)'; }, 1000);
         }
 
         document.getElementById('adminPassword').addEventListener('keydown', function(e) {
@@ -431,7 +493,7 @@
             fetch('/api/chat/' + encodeURIComponent(convId))
             .then(function(r) { return r.json(); })
             .then(function(msgs) {
-                renderThread(Array.isArray(msgs) ? msgs : []);
+                renderThread(Array.isArray(msgs) ? msgs : [], !silent);
             })
             .catch(function() {
                 if (!silent) {
@@ -440,12 +502,15 @@
             });
         }
 
-        function renderThread(msgs) {
+        function renderThread(msgs, forceScroll) {
             var container = document.getElementById('threadMessages');
+            // Preserve scroll position: only auto-scroll if within 80px of bottom
+            var wasAtBottom = (container.scrollHeight - container.scrollTop - container.clientHeight) < 80;
             if (msgs.length === 0) {
                 container.innerHTML = '<div class="thread-empty">No messages in this conversation.</div>';
                 return;
             }
+            var prevCount = container.querySelectorAll('.msg-group').length;
             container.innerHTML = msgs.map(function(msg) {
                 var side = msg.isUser ? 'user' : 'agent';
                 var groupSide = msg.isUser ? 'user-group' : 'agent-group';
@@ -455,7 +520,9 @@
                     + '<div class="msg-meta">' + label + ' &nbsp;·&nbsp; ' + formatTime(msg.timestamp) + '</div>'
                     + '</div>';
             }).join('');
-            container.scrollTop = container.scrollHeight;
+            if (forceScroll || wasAtBottom || msgs.length !== prevCount) {
+                container.scrollTop = container.scrollHeight;
+            }
         }
 
         // ---- Reply ----
@@ -481,7 +548,7 @@
                 if (data.success) {
                     input.value = '';
                     showReplyStatus('success', 'Sent!');
-                    loadThread(selectedConvId, true);
+                    loadThread(selectedConvId, false);
                 } else {
                     showReplyStatus('error', 'Failed to send. Try again.');
                 }
@@ -507,6 +574,55 @@
                 sendReply();
             }
         });
+
+        // ---- Emoji Picker ----
+        var EMOJIS = ['😀','😊','😂','🥲','😍','🥰','😎','🙏','👍','👎','❤️','🔥','✨','🎉','💪','🤝','💯','😢','😔','🌟','🌈','🕊️','💙','💚','💛','🧡','🫶','🙌','💐','🌻'];
+        var adminEmojiPicker = document.getElementById('adminEmojiPicker');
+        var btnEmojiAdmin = document.getElementById('btnEmojiAdmin');
+        var replyInput = document.getElementById('replyInput');
+        adminEmojiPicker.innerHTML = EMOJIS.map(function(e) {
+            return '<button class="admin-emoji-item" type="button">' + e + '</button>';
+        }).join('');
+        adminEmojiPicker.querySelectorAll('.admin-emoji-item').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var pos = replyInput.selectionStart || replyInput.value.length;
+                replyInput.value = replyInput.value.slice(0, pos) + btn.textContent + replyInput.value.slice(pos);
+                replyInput.focus();
+                replyInput.selectionStart = replyInput.selectionEnd = pos + btn.textContent.length;
+                adminEmojiPicker.classList.remove('open');
+            });
+        });
+        btnEmojiAdmin.addEventListener('click', function(e) {
+            e.stopPropagation();
+            adminEmojiPicker.classList.toggle('open');
+        });
+        document.addEventListener('click', function(e) {
+            if (!adminEmojiPicker.contains(e.target) && e.target !== btnEmojiAdmin) {
+                adminEmojiPicker.classList.remove('open');
+            }
+        });
+
+        // ---- Agent typing signal ----
+        replyInput.addEventListener('input', function() {
+            if (!selectedConvId) return;
+            fetch('/api/chat/typing', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ conversationId: selectedConvId, isUser: false })
+            }).catch(function() {});
+        });
+
+        // ---- Poll visitor typing indicator (every 2s when a conv is selected) ----
+        setInterval(function() {
+            if (!selectedConvId) return;
+            fetch('/api/chat/typing/' + encodeURIComponent(selectedConvId))
+            .then(function(r) { return r.json(); })
+            .then(function(d) {
+                var el = document.getElementById('visitorTyping');
+                if (el) el.textContent = d.userTyping ? 'Visitor is typing...' : '';
+            })
+            .catch(function() {});
+        }, 2000);
 
         // ---- Helpers ----
         function formatTime(ts) {

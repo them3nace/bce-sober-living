@@ -3,8 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Housing - BCE Sober Living, L.L.C</title>
-    <meta name="description" content="Browse available housing options at BCE Sober Living. Filter by level of care, gender, and payment type.">
+    <meta name="robots" content="index, follow">
+    <title>Available Sober Living Housing Frederick MD | BCE Sober Living</title>
+    <meta name="description" content="Browse available sober living homes at BCE Sober Living in Frederick, MD. Filter by level of care, gender, and payment options. Apply today.">
+    <meta name="keywords" content="sober living homes available, recovery housing Frederick MD, transitional housing Maryland, sober house openings, men women sober living">
+    <link rel="canonical" href="https://www.bcesoberliving.com/housing.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BCE Sober Living">
+    <meta property="og:title" content="Available Sober Living Housing Frederick MD | BCE Sober Living">
+    <meta property="og:description" content="Browse available sober living homes at BCE Sober Living in Frederick, MD. Filter by level of care, gender, and payment options.">
+    <meta property="og:url" content="https://www.bcesoberliving.com/housing.html">
+    <meta property="og:image" content="https://www.bcesoberliving.com/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Available Sober Living Housing Frederick MD | BCE Sober Living">
+    <meta name="twitter:description" content="Browse available sober living homes at BCE Sober Living in Frederick, MD. Filter by level of care, gender, and payment options.">
+    <meta name="twitter:image" content="https://www.bcesoberliving.com/og-image.png">
     <link rel="stylesheet" href="styles.css">
     <style>
         .housing-page {
@@ -20,6 +33,15 @@
             top: 0;
             z-index: 100;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        @media (max-width: 768px) {
+            .filter-section {
+                top: 80px;
+                padding: 1rem 0;
+            }
+            .filter-container {
+                padding: 0 1rem;
+            }
         }
 
         .filter-container {
@@ -389,6 +411,7 @@
                 <li><a href="updates.html">BCE Updates</a></li>
                 <li><a href="comments.html">Comment Board</a></li>
                 <li><a href="networking.html">BCE Networking</a></li>
+                <li><a href="remembrance.html">In Memoriam</a></li>
                 <li><a href="contact.html">Contact Us</a></li>
             </ul>
         </div>
@@ -400,6 +423,72 @@
             <div class="hero-content">
                 <h1 class="hero-title animate-fade-in">Available Housing</h1>
                 <p class="hero-subtitle animate-fade-in-delay">Find the right fit for your recovery journey</p>
+            </div>
+        </section>
+
+        <section class="image-gallery" style="background:var(--white);padding:4rem 0 3rem;">
+            <div class="container">
+                <h2 class="section-title">Our Facilities</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item" data-gallery data-slot="exterior">
+                        <div class="image-placeholder">
+                            <svg width="100%" height="100%" viewBox="0 0 400 300">
+                                <rect width="400" height="300" fill="#1e3a5f"/>
+                                <text x="50%" y="50%" text-anchor="middle" fill="#4da6ff" font-size="20">Exterior Photo</text>
+                            </svg>
+                        </div>
+                        <p>Modern, welcoming exterior</p>
+                    </div>
+                    <div class="gallery-item" data-gallery data-slot="living_area">
+                        <div class="image-placeholder">
+                            <svg width="100%" height="100%" viewBox="0 0 400 300">
+                                <rect width="400" height="300" fill="#1e3a5f"/>
+                                <text x="50%" y="50%" text-anchor="middle" fill="#4da6ff" font-size="20">Living Area</text>
+                            </svg>
+                        </div>
+                        <p>Comfortable common spaces</p>
+                    </div>
+                    <div class="gallery-item" data-gallery data-slot="bedrooms">
+                        <div class="image-placeholder">
+                            <svg width="100%" height="100%" viewBox="0 0 400 300">
+                                <rect width="400" height="300" fill="#1e3a5f"/>
+                                <text x="50%" y="50%" text-anchor="middle" fill="#4da6ff" font-size="20">Bedroom</text>
+                            </svg>
+                        </div>
+                        <p>Private, peaceful rooms</p>
+                    </div>
+                    <div class="gallery-item" data-gallery data-slot="kitchen">
+                        <div class="image-placeholder">
+                            <svg width="100%" height="100%" viewBox="0 0 400 300">
+                                <rect width="400" height="300" fill="#1e3a5f"/>
+                                <text x="50%" y="50%" text-anchor="middle" fill="#4da6ff" font-size="20">Kitchen</text>
+                            </svg>
+                        </div>
+                        <p>Modern kitchen facilities</p>
+                    </div>
+                    <div class="gallery-item" data-gallery data-slot="meeting_room">
+                        <div class="image-placeholder">
+                            <svg width="100%" height="100%" viewBox="0 0 400 300">
+                                <rect width="400" height="300" fill="#1e3a5f"/>
+                                <text x="50%" y="50%" text-anchor="middle" fill="#4da6ff" font-size="20">Meeting Room</text>
+                            </svg>
+                        </div>
+                        <p>Group meeting space</p>
+                    </div>
+                    <div class="gallery-item" data-gallery data-slot="outdoor_space">
+                        <div class="image-placeholder">
+                            <svg width="100%" height="100%" viewBox="0 0 400 300">
+                                <rect width="400" height="300" fill="#1e3a5f"/>
+                                <text x="50%" y="50%" text-anchor="middle" fill="#4da6ff" font-size="20">Outdoor Space</text>
+                            </svg>
+                        </div>
+                        <p>Peaceful outdoor areas</p>
+                    </div>
+                </div>
+                <!-- Facilities Admin button -->
+                <div style="text-align:center;margin-top:1.5rem;">
+                    <button id="facilityAdminBtn" style="background:#6c757d;color:#fff;border:none;border-radius:6px;padding:0.45rem 1.2rem;font-size:0.88rem;cursor:pointer;">🔐 Admin Update</button>
+                </div>
             </div>
         </section>
 
@@ -518,6 +607,175 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <!-- Facility Admin Modal -->
+    <div id="facilityAdminModal" class="admin-modal">
+        <div class="admin-modal-content" style="max-width:700px;">
+            <button id="facilityAdminClose" class="admin-close">&#x2715;</button>
+            <div id="facilityAdminLogin">
+                <h3>Admin Login</h3>
+                <div class="form-group">
+                    <label for="facilityAdminPw">Password</label>
+                    <input type="password" id="facilityAdminPw" placeholder="Enter admin password" />
+                </div>
+                <button id="facilityAdminLoginBtn" class="btn btn-primary">Login</button>
+                <p id="facilityAdminErr" style="color:#dc3545;margin-top:0.5rem;font-size:0.9rem;"></p>
+            </div>
+            <div id="facilityAdminPanel" style="display:none;">
+                <h3 style="margin-bottom:1.25rem;">Manage Facility Photos</h3>
+                <div id="facilitySlotList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var SLOTS = [
+            { key: 'exterior',     label: 'Exterior' },
+            { key: 'living_area',  label: 'Living Area' },
+            { key: 'bedrooms',     label: 'Bedrooms' },
+            { key: 'kitchen',      label: 'Kitchen' },
+            { key: 'meeting_room', label: 'Meeting Room' },
+            { key: 'outdoor_space',label: 'Outdoor Space' }
+        ];
+
+        var facilityPhotos = {};
+        var facilityToken  = '';
+
+        function applyFacilityPhotos(photos) {
+            facilityPhotos = photos || {};
+            var svgTexts = { exterior:'Exterior Photo', living_area:'Living Area', bedrooms:'Bedroom', kitchen:'Kitchen', meeting_room:'Meeting Room', outdoor_space:'Outdoor Space' };
+            SLOTS.forEach(function(s) {
+                var item = document.querySelector('.gallery-item[data-slot="' + s.key + '"]');
+                if (!item) return;
+                var ph = item.querySelector('.image-placeholder');
+                var url = facilityPhotos[s.key];
+                if (url) {
+                    ph.innerHTML = '<img src="' + url + '" alt="' + s.label + '" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" />';
+                } else {
+                    ph.innerHTML = '<svg width="100%" height="100%" viewBox="0 0 400 300"><rect width="400" height="300" fill="#1e3a5f"/><text x="50%" y="50%" text-anchor="middle" fill="#4da6ff" font-size="20">' + (svgTexts[s.key]||s.label) + '</text></svg>';
+                }
+            });
+        }
+
+        fetch('/api/facility-photos')
+            .then(function(r) { return r.ok ? r.json() : {}; })
+            .then(applyFacilityPhotos)
+            .catch(function() {});
+
+        var modal = document.getElementById('facilityAdminModal');
+        var btn   = document.getElementById('facilityAdminBtn');
+        if (!modal || !btn) return;
+
+        btn.addEventListener('click', function() { modal.classList.add('open'); });
+        document.getElementById('facilityAdminClose').addEventListener('click', function() { modal.classList.remove('open'); });
+        modal.addEventListener('click', function(e) { if (e.target === modal) modal.classList.remove('open'); });
+
+        async function hashPw(pw) {
+            var d = new TextEncoder().encode(pw + 'bce_salt_2025');
+            var h = await crypto.subtle.digest('SHA-256', d);
+            return Array.from(new Uint8Array(h)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
+        }
+
+        document.getElementById('facilityAdminLoginBtn').addEventListener('click', async function() {
+            var pw = document.getElementById('facilityAdminPw').value;
+            var hashed  = await hashPw(pw);
+            var correct = await hashPw('admin123');
+            if (hashed === correct) {
+                facilityToken = hashed;
+                document.getElementById('facilityAdminLogin').style.display = 'none';
+                document.getElementById('facilityAdminPanel').style.display  = 'block';
+                renderSlotList();
+            } else {
+                document.getElementById('facilityAdminErr').textContent = 'Incorrect password';
+            }
+        });
+
+        function renderSlotList() {
+            var list = document.getElementById('facilitySlotList');
+            list.innerHTML = SLOTS.map(function(s) {
+                var hasPhoto = !!facilityPhotos[s.key];
+                return '<div style="display:flex;align-items:center;gap:1rem;padding:0.85rem 0;border-bottom:1px solid #eee;flex-wrap:wrap;">' +
+                    '<div style="min-width:120px;font-weight:600;color:var(--dark-blue);">' + s.label + '</div>' +
+                    (hasPhoto
+                        ? '<img src="' + facilityPhotos[s.key] + '" alt="' + s.label + '" style="width:80px;height:55px;object-fit:cover;border-radius:6px;border:1px solid #ccc;" />'
+                        : '<div style="width:80px;height:55px;background:#e9ecef;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:#999;">No photo</div>') +
+                    '<label style="background:#007bff;color:#fff;border-radius:4px;padding:5px 12px;cursor:pointer;font-size:0.85rem;white-space:nowrap;">' +
+                        (hasPhoto ? 'Change' : 'Upload') +
+                        '<input type="file" accept="image/*" data-slot="' + s.key + '" style="display:none;" />' +
+                    '</label>' +
+                    (hasPhoto ? '<button data-remove="' + s.key + '" style="background:#dc3545;color:#fff;border:none;border-radius:4px;padding:5px 12px;cursor:pointer;font-size:0.85rem;">Remove</button>' : '') +
+                    '<span id="fstatus_' + s.key + '" style="font-size:0.82rem;color:green;"></span>' +
+                '</div>';
+            }).join('');
+
+            list.querySelectorAll('input[type="file"]').forEach(function(input) {
+                input.addEventListener('change', async function() {
+                    var slot = this.dataset.slot;
+                    var file = this.files[0];
+                    if (!file) return;
+                    var status = document.getElementById('fstatus_' + slot);
+                    status.style.color = '#888'; status.textContent = 'Uploading...';
+                    try {
+                        // Resize/crop all photos to 800×600 (4:3) before storing
+                        var dataUrl = await new Promise(function(res, rej) {
+                            var fr = new FileReader();
+                            fr.onerror = rej;
+                            fr.onload = function() {
+                                var img = new Image();
+                                img.onerror = rej;
+                                img.onload = function() {
+                                    var TARGET_W = 800, TARGET_H = 600;
+                                    // Cover crop: scale so image fills 800×600 then center-crop
+                                    var scale = Math.max(TARGET_W / img.width, TARGET_H / img.height);
+                                    var sw = TARGET_W / scale, sh = TARGET_H / scale;
+                                    var sx = (img.width  - sw) / 2;
+                                    var sy = (img.height - sh) / 2;
+                                    var canvas = document.createElement('canvas');
+                                    canvas.width  = TARGET_W;
+                                    canvas.height = TARGET_H;
+                                    canvas.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, TARGET_W, TARGET_H);
+                                    res(canvas.toDataURL('image/jpeg', 0.88));
+                                };
+                                img.src = fr.result;
+                            };
+                            fr.readAsDataURL(file);
+                        });
+                        var r = await fetch('/api/admin/facility-photos', {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + facilityToken },
+                            body: JSON.stringify({ slot: slot, photo: dataUrl })
+                        });
+                        if (!r.ok) throw new Error();
+                        facilityPhotos[slot] = dataUrl;
+                        applyFacilityPhotos(facilityPhotos);
+                        status.style.color = 'green'; status.textContent = 'Saved!';
+                        setTimeout(function() { renderSlotList(); }, 800);
+                    } catch (e) {
+                        status.style.color = '#dc3545'; status.textContent = 'Error!';
+                    }
+                });
+            });
+
+            list.querySelectorAll('[data-remove]').forEach(function(b) {
+                b.addEventListener('click', async function() {
+                    var slot = this.dataset.remove;
+                    if (!confirm('Remove photo for ' + slot.replace(/_/g,' ') + '?')) return;
+                    try {
+                        await fetch('/api/admin/facility-photos/' + slot, {
+                            method: 'DELETE',
+                            headers: { 'Authorization': 'Bearer ' + facilityToken }
+                        });
+                        delete facilityPhotos[slot];
+                        applyFacilityPhotos(facilityPhotos);
+                        renderSlotList();
+                    } catch (e) { alert('Error removing photo'); }
+                });
+            });
+        }
+    });
+    </script>
+
     <script>
         var allHouses = [];
         var activeFilters = {};

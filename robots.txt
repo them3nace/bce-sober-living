@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin-chat.html
+
+Sitemap: https://www.bcesoberliving.com/sitemap.xml

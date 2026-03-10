@@ -874,12 +874,11 @@ body {
         background: rgba(77, 166, 255, 0.2);
     }
 
-    /* Prevent body scroll when menu open */
+    /* Prevent body scroll when menu open (top set via JS to preserve scroll position) */
     body.menu-open {
         overflow: hidden;
         position: fixed;
         width: 100%;
-        height: 100%;
     }
 
     .hero-title {
@@ -1926,8 +1925,62 @@ a:not(.btn):not(.nav-menu a):hover {
     text-align: right;
 }
 
+.chat-typing-indicator {
+    min-height: 20px;
+    padding: 2px 15px 4px;
+    font-size: 0.78rem;
+    color: #888;
+    font-style: italic;
+    background: #f8f9fa;
+}
+
+.chat-emoji-picker {
+    display: none;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding: 8px 10px;
+    background: white;
+    border-top: 1px solid #e8e8e8;
+    max-height: 130px;
+    overflow-y: auto;
+}
+
+.chat-emoji-picker.open {
+    display: flex;
+}
+
+.chat-emoji-item {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 3px 5px;
+    border-radius: 4px;
+    line-height: 1;
+}
+
+.chat-emoji-item:hover {
+    background: #f0f4f8;
+}
+
+.chat-emoji-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 6px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.chat-emoji-btn:hover {
+    background: #f0f4f8;
+}
+
 .chat-input-area {
     display: flex;
+    align-items: center;
     padding: 10px;
     background: white;
     border-top: 1px solid #e0e0e0;
@@ -1947,7 +2000,7 @@ a:not(.btn):not(.nav-menu a):hover {
     border-color: #4da6ff;
 }
 
-.chat-input-area button {
+.chat-input-area #chatSend {
     width: 45px;
     height: 45px;
     background: linear-gradient(135deg, #4da6ff 0%, #2a5298 100%);
@@ -1959,9 +2012,10 @@ a:not(.btn):not(.nav-menu a):hover {
     align-items: center;
     justify-content: center;
     transition: transform 0.2s;
+    flex-shrink: 0;
 }
 
-.chat-input-area button:hover {
+.chat-input-area #chatSend:hover {
     transform: scale(1.1);
 }
 
@@ -2258,16 +2312,16 @@ a:not(.btn):not(.nav-menu a):hover {
         bottom: 15px;
         right: 15px;
     }
-    
+
     #liveAgentBtn svg {
         width: 26px;
         height: 26px;
     }
-    
+
     #liveAgentBtn span {
         font-size: 7px;
     }
-    
+
     #chatPopup {
         bottom: 85px;
         right: 10px;
@@ -2276,30 +2330,186 @@ a:not(.btn):not(.nav-menu a):hover {
         height: calc(100vh - 120px);
         max-height: none;
     }
-    
+
     .admin-modal-content {
         padding: 1.5rem;
         width: 95%;
     }
-    
+
     .admin-tabs {
         flex-wrap: wrap;
     }
-    
+
     .admin-tab {
         flex: 1 1 45%;
         font-size: 12px;
         padding: 8px 10px;
     }
-    
+
     .admin-item {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
     }
-    
+
     .admin-item-actions {
         width: 100%;
         justify-content: flex-end;
+    }
+}
+
+/* ========================================
+   COMPREHENSIVE MOBILE COMPATIBILITY FIXES
+   ======================================== */
+
+/* --- Prevent any horizontal overflow site-wide --- */
+html, body {
+    overflow-x: hidden;
+}
+
+/* --- Nav dropdown: support 9 items on short screens --- */
+@media (max-width: 768px) {
+    .nav-menu.active {
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* --- Logo text shrinks on smaller phones --- */
+    .logo-text {
+        font-size: 1.15rem;
+    }
+
+    /* --- Comment and update headers wrap on narrow screens --- */
+    .comment-header,
+    .update-header {
+        flex-wrap: wrap;
+        gap: 0.2rem;
+    }
+
+    /* --- Disable input focus scale — causes layout jank when keyboard opens --- */
+    input:focus,
+    textarea:focus,
+    select:focus {
+        transform: none;
+    }
+
+    /* --- Ensure form containers don't overflow on narrow screens --- */
+    .form-container {
+        margin-left: 0;
+        margin-right: 0;
+        border-radius: 10px;
+    }
+
+    /* --- Prevent wide tables/grids from causing horizontal scroll --- */
+    .container {
+        overflow-x: hidden;
+    }
+
+    /* --- Admin tabs wrap on mobile --- */
+    .admin-tabs {
+        flex-wrap: wrap;
+    }
+
+    /* --- Reduce hero height further on mobile so content isn't buried --- */
+    .hero-title {
+        font-size: 1.9rem;
+        word-break: break-word;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+
+    /* --- Item action buttons stack on mobile --- */
+    .item-actions {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 400px) {
+    .logo-text {
+        font-size: 1rem;
+    }
+
+    .logo-svg {
+        width: 48px !important;
+        height: 48px !important;
+    }
+
+    .nav-container {
+        padding: 0.75rem 1rem;
+    }
+}
+
+/* --- Touch devices: disable hover transforms that don't apply to touch --- */
+@media (hover: none) {
+    .feature-card:hover,
+    .testimonial-card:hover,
+    .comment-item:hover,
+    .update-item:hover,
+    .amenity-item:hover,
+    .memorial-card:hover,
+    .card:hover,
+    .feature-box:hover {
+        transform: none;
+        box-shadow: var(--shadow);
+    }
+
+    img:hover {
+        transform: none;
+        filter: none;
+        box-shadow: none;
+    }
+
+    .nav-menu a:hover {
+        transform: none;
+    }
+
+    .btn:hover,
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .btn-light:hover {
+        transform: none;
+    }
+
+    /* Keep button active state for tap feedback */
+    .btn:active,
+    button:active {
+        transform: scale(0.97);
+    }
+}
+
+/* --- Ensure all inputs are at least 16px font so iOS doesn't auto-zoom --- */
+@media (max-width: 768px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="password"],
+    textarea,
+    select {
+        font-size: 16px;
+    }
+}
+
+/* --- Minimum tap target size for all interactive elements (WCAG 2.5.5) --- */
+@media (max-width: 768px) {
+    .btn,
+    button,
+    .nav-menu a,
+    .filter-chip,
+    .faq-question {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-menu li a {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }

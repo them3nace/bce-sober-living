@@ -3,10 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - BCE Sober Living, L.L.C</title>
-    <meta name="description" content="BCE Sober Living - Full service upscale transitional living homes in Frederick, MD. Supporting recovery through structured, compassionate care.">
-    <meta name="keywords" content="sober living, transitional housing, Frederick MD, recovery homes, addiction recovery">
+    <meta name="robots" content="index, follow">
+    <title>Sober Living Homes Frederick MD | BCE Sober Living</title>
+    <meta name="description" content="Upscale transitional sober living homes in Frederick, MD. Structured recovery support, life skills coaching, and compassionate care. Call (424) 395-6144.">
+    <meta name="keywords" content="sober living Frederick MD, transitional housing Maryland, recovery homes Frederick, addiction recovery housing, sober house Maryland, BCE Sober Living">
+    <link rel="canonical" href="https://www.bcesoberliving.com/home.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BCE Sober Living">
+    <meta property="og:title" content="Sober Living Homes Frederick MD | BCE Sober Living">
+    <meta property="og:description" content="Upscale transitional sober living homes in Frederick, MD. Structured recovery support, life skills coaching, and compassionate care.">
+    <meta property="og:url" content="https://www.bcesoberliving.com/home.html">
+    <meta property="og:image" content="https://www.bcesoberliving.com/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sober Living Homes Frederick MD | BCE Sober Living">
+    <meta name="twitter:description" content="Upscale transitional sober living homes in Frederick, MD. Structured recovery support, life skills coaching, and compassionate care.">
+    <meta name="twitter:image" content="https://www.bcesoberliving.com/og-image.png">
     <link rel="stylesheet" href="styles.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.bcesoberliving.com/#organization",
+          "name": "BCE Sober Living, L.L.C",
+          "url": "https://www.bcesoberliving.com",
+          "logo": "https://www.bcesoberliving.com/og-image.png",
+          "telephone": "+14243956144",
+          "email": "contact@bcesoberliving.com",
+          "sameAs": []
+        },
+        {
+          "@type": "LocalBusiness",
+          "@id": "https://www.bcesoberliving.com/#localbusiness",
+          "name": "BCE Sober Living",
+          "description": "Upscale transitional sober living homes in Frederick, MD providing structured recovery support, life skills coaching, and compassionate care.",
+          "url": "https://www.bcesoberliving.com",
+          "telephone": "+14243956144",
+          "priceRange": "$$",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Frederick",
+            "addressRegion": "MD",
+            "addressCountry": "US"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 39.4143,
+            "longitude": -77.4105
+          },
+          "openingHours": "Mo-Su 00:00-23:59",
+          "hasMap": "https://maps.google.com/?q=Frederick,MD",
+          "serviceArea": {
+            "@type": "GeoCircle",
+            "geoMidpoint": {
+              "@type": "GeoCoordinates",
+              "latitude": 39.4143,
+              "longitude": -77.4105
+            },
+            "geoRadius": "50000"
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 <body>
     <nav class="navbar" id="navbar">
@@ -62,6 +122,7 @@
                 <li><a href="updates.html">BCE Updates</a></li>
                 <li><a href="comments.html">Comment Board</a></li>
                 <li><a href="networking.html">BCE Networking</a></li>
+                <li><a href="remembrance.html">In Memoriam</a></li>
                 <li><a href="contact.html">Contact Us</a></li>
             </ul>
         </div>
@@ -122,37 +183,330 @@
             </div>
         </section>
 
-        <section class="testimonials-section">
+        <style>
+            #reviewsGrid { grid-template-columns: repeat(4, 1fr) !important; gap: 1.25rem !important; margin-top: 2rem !important; }
+            #reviewsGrid .testimonial-card { padding: 1.5rem 1.25rem; font-size: 0.93rem; }
+            #reviewsGrid .testimonial-card::before { font-size: 5rem; top: -15px; }
+            #reviewsGrid .testimonial-text { font-size: 0.88rem; line-height: 1.6; }
+            @media (max-width: 1100px) { #reviewsGrid { grid-template-columns: repeat(2, 1fr) !important; } }
+            @media (max-width: 600px)  { #reviewsGrid { grid-template-columns: 1fr !important; } }
+            .star-opt { color:#ccc; transition:color 0.15s; line-height:1; }
+            .star-opt.active { color:#f5a623; }
+            .review-stars { color:#f5a623; letter-spacing:1px; font-size:1.05rem; margin-bottom:0.5rem; }
+        </style>
+
+        <section class="testimonials-section" id="reviewsSection">
             <div class="container">
                 <h2 class="section-title">What Our Residents Say</h2>
-                <div class="testimonials-grid">
+
+                <!-- Average rating bar -->
+                <div id="reviewsAvgBar" style="text-align:center;margin-bottom:2rem;display:none;">
+                    <div style="font-size:2.2rem;color:#f5a623;letter-spacing:2px;" id="reviewsAvgStars"></div>
+                    <div style="font-size:1.05rem;color:var(--text-dark);margin-top:0.35rem;" id="reviewsAvgText"></div>
+                </div>
+
+                <!-- 4x4 reviews grid -->
+                <div class="testimonials-grid" id="reviewsGrid">
                     <div class="testimonial-card">
                         <div class="stars">★★★★★</div>
-                        <p class="testimonial-text">"BCE provided the structure and support I desperately needed. The staff genuinely cares, and the facility is top-notch. Six months sober and thriving!"</p>
-                        <div class="testimonial-author">
-                            <strong>Michael R.</strong>
-                            <span>Former Resident</span>
-                        </div>
+                        <p class="testimonial-text">"BCE provided the structure and support I desperately needed. The staff genuinely cares. Six months sober and thriving!"</p>
+                        <div class="testimonial-author"><strong>Michael R.</strong><span>Former Resident</span></div>
                     </div>
                     <div class="testimonial-card">
                         <div class="stars">★★★★★</div>
-                        <p class="testimonial-text">"The quality here sets a new standard. Clean, professional, and compassionate. I found not just housing, but a community that helped me rebuild my life."</p>
-                        <div class="testimonial-author">
-                            <strong>Jennifer K.</strong>
-                            <span>Former Resident</span>
-                        </div>
+                        <p class="testimonial-text">"Clean, professional, and compassionate. I found not just housing, but a community that helped me rebuild my life."</p>
+                        <div class="testimonial-author"><strong>Jennifer K.</strong><span>Former Resident</span></div>
                     </div>
                     <div class="testimonial-card">
                         <div class="stars">★★★★★</div>
-                        <p class="testimonial-text">"After trying other sober living homes, BCE was a breath of fresh air. Professional management, accountability without judgment, and real results."</p>
-                        <div class="testimonial-author">
-                            <strong>David M.</strong>
-                            <span>Former Resident</span>
-                        </div>
+                        <p class="testimonial-text">"BCE was a breath of fresh air. Professional management, accountability without judgment, and real results."</p>
+                        <div class="testimonial-author"><strong>David M.</strong><span>Former Resident</span></div>
                     </div>
                 </div>
+
+                <!-- Leave a review form -->
+                <div style="max-width:600px;margin:3.5rem auto 0;background:#fff;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,0.09);padding:2rem 2rem 1.75rem;border-top:4px solid var(--primary-blue);">
+                    <h3 style="color:var(--dark-blue);margin-bottom:0.4rem;font-size:1.35rem;">Leave Us a Review</h3>
+                    <p style="color:var(--text-light);font-size:0.92rem;margin-bottom:1.5rem;">Your kind or helpful words make a difference. Thank you!</p>
+
+                    <div id="reviewSuccess" style="display:none;background:#e8f5e9;border:1px solid #a5d6a7;color:#2e7d32;padding:1rem 1.25rem;border-radius:8px;margin-bottom:1.25rem;text-align:center;">
+                        Thank you for your review! It means the world to us.
+                    </div>
+
+                    <form id="reviewForm">
+                        <div class="form-group">
+                            <label for="reviewName">Your Name *</label>
+                            <input type="text" id="reviewName" required placeholder="e.g. Michael R." maxlength="80">
+                        </div>
+                        <div class="form-group">
+                            <label>Rating *</label>
+                            <div id="starPicker" style="display:flex;gap:6px;font-size:2rem;cursor:pointer;user-select:none;" role="group" aria-label="Star rating">
+                                <span class="star-opt" data-val="1">☆</span>
+                                <span class="star-opt" data-val="2">☆</span>
+                                <span class="star-opt" data-val="3">☆</span>
+                                <span class="star-opt" data-val="4">☆</span>
+                                <span class="star-opt" data-val="5">☆</span>
+                            </div>
+                            <input type="hidden" id="reviewStars" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="reviewType">I am a *</label>
+                            <select id="reviewType" required>
+                                <option value="">— Select —</option>
+                                <option value="Current Resident">Current Resident</option>
+                                <option value="Former Resident">Former Resident</option>
+                                <option value="Community Member">Community Member</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reviewComment">Your Review *</label>
+                            <textarea id="reviewComment" required rows="4" maxlength="1000" placeholder="Share your experience with BCE Sober Living..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="reviewSubmitBtn" style="width:100%;">Submit Review</button>
+                    </form>
+                </div>
+
+                <!-- Admin Update box -->
+                <div style="max-width:600px;margin:1.5rem auto 0;text-align:center;">
+                    <button id="reviewAdminBtn" style="background:#6c757d;color:#fff;border:none;border-radius:6px;padding:0.45rem 1.2rem;font-size:0.88rem;cursor:pointer;">🔐 Admin Update</button>
+                </div>
+
             </div>
         </section>
+
+        <!-- Reviews Admin Modal -->
+        <div id="reviewAdminModal" class="admin-modal">
+            <div class="admin-modal-content">
+                <button id="reviewAdminClose" class="admin-close">&#x2715;</button>
+                <div id="reviewAdminLogin">
+                    <h3>Admin Login</h3>
+                    <div class="form-group">
+                        <label for="reviewAdminPw">Password</label>
+                        <input type="password" id="reviewAdminPw" placeholder="Enter admin password" />
+                    </div>
+                    <button id="reviewAdminLoginBtn" class="btn btn-primary">Login</button>
+                    <p id="reviewAdminErr" style="color:#dc3545;margin-top:0.5rem;font-size:0.9rem;"></p>
+                </div>
+                <div id="reviewAdminPanel" style="display:none;">
+                    <h3>Manage Reviews</h3>
+                    <div id="reviewAdminList">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var grid       = document.getElementById('reviewsGrid');
+            var avgBar     = document.getElementById('reviewsAvgBar');
+            var avgStars   = document.getElementById('reviewsAvgStars');
+            var avgText    = document.getElementById('reviewsAvgText');
+            var starsInput = document.getElementById('reviewStars');
+            var selVal     = 0;
+            var allReviews = [];
+
+            // Star picker
+            var starOpts = document.querySelectorAll('#starPicker .star-opt');
+            starOpts.forEach(function(s) {
+                s.addEventListener('mouseenter', function() { hilite(+this.dataset.val); });
+                s.addEventListener('mouseleave', function() { hilite(selVal); });
+                s.addEventListener('click', function() { selVal = +this.dataset.val; starsInput.value = selVal; hilite(selVal); });
+            });
+            function hilite(n) {
+                starOpts.forEach(function(s) {
+                    s.textContent = +s.dataset.val <= n ? '★' : '☆';
+                    s.classList.toggle('active', +s.dataset.val <= n);
+                });
+            }
+
+            function starsHtml(n) { return '★'.repeat(n) + '☆'.repeat(5 - n); }
+            function esc(s) {
+                if (!s) return '';
+                return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            }
+
+            function renderAvg(reviews) {
+                if (!reviews.length) return;
+                var total = reviews.reduce(function(s, r) { return s + (r.stars || 5); }, 0);
+                var avg   = (total / reviews.length).toFixed(1);
+                var full  = Math.floor(avg), half = (avg - full) >= 0.5;
+                avgStars.textContent = '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - (half ? 1 : 0));
+                avgText.innerHTML = '<strong>' + avg + ' / 5</strong> &nbsp;·&nbsp; ' + reviews.length + ' review' + (reviews.length !== 1 ? 's' : '');
+                avgBar.style.display = 'block';
+            }
+
+            function renderGrid(reviews) {
+                if (!reviews.length) return;
+                var recent = reviews.slice(0, 8);
+                grid.innerHTML = recent.map(function(rv) {
+                    return '<div class="testimonial-card">' +
+                        '<div class="review-stars">' + starsHtml(rv.stars || 5) + '</div>' +
+                        '<p class="testimonial-text">&ldquo;' + esc(rv.comment) + '&rdquo;</p>' +
+                        '<div class="testimonial-author"><strong>' + esc(rv.name) + '</strong><span>' + esc(rv.type) + '</span></div>' +
+                    '</div>';
+                }).join('');
+            }
+
+            function loadReviews() {
+                return fetch('/api/reviews')
+                    .then(function(r) { return r.ok ? r.json() : []; })
+                    .then(function(reviews) {
+                        allReviews = reviews || [];
+                        renderAvg(allReviews);
+                        renderGrid(allReviews);
+                        return allReviews;
+                    })
+                    .catch(function() { return []; });
+            }
+
+            loadReviews();
+
+            // Submit form
+            document.getElementById('reviewForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                if (+starsInput.value < 1) { alert('Please select a star rating.'); return; }
+                var type = document.getElementById('reviewType').value;
+                if (!type) { alert('Please select your role.'); return; }
+                var btn = document.getElementById('reviewSubmitBtn');
+                btn.disabled = true; btn.textContent = 'Submitting...';
+                try {
+                    var r = await fetch('/api/reviews', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name:    document.getElementById('reviewName').value.trim(),
+                            comment: document.getElementById('reviewComment').value.trim(),
+                            stars:   +starsInput.value,
+                            type:    type
+                        })
+                    });
+                    if (!r.ok) throw new Error();
+                    document.getElementById('reviewSuccess').style.display = 'block';
+                    document.getElementById('reviewForm').reset();
+                    selVal = 0; hilite(0); starsInput.value = 0;
+                    loadReviews();
+                } catch (err) {
+                    alert('Could not submit. Please try again.');
+                } finally {
+                    btn.disabled = false; btn.textContent = 'Submit Review';
+                }
+            });
+
+            // ---- Admin panel ----
+            var adminModal = document.getElementById('reviewAdminModal');
+            var adminLogin = document.getElementById('reviewAdminLogin');
+            var adminPanel = document.getElementById('reviewAdminPanel');
+            var adminToken = '';
+
+            document.getElementById('reviewAdminBtn').addEventListener('click', function() { adminModal.classList.add('open'); });
+            document.getElementById('reviewAdminClose').addEventListener('click', function() { adminModal.classList.remove('open'); });
+            adminModal.addEventListener('click', function(e) { if (e.target === adminModal) adminModal.classList.remove('open'); });
+
+            async function hashPw(pw) {
+                var d = new TextEncoder().encode(pw + 'bce_salt_2025');
+                var h = await crypto.subtle.digest('SHA-256', d);
+                return Array.from(new Uint8Array(h)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
+            }
+
+            document.getElementById('reviewAdminLoginBtn').addEventListener('click', async function() {
+                var pw = document.getElementById('reviewAdminPw').value;
+                var hashed  = await hashPw(pw);
+                var correct = await hashPw('admin123');
+                if (hashed === correct) {
+                    adminToken = hashed;
+                    adminLogin.style.display = 'none';
+                    adminPanel.style.display = 'block';
+                    renderAdminList(allReviews.length ? allReviews : await loadReviews());
+                } else {
+                    document.getElementById('reviewAdminErr').textContent = 'Incorrect password';
+                }
+            });
+
+            function renderAdminList(reviews) {
+                var list = document.getElementById('reviewAdminList');
+                if (!reviews || !reviews.length) { list.innerHTML = '<p>No reviews yet.</p>'; return; }
+                list.innerHTML = reviews.map(function(rv) {
+                    return '<div class="admin-item" data-rid="' + esc(rv.id) + '">' +
+                        '<div class="admin-item-info">' +
+                            '<strong>' + esc(rv.name) + '</strong>' +
+                            '<span style="color:#f5a623;margin-left:8px;">' + starsHtml(rv.stars||5) + '</span>' +
+                            '<span style="font-size:.8rem;color:#888;margin-left:6px;">(' + esc(rv.type) + ')</span>' +
+                            '<p style="font-size:.83rem;color:#555;margin:.3rem 0 0;">' + esc((rv.comment||'').substring(0,100)) + ((rv.comment||'').length>100?'…':'') + '</p>' +
+                        '</div>' +
+                        '<div class="admin-item-actions">' +
+                            '<button class="btn-small rv-edit" data-id="' + esc(rv.id) + '" style="background:#0056b3;color:#fff;border:none;border-radius:4px;padding:4px 10px;cursor:pointer;">Edit</button>' +
+                            '<button class="btn-small rv-del"  data-id="' + esc(rv.id) + '" style="background:#dc3545;color:#fff;border:none;border-radius:4px;padding:4px 10px;cursor:pointer;">Delete</button>' +
+                        '</div>' +
+                        '<div id="ref_' + esc(rv.id) + '" style="display:none;margin-top:.75rem;">' +
+                            '<input type="text" class="ref-name" value="' + esc(rv.name) + '" placeholder="Name" style="width:100%;margin-bottom:.4rem;padding:6px;border:1px solid #ccc;border-radius:4px;" />' +
+                            '<div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.4rem;">' +
+                                '<label style="font-size:.85rem;color:#555;white-space:nowrap;">Stars:</label>' +
+                                '<input type="number" class="ref-stars" value="' + (rv.stars||5) + '" min="1" max="5" style="width:60px;padding:6px;border:1px solid #ccc;border-radius:4px;" />' +
+                                '<select class="ref-type" style="flex:1;padding:6px;border:1px solid #ccc;border-radius:4px;">' +
+                                    ['Current Resident','Former Resident','Community Member'].map(function(t) {
+                                        return '<option' + (rv.type===t?' selected':'') + '>' + t + '</option>';
+                                    }).join('') +
+                                '</select>' +
+                            '</div>' +
+                            '<textarea class="ref-comment" rows="3" style="width:100%;padding:6px;border:1px solid #ccc;border-radius:4px;resize:vertical;">' + esc(rv.comment||'') + '</textarea>' +
+                            '<div style="display:flex;gap:6px;margin-top:.5rem;">' +
+                                '<button class="rv-save" data-id="' + esc(rv.id) + '" style="background:#007bff;color:#fff;border:none;border-radius:4px;padding:5px 12px;cursor:pointer;">Save</button>' +
+                                '<button class="rv-cancel" data-id="' + esc(rv.id) + '" style="background:#6c757d;color:#fff;border:none;border-radius:4px;padding:5px 12px;cursor:pointer;">Cancel</button>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+
+                list.querySelectorAll('.rv-edit').forEach(function(b) {
+                    b.addEventListener('click', function() {
+                        var f = document.getElementById('ref_' + this.dataset.id);
+                        f.style.display = f.style.display === 'none' ? 'block' : 'none';
+                    });
+                });
+                list.querySelectorAll('.rv-cancel').forEach(function(b) {
+                    b.addEventListener('click', function() {
+                        document.getElementById('ref_' + this.dataset.id).style.display = 'none';
+                    });
+                });
+                list.querySelectorAll('.rv-save').forEach(function(b) {
+                    b.addEventListener('click', async function() {
+                        var id = this.dataset.id;
+                        var f  = document.getElementById('ref_' + id);
+                        var payload = {
+                            name:    f.querySelector('.ref-name').value.trim(),
+                            stars:   +f.querySelector('.ref-stars').value,
+                            type:    f.querySelector('.ref-type').value,
+                            comment: f.querySelector('.ref-comment').value.trim()
+                        };
+                        try {
+                            var r = await fetch('/api/admin/reviews/' + id, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken },
+                                body: JSON.stringify(payload)
+                            });
+                            if (!r.ok) throw new Error();
+                        } catch (e) { alert('Save failed'); return; }
+                        f.style.display = 'none';
+                        var updated = await loadReviews();
+                        renderAdminList(updated);
+                    });
+                });
+                list.querySelectorAll('.rv-del').forEach(function(b) {
+                    b.addEventListener('click', async function() {
+                        if (!confirm('Delete this review?')) return;
+                        var id = this.dataset.id;
+                        try {
+                            await fetch('/api/admin/reviews/' + id, {
+                                method: 'DELETE',
+                                headers: { 'Authorization': 'Bearer ' + adminToken }
+                            });
+                        } catch (e) {}
+                        this.closest('.admin-item').remove();
+                        loadReviews();
+                    });
+                });
+            }
+        });
+        </script>
 
         <section class="amenities-section">
             <div class="container">
@@ -244,67 +598,6 @@
             </div>
         </section>
 
-        <section class="image-gallery">
-            <div class="container">
-                <h2 class="section-title">Our Facilities</h2>
-                <div class="gallery-grid">
-                    <div class="gallery-item" data-gallery>
-                        <div class="image-placeholder">
-                            <svg width="100%" height="100%" viewBox="0 0 400 300">
-                                <rect width="400" height="300" fill="#1e3a5f"/>
-                                <text x="50%" y="50%" text-anchor="middle" fill="#4da6ff" font-size="20">Exterior Photo</text>
-                            </svg>
-                        </div>
-                        <p>Modern, welcoming exterior</p>
-                    </div>
-                    <div class="gallery-item" data-gallery>
-                        <div class="image-placeholder">
-                            <svg width="100%" height="100%" viewBox="0 0 400 300">
-                                <rect width="400" height="300" fill="#1e3a5f"/>
-                                <text x="50%" y="50%" text-anchor="middle" fill="#4da6ff" font-size="20">Living Area</text>
-                            </svg>
-                        </div>
-                        <p>Comfortable common spaces</p>
-                    </div>
-                    <div class="gallery-item" data-gallery>
-                        <div class="image-placeholder">
-                            <svg width="100%" height="100%" viewBox="0 0 400 300">
-                                <rect width="400" height="300" fill="#1e3a5f"/>
-                                <text x="50%" y="50%" text-anchor="middle" fill="#4da6ff" font-size="20">Bedroom</text>
-                            </svg>
-                        </div>
-                        <p>Private, peaceful rooms</p>
-                    </div>
-                    <div class="gallery-item" data-gallery>
-                        <div class="image-placeholder">
-                            <svg width="100%" height="100%" viewBox="0 0 400 300">
-                                <rect width="400" height="300" fill="#1e3a5f"/>
-                                <text x="50%" y="50%" text-anchor="middle" fill="#4da6ff" font-size="20">Kitchen</text>
-                            </svg>
-                        </div>
-                        <p>Modern kitchen facilities</p>
-                    </div>
-                    <div class="gallery-item" data-gallery>
-                        <div class="image-placeholder">
-                            <svg width="100%" height="100%" viewBox="0 0 400 300">
-                                <rect width="400" height="300" fill="#1e3a5f"/>
-                                <text x="50%" y="50%" text-anchor="middle" fill="#4da6ff" font-size="20">Meeting Room</text>
-                            </svg>
-                        </div>
-                        <p>Group meeting space</p>
-                    </div>
-                    <div class="gallery-item" data-gallery>
-                        <div class="image-placeholder">
-                            <svg width="100%" height="100%" viewBox="0 0 400 300">
-                                <rect width="400" height="300" fill="#1e3a5f"/>
-                                <text x="50%" y="50%" text-anchor="middle" fill="#4da6ff" font-size="20">Outdoor Space</text>
-                            </svg>
-                        </div>
-                        <p>Peaceful outdoor areas</p>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <footer class="footer">

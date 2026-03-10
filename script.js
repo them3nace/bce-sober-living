@@ -17,13 +17,23 @@
         
         if (!menuButton || !menu) return;
         
+        var menuScrollY = 0;
+
+        function closeMenu() {
+            menu.classList.remove('active');
+            menuButton.classList.remove('active');
+            body.classList.remove('menu-open');
+            body.style.top = '';
+            window.scrollTo(0, menuScrollY);
+        }
+
         function toggleMenu() {
             var isOpen = menu.classList.contains('active');
             if (isOpen) {
-                menu.classList.remove('active');
-                menuButton.classList.remove('active');
-                body.classList.remove('menu-open');
+                closeMenu();
             } else {
+                menuScrollY = window.pageYOffset;
+                body.style.top = '-' + menuScrollY + 'px';
                 menu.classList.add('active');
                 menuButton.classList.add('active');
                 body.classList.add('menu-open');
@@ -38,18 +48,14 @@
         var links = menu.getElementsByTagName('a');
         for (var i = 0; i < links.length; i++) {
             links[i].addEventListener('click', function() {
-                menu.classList.remove('active');
-                menuButton.classList.remove('active');
-                body.classList.remove('menu-open');
+                closeMenu();
             });
         }
-        
+
         document.addEventListener('click', function(e) {
             if (!menu.contains(e.target) && !menuButton.contains(e.target)) {
                 if (menu.classList.contains('active')) {
-                    menu.classList.remove('active');
-                    menuButton.classList.remove('active');
-                    body.classList.remove('menu-open');
+                    closeMenu();
                 }
             }
         });
@@ -639,7 +645,10 @@
                     <span class="chat-time">Just now</span>
                 </div>
             </div>
+            <div class="chat-typing-indicator" id="chatTypingIndicator"></div>
+            <div class="chat-emoji-picker" id="chatEmojiPicker"></div>
             <div class="chat-input-area">
+                <button class="chat-emoji-btn" id="chatEmojiBtn" type="button">😊</button>
                 <input type="text" id="chatInput" placeholder="Type your message..." />
                 <button id="chatSend">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
@@ -739,7 +748,58 @@
         chatInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') sendMessage();
         });
-        
+
+        // Emoji picker setup
+        var EMOJIS = ['😀','😊','😂','🥲','😍','🥰','😎','🙏','👍','👎','❤️','🔥','✨','🎉','💪','🤝','💯','😢','😔','🌟','🌈','🕊️','💙','💚','💛','🧡','🫶','🙌','💐','🌻'];
+        var emojiPicker = document.getElementById('chatEmojiPicker');
+        var emojiBtn = document.getElementById('chatEmojiBtn');
+        emojiPicker.innerHTML = EMOJIS.map(function(e) {
+            return '<button class="chat-emoji-item" type="button">' + e + '</button>';
+        }).join('');
+        emojiPicker.querySelectorAll('.chat-emoji-item').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var pos = chatInput.selectionStart || chatInput.value.length;
+                chatInput.value = chatInput.value.slice(0, pos) + btn.textContent + chatInput.value.slice(pos);
+                chatInput.focus();
+                chatInput.selectionStart = chatInput.selectionEnd = pos + btn.textContent.length;
+                emojiPicker.classList.remove('open');
+            });
+        });
+        emojiBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            emojiPicker.classList.toggle('open');
+        });
+        document.addEventListener('click', function(e) {
+            if (!emojiPicker.contains(e.target) && e.target !== emojiBtn) {
+                emojiPicker.classList.remove('open');
+            }
+        });
+
+        // Typing signal — fire when user types, 4s debounce
+        var typingTimeout = null;
+        chatInput.addEventListener('input', function() {
+            clearTimeout(typingTimeout);
+            fetch(API_BASE + '/api/chat/typing', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ conversationId: conversationId, isUser: true })
+            }).catch(function() {});
+            typingTimeout = setTimeout(function() {}, 4000);
+        });
+
+        // Poll for agent typing indicator (every 2s)
+        var typingIndicator = document.getElementById('chatTypingIndicator');
+        setInterval(async function() {
+            if (!isOpen) return;
+            try {
+                var r = await fetch(API_BASE + '/api/chat/typing/' + conversationId);
+                if (r.ok) {
+                    var d = await r.json();
+                    typingIndicator.textContent = d.agentTyping ? 'BCE Support is typing...' : '';
+                }
+            } catch (e) {}
+        }, 2000);
+
         // Poll for new agent responses
         setInterval(async function() {
             if (!isOpen) return;

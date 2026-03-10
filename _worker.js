@@ -207,8 +207,41 @@ export default {
       }
     }
 
+    // Typing indicator — POST /api/chat/typing
+    if (url.pathname === '/api/chat/typing' && request.method === 'POST') {
+      try {
+        const data = await request.json();
+        const { conversationId, isUser } = data;
+        const key = `typing_${isUser ? 'user' : 'agent'}_${conversationId}`;
+        await env['BCE-SESSIONS'].put(key, '1', { expirationTtl: 6 });
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ success: false }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // Typing indicator — GET /api/chat/typing/{conversationId}
+    if (url.pathname.startsWith('/api/chat/typing/') && request.method === 'GET') {
+      try {
+        const conversationId = url.pathname.slice('/api/chat/typing/'.length);
+        const userTyping = await env['BCE-SESSIONS'].get(`typing_user_${conversationId}`);
+        const agentTyping = await env['BCE-SESSIONS'].get(`typing_agent_${conversationId}`);
+        return new Response(JSON.stringify({ userTyping: !!userTyping, agentTyping: !!agentTyping }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ userTyping: false, agentTyping: false }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
     // Get chat history
-    if (url.pathname.startsWith('/api/chat/') && !url.pathname.startsWith('/api/chat/poll/') && request.method === 'GET') {
+    if (url.pathname.startsWith('/api/chat/') && !url.pathname.startsWith('/api/chat/poll/') && !url.pathname.startsWith('/api/chat/typing/') && request.method === 'GET') {
       try {
         const conversationId = url.pathname.split('/').pop();
         const prefix = `chat_${conversationId}_`;
@@ -586,6 +619,211 @@ export default {
     }
 
     // ============================================
+    // REVIEWS API
+    // ============================================
+    if (url.pathname === '/api/reviews' && request.method === 'GET') {
+      try {
+        const keys = await env['BCE-SESSIONS'].list({ prefix: 'review_' });
+        const reviews = [];
+        for (const key of keys.keys) {
+          const value = await env['BCE-SESSIONS'].get(key.name);
+          if (value) reviews.push(JSON.parse(value));
+        }
+        reviews.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        return new Response(JSON.stringify(reviews), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify([]), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    if (url.pathname === '/api/reviews' && request.method === 'POST') {
+      try {
+        const data = await request.json();
+        const id = Date.now().toString();
+        const review = {
+          id,
+          name: (data.name || 'Anonymous').substring(0, 80),
+          comment: (data.comment || '').substring(0, 1000),
+          stars: Math.min(5, Math.max(1, parseInt(data.stars) || 5)),
+          type: data.type || 'Community Member',
+          timestamp: new Date().toISOString()
+        };
+        await env['BCE-SESSIONS'].put(`review_${id}`, JSON.stringify(review));
+        await sendEmailNotification(env, 'New Review Submitted',
+          `From: ${review.name} (${review.type})\nStars: ${review.stars}/5\nComment: ${review.comment}`);
+        return new Response(JSON.stringify({ success: true, review }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to submit review' }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // Edit review (admin)
+    if (url.pathname.startsWith('/api/admin/reviews/') && request.method === 'PUT') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const id = url.pathname.split('/').pop();
+        const data = await request.json();
+        const existing = await env['BCE-SESSIONS'].get(`review_${id}`);
+        if (!existing) {
+          return new Response(JSON.stringify({ error: 'Review not found' }), {
+            status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          });
+        }
+        const review = JSON.parse(existing);
+        if (data.name    !== undefined) review.name    = data.name;
+        if (data.comment !== undefined) review.comment = data.comment;
+        if (data.stars   !== undefined) review.stars   = Math.min(5, Math.max(1, parseInt(data.stars) || 5));
+        if (data.type    !== undefined) review.type    = data.type;
+        review.editedAt = new Date().toISOString();
+        await env['BCE-SESSIONS'].put(`review_${id}`, JSON.stringify(review));
+        return new Response(JSON.stringify({ success: true, review }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to edit review' }), {
+          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // Delete review (admin)
+    if (url.pathname.startsWith('/api/admin/reviews/') && request.method === 'DELETE') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const id = url.pathname.split('/').pop();
+        await env['BCE-SESSIONS'].delete(`review_${id}`);
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to delete review' }), {
+          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // ============================================
+    // REMEMBRANCE / IN MEMORIAM API
+    // ============================================
+    if (url.pathname === '/api/remembrance' && request.method === 'GET') {
+      try {
+        const keys = await env['BCE-SESSIONS'].list({ prefix: 'memorial_' });
+        const memorials = [];
+        for (const key of keys.keys) {
+          const value = await env['BCE-SESSIONS'].get(key.name);
+          if (value) memorials.push(JSON.parse(value));
+        }
+        memorials.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        return new Response(JSON.stringify(memorials), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify([]), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    if (url.pathname === '/api/remembrance' && request.method === 'POST') {
+      try {
+        const data = await request.json();
+        const id = Date.now().toString();
+        const memorial = {
+          id,
+          lovedOneName: data.lovedOneName || '',
+          dob: data.dob || '',
+          dop: data.dop || '',
+          bio: data.bio || '',
+          submitterName: data.submitterName || '',
+          photo: data.photo || null,
+          timestamp: data.timestamp || new Date().toISOString()
+        };
+        await env['BCE-SESSIONS'].put(`memorial_${id}`, JSON.stringify(memorial));
+        await sendEmailNotification(env, 'New In Memoriam Tribute',
+          `Loved One: ${memorial.lovedOneName}\nDOB: ${memorial.dob}\nDOP: ${memorial.dop}\nSubmitted by: ${memorial.submitterName || 'Anonymous'}\nBio: ${memorial.bio}`);
+        return new Response(JSON.stringify({ success: true, memorial }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to submit tribute' }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // Edit memorial (admin)
+    if (url.pathname.startsWith('/api/admin/remembrance/') && request.method === 'PUT') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const id = url.pathname.split('/').pop();
+        const data = await request.json();
+        const existing = await env['BCE-SESSIONS'].get(`memorial_${id}`);
+        if (!existing) {
+          return new Response(JSON.stringify({ error: 'Memorial not found' }), {
+            status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          });
+        }
+        const memorial = JSON.parse(existing);
+        if (data.lovedOneName !== undefined) memorial.lovedOneName = data.lovedOneName;
+        if (data.dob          !== undefined) memorial.dob          = data.dob;
+        if (data.dop          !== undefined) memorial.dop          = data.dop;
+        if (data.bio          !== undefined) memorial.bio          = data.bio;
+        if (data.submitterName !== undefined) memorial.submitterName = data.submitterName;
+        memorial.editedAt = new Date().toISOString();
+        await env['BCE-SESSIONS'].put(`memorial_${id}`, JSON.stringify(memorial));
+        return new Response(JSON.stringify({ success: true, memorial }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to edit memorial' }), {
+          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // Delete memorial (admin)
+    if (url.pathname.startsWith('/api/admin/remembrance/') && request.method === 'DELETE') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const id = url.pathname.split('/').pop();
+        await env['BCE-SESSIONS'].delete(`memorial_${id}`);
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to delete' }), {
+          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // ============================================
     // HOUSING API (public)
     // ============================================
     if (url.pathname === '/api/houses' && request.method === 'GET') {
@@ -740,6 +978,63 @@ export default {
         return new Response(JSON.stringify({ error: 'Failed to delete house' }), {
           status: 500,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    // ============================================
+    // FACILITY PHOTOS API
+    // ============================================
+    if (url.pathname === '/api/facility-photos' && request.method === 'GET') {
+      const slots = ['exterior', 'living_area', 'bedrooms', 'kitchen', 'meeting_room', 'outdoor_space'];
+      const result = {};
+      for (const slot of slots) {
+        result[slot] = await env['BCE-SESSIONS'].get(`facility_photo_${slot}`);
+      }
+      return new Response(JSON.stringify(result), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    if (url.pathname === '/api/admin/facility-photos' && request.method === 'PUT') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const data = await request.json();
+        const slot = data.slot;
+        const photo = data.photo;
+        if (!slot || !photo) return new Response(JSON.stringify({ error: 'Missing slot or photo' }), {
+          status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+        await env['BCE-SESSIONS'].put(`facility_photo_${slot}`, photo);
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to save photo' }), {
+          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+
+    if (url.pathname.startsWith('/api/admin/facility-photos/') && request.method === 'DELETE') {
+      if (!verifyAdmin(request)) {
+        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+      try {
+        const slot = url.pathname.split('/').pop();
+        await env['BCE-SESSIONS'].delete(`facility_photo_${slot}`);
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to delete photo' }), {
+          status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
       }
     }
