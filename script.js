@@ -664,6 +664,7 @@
         var chatMessages = document.getElementById('chatMessages');
         var chatInput = document.getElementById('chatInput');
         var conversationId = 'chat_' + Date.now();
+        var autoResponseSent = false;
         
         liveAgentBtn.addEventListener('click', function() {
             isOpen = !isOpen;
@@ -718,10 +719,13 @@
                     })
                 });
                 
-                // Auto response after short delay
-                setTimeout(function() {
-                    addMessage("Thank you for your message!  Responses typically take about 2-5 minutes; please be patient for your response...  William will respond shortly but for immediate assistance, you may call William at (424) 395-6144.", false);
-                }, 1000);
+                // Auto response after short delay (only once)
+                if (!autoResponseSent) {
+                    autoResponseSent = true;
+                    setTimeout(function() {
+                        addMessage("Thank you for your message! Responses typically take about 2-5 minutes; please be patient for your response... William will respond shortly but for immediate assistance, you may call William at (424) 395-6144.", false);
+                    }, 1000);
+                }
             } catch (error) {
                 console.error('Chat error:', error);
             }
